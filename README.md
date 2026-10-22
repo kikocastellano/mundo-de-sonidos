@@ -25,7 +25,7 @@ npm run test:e2e   # recorre todas las pantallas en iPhone, Android, horizontal,
   2. Escuchas y apuntas el elegido en `sounds-approved.json`: `{ "vaca": { "file": "02-commons.ogg", "start": 0.4 } }`.
   3. `npm run sounds:process` recorta, nivela a -16 LUFS, guarda `public/sounds/<animal>.mp3`, registra autor/licencia en `src/sounds.json` y pasa `tests/licenses.mjs`, que falla si algún sonido no tiene licencia válida.
   El nombre hablado usa la voz del dispositivo (sin archivos).
-- **Fase 6 (parcial)**: modo calma (selva, lluvia, olas, noche, viento con temporizador y paisaje nocturno) y modo profe (favoritos seguidos, pantalla completa). Son premium; en la zona de padres hay un interruptor «Probar premium (solo pruebas)» hasta conectar el cobro.
+- **Fase 6 (parcial)**: modo calma (nana, lluvia suave, olas, arroyo, latido, ballenas, chimenea, selva, noche, brisa con temporizador y paisaje nocturno) y modo profe (favoritos seguidos, pantalla completa). Son premium; en la zona de padres hay un interruptor «Probar premium (solo pruebas)» hasta conectar el cobro.
 - **Fase 7 (parcial)**: pantalla de créditos, `public/privacidad.html` (ES/EN) y borrador de ficha en `docs/FICHA_TIENDA.md`.
 
 ## Estructura

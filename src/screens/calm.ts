@@ -6,17 +6,22 @@ import { $, backBtn, icon } from '../ui';
 import { premiumWall } from './premium';
 
 const OPTS: { id: Ambience; emoji: string; es: string; en: string }[] = [
-  { id: 'selva', emoji: '🌴', es: 'Selva', en: 'Jungle' },
-  { id: 'lluvia', emoji: '🌧️', es: 'Lluvia', en: 'Rain' },
+  { id: 'nana', emoji: '🎶', es: 'Nana', en: 'Lullaby' },
+  { id: 'lluvia', emoji: '🌧️', es: 'Lluvia suave', en: 'Soft rain' },
   { id: 'olas', emoji: '🌊', es: 'Olas', en: 'Waves' },
+  { id: 'arroyo', emoji: '💧', es: 'Arroyo', en: 'Stream' },
+  { id: 'corazon', emoji: '💗', es: 'Latido', en: 'Heartbeat' },
+  { id: 'ballenas', emoji: '🐋', es: 'Ballenas', en: 'Whales' },
+  { id: 'chimenea', emoji: '🔥', es: 'Chimenea', en: 'Fireplace' },
+  { id: 'selva', emoji: '🌴', es: 'Selva', en: 'Jungle' },
   { id: 'noche', emoji: '🦗', es: 'Noche', en: 'Night' },
-  { id: 'viento', emoji: '🍃', es: 'Viento', en: 'Wind' },
+  { id: 'viento', emoji: '🍃', es: 'Brisa', en: 'Breeze' },
 ];
 const TIMERS = [5, 15, 30, 0];
 
 export function calm(root: HTMLElement) {
   if (premiumWall(root, t('calm'))) return;
-  let kind: Ambience = 'selva', minutes = 15, playing = false, endAt = 0, iv = 0;
+  let kind: Ambience = 'nana', minutes = 15, playing = false, endAt = 0, iv = 0;
   root.innerHTML = `
     <section class="screen calm">
       <header class="topbar">${backBtn('/')}<h2>🌙 ${t('calm')}</h2><span class="spacer"></span></header>

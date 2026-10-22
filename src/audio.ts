@@ -86,11 +86,11 @@ function noise(o: { at?: number; dur: number; gain?: number; filter: [BiquadFilt
   src.start(t0); src.stop(t0 + o.dur + 0.05); live.push(src);
 }
 
-function echo(time: number, fb: number) {
+function echo(time: number, fb: number, dest: AudioNode = master) {
   const c = ctx!; const d = c.createDelay(1); d.delayTime.value = time;
   const g = c.createGain(); g.gain.value = fb;
-  d.connect(g).connect(d); d.connect(master);
-  const input = c.createGain(); input.connect(master); input.connect(d);
+  d.connect(g).connect(d); d.connect(dest);
+  const input = c.createGain(); input.connect(dest); input.connect(d);
   return input;
 }
 
@@ -250,45 +250,109 @@ export function sfx(kind: 'tap' | 'win' | 'oops' | 'star') {
 export const hasRecipe = (k: string) => k in RECIPES;
 
 // ---------- Modo calma: paisajes sonoros continuos ----------
-export type Ambience = 'lluvia' | 'olas' | 'noche' | 'viento' | 'selva';
+// Todo parte de ruido «marrón» (grave y suave, como un rumor lejano), nunca del ruido blanco agudo.
+export type Ambience = 'lluvia' | 'olas' | 'noche' | 'viento' | 'selva' | 'arroyo' | 'nana' | 'corazon' | 'ballenas' | 'chimenea';
 let amb: { out: GainNode; nodes: AudioScheduledSourceNode[]; timers: number[] } | null = null;
+let brownBuf: AudioBuffer | null = null;
 
-export function startAmbience(kind: Ambience, volume = 0.8) {
+function brown(c: AudioContext) {
+  if (brownBuf) return brownBuf;
+  const len = c.sampleRate * 8;
+  brownBuf = c.createBuffer(2, len, c.sampleRate);
+  for (let ch = 0; ch < 2; ch++) {
+    const d = brownBuf.getChannelData(ch); let last = 0;
+    for (let k = 0; k < len; k++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[k] = last * 3.5; }
+    // fundido del bucle para que no se note el salto
+    for (let k = 0; k < 2000; k++) { const f = k / 2000; d[k] *= f; d[len - 1 - k] *= f; }
+  }
+  return brownBuf;
+}
+
+// Nana de Brahms (dominio público), notas en Hz y duración en tiempos
+const NANA: [number, number][] = [[330, 1], [330, 1], [392, 3], [330, 1], [330, 1], [392, 3], [330, 1], [392, 1], [523, 2], [494, 2], [440, 2], [440, 2], [392, 2],
+  [294, 1], [330, 1], [349, 2], [294, 2], [294, 1], [330, 1], [349, 3], [294, 1], [349, 1], [494, 1], [440, 1], [392, 2], [494, 2], [523, 4]];
+
+export function startAmbience(kind: Ambience, volume = 0.55) {
   unlockAudio();
   stopAmbience(0.2);
   if (!ctx) return;
   const c = ctx; const out = c.createGain();
   out.gain.setValueAtTime(0.0001, c.currentTime);
-  out.gain.exponentialRampToValueAtTime(volume, c.currentTime + 2.5);
+  out.gain.exponentialRampToValueAtTime(volume, c.currentTime + 4);
   out.connect(master);
   const nodes: AudioScheduledSourceNode[] = []; const timers: number[] = [];
-  const bed = (type: BiquadFilterType, f: number, q: number, g: number, lfo?: [number, number]) => {
-    const src = c.createBufferSource(); src.buffer = noiseBuf; src.loop = true;
+  /** Capa de ruido marrón filtrado, con «respiración» lenta opcional. */
+  const bed = (type: BiquadFilterType, f: number, q: number, g: number, lfo?: [number, number], offset = 0) => {
+    const src = c.createBufferSource(); src.buffer = brown(c); src.loop = true;
     const bq = c.createBiquadFilter(); bq.type = type; bq.frequency.value = f; bq.Q.value = q;
     const gn = c.createGain(); gn.gain.value = g;
-    src.connect(bq).connect(gn).connect(out); src.start(); nodes.push(src);
+    src.connect(bq).connect(gn).connect(out); src.start(0, offset); nodes.push(src);
     if (lfo) { const l = c.createOscillator(); const lg = c.createGain(); l.frequency.value = lfo[0]; lg.gain.value = lfo[1]; l.connect(lg).connect(gn.gain); l.start(); nodes.push(l); }
     return bq;
   };
-  const every = (ms: number, fn: () => void) => { const tick = () => { if (!amb || amb.out !== out) return; fn(); timers.push(window.setTimeout(tick, ms * (0.5 + Math.random()))); }; tick(); };
+  const every = (ms: number, fn: () => void) => { const tick = () => { if (!amb || amb.out !== out) return; fn(); timers.push(window.setTimeout(tick, ms * (0.6 + Math.random() * 0.8))); }; timers.push(window.setTimeout(tick, ms * Math.random())); };
+  const soft = (f: number, dur: number, g: number, type: OscillatorType = 'sine', glide = 1, dest: AudioNode = out) =>
+    tone({ type, dur, f: [[0, f], [1, f * glide]], gain: g, attack: Math.min(0.3, dur / 3), release: dur / 2, out: dest });
+
   if (kind === 'lluvia') {
-    bed('lowpass', 1200, 0.5, 0.35); bed('highpass', 5000, 0.5, 0.06);
-    every(140, () => tone({ type: 'sine', dur: 0.05, f: [[0, 1800 + Math.random() * 2500], [1, 900]], gain: 0.03, attack: 0.002, release: 0.04, out }));
+    // lluvia suave sobre las hojas: rumor grave y gotitas lejanas
+    bed('lowpass', 700, 0.4, 0.3, [0.05, 0.05]); bed('bandpass', 1400, 0.6, 0.05, [0.07, 0.02], 3);
+    every(220, () => soft(900 + Math.random() * 900, 0.08, 0.008 + Math.random() * 0.01));
   }
-  if (kind === 'olas') bed('lowpass', 600, 0.7, 0.3, [0.09, 0.28]);
-  if (kind === 'viento') { const f = bed('bandpass', 500, 2, 0.35, [0.05, 0.2]); const l = c.createOscillator(); const lg = c.createGain(); l.frequency.value = 0.07; lg.gain.value = 300; l.connect(lg).connect(f.frequency); l.start(); nodes.push(l); }
+  if (kind === 'olas') {
+    // olas que llegan cada 8-10 s y se retiran despacio
+    bed('lowpass', 420, 0.5, 0.7, [0.11, 0.55]); bed('lowpass', 900, 0.4, 0.15, [0.09, 0.12], 2);
+  }
+  if (kind === 'viento') {
+    // brisa suave entre los árboles
+    const f = bed('bandpass', 320, 0.8, 0.45, [0.04, 0.2]);
+    const l = c.createOscillator(); const lg = c.createGain(); l.frequency.value = 0.05; lg.gain.value = 120; l.connect(lg).connect(f.frequency); l.start(); nodes.push(l);
+    every(9000, () => soft(500 + Math.random() * 200, 3, 0.006, 'sine', 1.08));
+  }
   if (kind === 'noche') {
-    bed('lowpass', 300, 0.5, 0.08);
-    every(1600, () => range(3, (i) => tone({ type: 'sine', at: i * 0.06, dur: 0.04, f: [[0, 4400], [1, 4300]], gain: 0.025, attack: 0.005, release: 0.02, out })));
-    every(14000, () => { const n: [number, number][] = [[0, 0.45], [0.75, 0.22], [1.05, 0.55]]; for (const [at, dur] of n) tone({ type: 'sine', at, dur, f: [[0, 400], [1, 360]], gain: 0.06, attack: 0.06, release: 0.2, out }); });
+    bed('lowpass', 250, 0.5, 0.25);
+    every(2200, () => range(3, (i) => tone({ type: 'sine', at: i * 0.07, dur: 0.05, f: [[0, 4200], [1, 4150]], gain: 0.008, attack: 0.01, release: 0.03, out })));
+    every(20000, () => { const n: [number, number][] = [[0, 0.5], [0.8, 0.25], [1.15, 0.6]]; for (const [at, dur] of n) tone({ type: 'sine', at, dur, f: [[0, 390], [1, 350]], gain: 0.025, attack: 0.08, release: 0.25, out }); });
   }
   if (kind === 'selva') {
-    // Arroyo suave, llovizna lejana, pájaros tropicales, ranitas y algún mono a lo lejos.
-    bed('bandpass', 900, 0.6, 0.12, [0.15, 0.05]); bed('lowpass', 500, 0.5, 0.1);
-    every(2200, () => { const f = 2200 + Math.random() * 1600; range(2 + Math.floor(Math.random() * 3), (i) => tone({ type: 'sine', at: i * 0.13, dur: 0.1, f: [[0, f], [1, f * 1.25]], gain: 0.035, attack: 0.01, release: 0.05, out })); });
-    every(5200, () => { const f = 900 + Math.random() * 300; tone({ type: 'sine', dur: 0.7, f: [[0, f], [0.5, f * 1.5], [1, f * 1.1]], gain: 0.04, attack: 0.1, release: 0.3, vib: [6, 25], out }); });
-    every(3000, () => range(2, (i) => tone({ type: 'square', at: i * 0.35, dur: 0.18, f: [[0, 300], [1, 240]], gain: 0.012, attack: 0.01, release: 0.05, am: [30, 0.9], filter: ['lowpass', 900, 3], out })));
-    every(16000, () => range(4, (i) => tone({ type: 'triangle', at: i * 0.22, dur: 0.18, f: [[0, 500 + i * 80], [1, 800 + i * 90]], gain: 0.02, attack: 0.03, release: 0.08, filter: ['lowpass', 1500], out })));
+    bed('lowpass', 600, 0.5, 0.25, [0.06, 0.05]);
+    every(3200, () => { const f = 2000 + Math.random() * 1400; range(2 + Math.floor(Math.random() * 2), (i) => tone({ type: 'sine', at: i * 0.16, dur: 0.12, f: [[0, f], [1, f * 1.2]], gain: 0.012, attack: 0.02, release: 0.08, out })); });
+    every(7000, () => { const f = 800 + Math.random() * 300; tone({ type: 'sine', dur: 0.9, f: [[0, f], [0.5, f * 1.4], [1, f * 1.1]], gain: 0.015, attack: 0.15, release: 0.4, vib: [5, 15], out }); });
+  }
+  if (kind === 'arroyo') {
+    // agua que corre entre piedras: burbujitas suaves
+    bed('bandpass', 900, 0.7, 0.22, [0.3, 0.05]); bed('lowpass', 400, 0.5, 0.25, undefined, 4);
+    every(160, () => soft(250 + Math.random() * 500, 0.1 + Math.random() * 0.08, 0.012, 'sine', 1.6 + Math.random()));
+  }
+  if (kind === 'chimenea') {
+    // fuego tranquilo: rumor cálido y chasquidos pequeños
+    bed('lowpass', 300, 0.5, 0.3, [0.2, 0.06]);
+    every(450, () => noise({ dur: 0.02 + Math.random() * 0.03, gain: 0.015 + Math.random() * 0.02, filter: ['bandpass', 1500 + Math.random() * 2500, 2], attack: 0.002 }));
+  }
+  if (kind === 'corazon') {
+    // latido lento (60 por minuto), como dentro de mamá
+    bed('lowpass', 200, 0.5, 0.18);
+    const beat = () => { soft(55, 0.18, 0.2, 'sine', 0.8); window.setTimeout(() => { if (amb?.out === out) soft(50, 0.16, 0.13, 'sine', 0.8); }, 260); };
+    beat(); const iv = window.setInterval(() => { if (amb?.out === out) beat(); else clearInterval(iv); }, 1000); timers.push(iv);
+  }
+  if (kind === 'ballenas') {
+    const e = echo(0.6, 0.5, out);
+    bed('lowpass', 350, 0.5, 0.3, [0.08, 0.18]);
+    every(9000, () => { const f = 160 + Math.random() * 140; tone({ type: 'sine', dur: 3 + Math.random() * 2, f: [[0, f], [0.4, f * 1.8], [1, f * 1.2]], gain: 0.04, attack: 0.8, release: 1.5, vib: [3, 6], out: e }); });
+  }
+  if (kind === 'nana') {
+    // caja de música con la nana de Brahms, muy suave y en bucle
+    const e = echo(0.35, 0.3, out);
+    const beat = 0.42; const total = NANA.reduce((a, [, d]) => a + d, 0) * beat + 2;
+    const play = () => {
+      let t = 0;
+      for (const [f, d] of NANA) {
+        tone({ type: 'sine', at: t, dur: Math.max(0.6, d * beat * 1.4), f: [[0, f * 2], [1, f * 2]], gain: 0.05, attack: 0.005, release: Math.max(0.5, d * beat), out: e });
+        tone({ type: 'triangle', at: t, dur: 0.4, f: [[0, f * 4], [1, f * 4]], gain: 0.008, attack: 0.003, release: 0.3, out: e });
+        t += d * beat;
+      }
+    };
+    play(); const iv = window.setInterval(() => { if (amb?.out === out) play(); else clearInterval(iv); }, total * 1000); timers.push(iv);
   }
   amb = { out, nodes, timers };
 }
@@ -296,7 +360,7 @@ export function startAmbience(kind: Ambience, volume = 0.8) {
 export function stopAmbience(fade = 2) {
   if (!amb || !ctx) return;
   const a = amb; amb = null;
-  a.timers.forEach(clearTimeout);
+  a.timers.forEach((t) => { clearTimeout(t); clearInterval(t); });
   const t = ctx.currentTime;
   a.out.gain.cancelScheduledValues(t); a.out.gain.setValueAtTime(Math.max(a.out.gain.value, 0.0001), t);
   a.out.gain.exponentialRampToValueAtTime(0.0001, t + fade);
