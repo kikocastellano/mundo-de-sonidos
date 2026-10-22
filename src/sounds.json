@@ -148,5 +148,185 @@
     "author": "hackerb9",
     "license": "CC BY",
     "source": "https://freesound.org/people/hackerb9/sounds/110116/"
+  },
+  "perro": {
+    "file": "perro.mp3",
+    "author": "www.bonson.ca",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/www.bonson.ca/sounds/24965/"
+  },
+  "cabra": {
+    "file": "cabra.mp3",
+    "author": "LukeIRL",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/LukeIRL/sounds/62025/"
+  },
+  "gallina": {
+    "file": "gallina.mp3",
+    "author": "Rudmer_Rotteveel",
+    "license": "CC0",
+    "source": "https://freesound.org/people/Rudmer_Rotteveel/sounds/316920/"
+  },
+  "pollito": {
+    "file": "pollito.mp3",
+    "author": "GB01",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/GB01/sounds/150298/"
+  },
+  "pavo": {
+    "file": "pavo.mp3",
+    "author": "DrDufus",
+    "license": "CC0",
+    "source": "https://freesound.org/people/DrDufus/sounds/417327/"
+  },
+  "burro": {
+    "file": "burro.mp3",
+    "author": "felix.blume",
+    "license": "CC0",
+    "source": "https://freesound.org/people/felix.blume/sounds/157763/"
+  },
+  "ganso": {
+    "file": "ganso.mp3",
+    "author": "FiveBrosStopMosYT",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/FiveBrosStopMosYT/sounds/533356/"
+  },
+  "conejo": {
+    "file": "conejo.mp3",
+    "author": "dobroide",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/dobroide/sounds/84141/"
+  },
+  "toro": {
+    "file": "toro.mp3",
+    "author": "confusion_music",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/confusion_music/sounds/103427/"
+  },
+  "gaviota": {
+    "file": "gaviota.mp3",
+    "author": "Snapper4298",
+    "license": "CC0",
+    "source": "https://freesound.org/people/Snapper4298/sounds/166703/"
+  },
+  "jirafa": {
+    "file": "jirafa.mp3",
+    "author": "thecityrings",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/thecityrings/sounds/152562/"
+  },
+  "rinoceronte": {
+    "file": "rinoceronte.mp3",
+    "author": "patchen",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/patchen/sounds/3398/"
+  },
+  "gorila": {
+    "file": "gorila.mp3",
+    "author": "J0ck0",
+    "license": "CC0",
+    "source": "https://freesound.org/people/J0ck0/sounds/397054/"
+  },
+  "flamenco": {
+    "file": "flamenco.mp3",
+    "author": "InspectorJ",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/InspectorJ/sounds/400860/"
+  },
+  "camello": {
+    "file": "camello.mp3",
+    "author": "Erdie",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/Erdie/sounds/57181/"
+  },
+  "bisonte": {
+    "file": "bisonte.mp3",
+    "author": "TheKingOfGeeks360",
+    "license": "CC0",
+    "source": "https://freesound.org/people/TheKingOfGeeks360/sounds/867549/"
+  },
+  "mapache": {
+    "file": "mapache.mp3",
+    "author": "TRP",
+    "license": "CC0",
+    "source": "https://freesound.org/people/TRP/sounds/717839/"
+  },
+  "serpiente": {
+    "file": "serpiente.mp3",
+    "author": "iut_Paris8",
+    "license": "CC0",
+    "source": "https://freesound.org/people/iut_Paris8/sounds/514235/"
+  },
+  "cobra": {
+    "file": "cobra.mp3",
+    "author": "schreibsel",
+    "license": "CC0",
+    "source": "https://freesound.org/people/schreibsel/sounds/540162/"
+  },
+  "grulla": {
+    "file": "grulla.mp3",
+    "author": "dobroide",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/dobroide/sounds/32746/"
+  },
+  "erizo": {
+    "file": "erizo.mp3",
+    "author": "soundmary",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/soundmary/sounds/194938/"
+  },
+  "ardilla": {
+    "file": "ardilla.mp3",
+    "author": "Mastersoundboy2005",
+    "license": "CC0",
+    "source": "https://freesound.org/people/Mastersoundboy2005/sounds/763377/"
+  },
+  "abeja": {
+    "file": "abeja.mp3",
+    "author": "soundmary",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/soundmary/sounds/194932/"
+  },
+  "grillo": {
+    "file": "grillo.mp3",
+    "author": "FreethinkerAnon",
+    "license": "CC0",
+    "source": "https://freesound.org/people/FreethinkerAnon/sounds/129678/"
+  },
+  "cuervo": {
+    "file": "cuervo.mp3",
+    "author": "nigelcoop",
+    "license": "CC0",
+    "source": "https://freesound.org/people/nigelcoop/sounds/75162/"
+  },
+  "jabali": {
+    "file": "jabali.mp3",
+    "author": "TheVeoMammoth11",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/TheVeoMammoth11/sounds/492654/"
+  },
+  "ciervo": {
+    "file": "ciervo.mp3",
+    "author": "jorickhoofd",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/jorickhoofd/sounds/169540/"
+  },
+  "paloma": {
+    "file": "paloma.mp3",
+    "author": "squashy555",
+    "license": "CC0",
+    "source": "https://freesound.org/people/squashy555/sounds/319512/"
+  },
+  "cacatua": {
+    "file": "cacatua.mp3",
+    "author": "tim.kahn",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/tim.kahn/sounds/7208/"
+  },
+  "reno": {
+    "file": "reno.mp3",
+    "author": "thabigm",
+    "license": "CC0",
+    "source": "https://freesound.org/people/thabigm/sounds/758377/"
   }
 }

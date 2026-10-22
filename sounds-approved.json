@@ -98,5 +98,125 @@
  "pinguino": {
   "file": "02-freesound.mp3",
   "duration": 4
+ },
+ "perro": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "cabra": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "gallina": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "pollito": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "pavo": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "burro": {
+  "file": "02-freesound.mp3",
+  "duration": 4
+ },
+ "ganso": {
+  "file": "03-freesound.mp3",
+  "duration": 4
+ },
+ "conejo": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "toro": {
+  "file": "05-freesound.mp3",
+  "duration": 4
+ },
+ "gaviota": {
+  "file": "02-freesound.mp3",
+  "duration": 4
+ },
+ "jirafa": {
+  "file": "02-freesound.mp3",
+  "duration": 4
+ },
+ "rinoceronte": {
+  "file": "04-freesound.mp3",
+  "duration": 4
+ },
+ "gorila": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "flamenco": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "camello": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "bisonte": {
+  "file": "02-freesound.mp3",
+  "duration": 4
+ },
+ "mapache": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "serpiente": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "cobra": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "grulla": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "erizo": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "ardilla": {
+  "file": "02-freesound.mp3",
+  "duration": 4
+ },
+ "abeja": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "grillo": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "cuervo": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "jabali": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "ciervo": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "paloma": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "cacatua": {
+  "file": "03-freesound.mp3",
+  "duration": 4
+ },
+ "reno": {
+  "file": "05-freesound.mp3",
+  "duration": 4
  }
 }
