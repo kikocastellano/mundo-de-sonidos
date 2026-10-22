@@ -2,7 +2,7 @@
 import { playAnimal, preload, sayName, sfx } from '../audio';
 import { ANIMALS, REGIONS, type Animal, type RegionId } from '../data';
 import { t } from '../i18n';
-import { addStar, isLocked, store } from '../store';
+import { addStar, discover, isLocked, save, store } from '../store';
 import { $, backBtn, confetti, esc, icon, soundRings } from '../ui';
 
 const shuffle = <T,>(arr: T[]) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -71,7 +71,9 @@ export function game(root: HTMLElement, where: RegionId | 'todo') {
       sfx('win'); confetti();
       setTimeout(() => sayName(target.name[L]), 500);
       if (mistakes === 0) streak++;
-      addStar(where);
+      addStar(where); setTimeout(() => discover(target.id), 1200);
+      store.rounds = (store.rounds || 0) + 1; save();
+      if (!store.premium && store.rounds % 8 === 0) setTimeout(() => upsell(root), 2400);
       const sc = $('.sc', root); sc.textContent = String(store.stars[where]); sc.parentElement!.classList.add('pop');
       setTimeout(() => sc.parentElement!.classList.remove('pop'), 600);
       setTimeout(next, 2300);
@@ -84,4 +86,16 @@ export function game(root: HTMLElement, where: RegionId | 'todo') {
     }
   }
   next();
+}
+
+/** Cada 8 aciertos, un aviso suave (no bloquea) de que hay más animales en el álbum completo. */
+function upsell(root: HTMLElement) {
+  if (root.querySelector('.upsell')) return;
+  const n = ANIMALS.filter((a) => isLocked(a)).length;
+  const el = document.createElement('div');
+  el.className = 'upsell';
+  el.innerHTML = `<span>🦁🐼🦒</span><p><b>+${n}</b> ${t('moreWaiting')}</p><button class="pill" data-go="/padres?next=premium">${t('askAdult')}</button><button class="up-x" aria-label="${t('close')}">✕</button>`;
+  root.querySelector('.screen')?.appendChild(el);
+  el.querySelector('.up-x')!.addEventListener('click', () => el.remove());
+  setTimeout(() => el.remove(), 9000);
 }

@@ -2,7 +2,7 @@ import { preload } from '../audio';
 import { animalsIn, regionById, type RegionId } from '../data';
 import { t } from '../i18n';
 import { store } from '../store';
-import { backBtn, card, esc, go, icon } from '../ui';
+import { backBtn, card, esc, go, icon, lockedModal } from '../ui';
 
 export function region(root: HTMLElement, id: RegionId) {
   const r = regionById(id);
@@ -16,5 +16,5 @@ export function region(root: HTMLElement, id: RegionId) {
     </section>`;
   preload(list);
   root.querySelectorAll<HTMLElement>('[data-animal]').forEach((b) =>
-    b.addEventListener('click', () => go(`/animal/${b.dataset.animal}`)));
+    b.addEventListener('click', () => (b.classList.contains('locked') ? lockedModal(b.querySelector('.card-emoji')!.textContent!) : go(`/animal/${b.dataset.animal}`))));
 }

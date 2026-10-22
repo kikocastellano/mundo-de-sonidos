@@ -1,12 +1,12 @@
 // Preferencias, favoritos y estrellas guardados solo en el dispositivo.
 import type { Lang } from './data';
 
-interface State { lang: Lang; muted: boolean; favs: string[]; stars: Record<string, number>; premium: boolean; voice: Record<Lang, string> }
+interface State { lang: Lang; muted: boolean; favs: string[]; stars: Record<string, number>; premium: boolean; voice: Record<Lang, string>; seen: Record<string, number>; rounds: number }
 
 const KEY = 'mundo-sonidos-v1';
 const defaults = (): State => ({
   lang: (navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en',
-  muted: false, favs: [], stars: {}, premium: false, voice: { es: '', en: '' },
+  muted: false, favs: [], stars: {}, premium: false, voice: { es: '', en: '' }, seen: {}, rounds: 0,
 });
 
 function load(): State {
@@ -36,3 +36,14 @@ export function addStar(region: string) {
 }
 
 export const isLocked = (a: { premium: boolean }) => a.premium && !store.premium;
+
+const stickerListeners = new Set<(id: string) => void>();
+export const onSticker = (fn: (id: string) => void) => stickerListeners.add(fn);
+
+/** Marca un animal como descubierto (pegatina del álbum). Devuelve true si es nueva. */
+export function discover(id: string) {
+  if (store.seen[id]) return false;
+  store.seen[id] = Date.now(); save();
+  stickerListeners.forEach((f) => f(id));
+  return true;
+}

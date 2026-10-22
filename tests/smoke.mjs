@@ -48,6 +48,11 @@ for (const t of targets) {
   await tap('.fav-btn'); check(await page.locator('.fav-btn.on').count() === 1, 'favorito marcado');
   await tap('.nav-arrow.right'); await sleep(300); check(page.url().includes('/animal/perro'), 'flecha pasa al siguiente animal');
   await page.goto(BASE + '#/animal/loro'); await shot('5-bloqueado'); check(await page.isVisible('.portrait-lock'), 'candado en animal de pago');
+  await page.goto(BASE + '#/region/africa'); await sleep(300); await page.locator('.card.locked').first().click(); await sleep(400);
+  check(await page.isVisible('.locked-modal'), 'aviso amable al tocar un animal bloqueado'); await shot('5b-aviso');
+  await page.locator('.locked-modal [data-act="close"]').click(); await sleep(300);
+  await page.goto(BASE + '#/album'); await sleep(400); await shot('5c-album');
+  check((await page.locator('.sticker.got').count()) >= 1, 'álbum con pegatinas descubiertas');
   await page.goto(BASE + '#/favoritos'); check((await page.locator('.card').count()) === 1, 'favorito guardado');
   await page.goto(BASE + '#/juego'); await shot('6-elegir-juego');
   await page.goto(BASE + '#/juego/granja'); await sleep(400);

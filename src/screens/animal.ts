@@ -3,8 +3,8 @@ import { playAnimal, preload, sayName, sfx, stopAll } from '../audio';
 import { ANIMALS, animalById, animalsIn, regionById } from '../data';
 import { INFO } from '../info';
 import { t } from '../i18n';
-import { isLocked, store, toggleFav } from '../store';
-import { $, backBtn, esc, go, icon, soundRings } from '../ui';
+import { discover, isLocked, store, toggleFav } from '../store';
+import { $, backBtn, esc, go, icon, lockedModal, soundRings } from '../ui';
 
 export function animal(root: HTMLElement, id: string, fromFav: boolean) {
   const a = animalById(id);
@@ -41,7 +41,7 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
         <button class="action name" aria-label="${t('hearName')}">${icon.mouth}<span>${esc(a.name[L])}</span></button>
       </div>
       ${locked
-        ? `<div class="fact locked-note">${icon.lock}<p>${t('locked')}</p><button class="pill" data-go="/padres?next=premium">${t('parents')}</button></div>`
+        ? `<div class="fact locked-note">${icon.lock}<p>${t('locked')}</p><button class="pill ask-adult">${t('askAdult')}</button></div>`
         : `<div class="fact"><span class="fact-emoji">💡</span><p>${esc(a.fact[L])}</p></div>
            ${INFO[a.id] ? `<button class="more-btn">📖 ${t('more')}</button>` : ''}`}
     </section>`;
@@ -50,8 +50,9 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
   preload(list);
   const portrait = $('.portrait', root);
   const play = () => {
-    if (locked) { sfx('oops'); portrait.classList.remove('shake'); void portrait.offsetWidth; portrait.classList.add('shake'); return; }
+    if (locked) { portrait.classList.remove('shake'); void portrait.offsetWidth; portrait.classList.add('shake'); lockedModal(a.emoji); return; }
     soundRings(portrait, playAnimal(a));
+    setTimeout(() => discover(a.id), 900);
   };
   portrait.addEventListener('click', play);
   $('.action.sound', root).addEventListener('click', play);
@@ -66,6 +67,7 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
     if (on) { fav.classList.remove('pop'); void fav.offsetWidth; fav.classList.add('pop'); }
   });
 
+  root.querySelector('.ask-adult')?.addEventListener('click', () => lockedModal(a.emoji));
   root.querySelector('.more-btn')?.addEventListener('click', () => { sfx('tap'); openInfo(a, r.accent); });
 
   // Deslizar para cambiar de animal

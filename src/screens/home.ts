@@ -19,6 +19,7 @@ export function home(root: HTMLElement) {
       <nav class="home-menu">
         <button class="big-btn primary" data-go="/mundo"><span class="big-emoji">🌍</span><span>${t('play')}</span></button>
         <button class="big-btn game" data-go="/juego"><span class="big-emoji">👂</span><span>${t('game')}</span></button>
+        <button class="big-btn album-btn" data-go="/album"><span class="big-emoji">📒</span><span>${t('album')} <small class="hb-count">${Object.keys(store.seen).length}/${ANIMALS.length}</small></span></button>
         <button class="big-btn fav" data-go="/favoritos"><span class="big-emoji">💖</span><span>${t('favorites')}</span></button>
       </nav>
       <nav class="home-menu extra">

@@ -49,18 +49,41 @@ function parentArea(root: HTMLElement, next: string | null) {
   root.innerHTML = `
     <section class="screen parents">
       <header class="topbar">${backBtn('/')}<h2>${t('parents')}</h2><span class="spacer"></span></header>
-      <div class="panel premium ${next === 'premium' ? 'highlight' : ''}">
+      ${(() => {
+        const es = store.lang === 'es';
+        const lockedList = ANIMALS.filter((a) => a.premium);
+        const got = Object.keys(store.seen).length;
+        const row = (list: typeof ANIMALS, dir: string) => `<div class="mq ${dir}"><div>${[...list, ...list].map((a) => `<span>${a.emoji}</span>`).join('')}</div></div>`;
+        const half = Math.ceil(lockedList.length / 2);
+        const perks: [string, string][] = es ? [
+          ['🦁', `<b>+${premiumCount} animales</b> de todo el mundo con su sonido real`],
+          ['📒', `Completar el <b>álbum de ${ANIMALS.length} pegatinas</b> (ahora tiene ${got})`],
+          ['🌙', '<b>Modo calma</b>: 10 sonidos para dormir con temporizador'],
+          ['🧑‍🏫', '<b>Modo profe</b>: presentaciones y preguntas para clase'],
+          ['✨', '<b>Animales nuevos</b> en el futuro, sin pagar más'],
+          ['🚫', 'Sin anuncios y sin datos personales. <b>Nunca.</b>'],
+        ] : [
+          ['🦁', `<b>+${premiumCount} animals</b> from around the world with real sounds`],
+          ['📒', `Complete the <b>${ANIMALS.length}-sticker album</b> (now ${got})`],
+          ['🌙', '<b>Calm mode</b>: 10 bedtime sounds with a timer'],
+          ['🧑‍🏫', '<b>Teacher mode</b>: slideshows and quizzes for class'],
+          ['✨', '<b>New animals</b> in the future at no extra cost'],
+          ['🚫', 'No ads and no personal data. <b>Ever.</b>'],
+        ];
+        return store.premium ? `
+      <div class="panel premium owned-panel"><div class="premium-emojis">🎉🦁🐘🐨🦜🐧</div><h3>${t('owned')}</h3><p class="muted small">${t('family')}</p></div>` : `
+      <div class="panel premium paywall ${next === 'premium' ? 'highlight' : ''}">
         <button class="btn-round close" data-go="/" aria-label="${t('close')}">${icon.close}</button>
-        <div class="premium-emojis">🦁🐘🐨🦜🐧</div>
-        <h3>${store.premium ? t('owned') : t('premiumTitle')}</h3>
-        ${store.premium ? '' : `<p>${t('premiumBody')}</p>
-        <p class="muted">+${premiumCount} ${store.lang === 'es' ? 'animales y modos extra' : 'animals and extra modes'}</p>
+        <div class="marquee">${row(lockedList.slice(0, half), 'l')}${row(lockedList.slice(half), 'r')}</div>
+        <h3>${t('premiumTitle')}</h3>
+        <ul class="perks">${perks.map(([e, txt], k) => `<li style="--i:${k}"><span>${e}</span><p>${txt}</p></li>`).join('')}</ul>
+        <div class="price-box"><b>${price()}</b><span>${es ? 'pago único · para siempre' : 'one-time · forever'}</span><small>${es ? 'Menos que un café ☕ y sin suscripciones' : 'Less than a coffee ☕ and no subscriptions'}</small></div>
         <button class="buy-btn" ${canBuy() ? '' : 'disabled'}>${t('buy')} <b>${price()}</b></button>
         <p class="one-time">${t('oneTime')}</p>
-        ${canBuy() ? '' : `<p class="muted">${t('webOnly')}</p>`}`}
-        ${canBuy() ? `<button class="link-btn restore">${t('restore')}</button>` : ''}
+        ${canBuy() ? `<button class="link-btn restore">${t('restore')}</button>` : `<p class="muted">${t('webOnly')}</p>`}
         <p class="muted small">${t('family')}</p>
-      </div>
+      </div>`;
+      })()}
       <div class="panel settings">
         <div class="row"><span>${t('language')}</span>
           <div class="seg">${(['es', 'en'] as const).map((l) => `<button data-lang="${l}" class="${store.lang === l ? 'on' : ''}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div></div>
