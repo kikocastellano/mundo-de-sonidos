@@ -147,6 +147,7 @@ const RECIPES: Record<string, () => number> = {
   cricket: () => { range(4, (i) => tone({ type: 'sine', at: i * 0.35, dur: 0.18, f: [[0, 4500], [1, 4400]], gain: 0.12, am: [60, 1], attack: 0.01, release: 0.03 })); return 1.4; },
   caw: () => { range(3, (i) => tone({ at: i * 0.35, dur: 0.25, f: [[0, 700], [1, 550]], gain: 0.35, attack: 0.02, release: 0.1, filter: ['bandpass', 1200, 1.5] })); return 1; },
   coo: () => { tone({ type: 'sine', dur: 1.2, f: [[0, 380], [0.3, 460], [0.6, 360], [1, 330]], gain: 0.4, attack: 0.1, release: 0.3, vib: [8, 6] }); return 1.2; },
+  woodpecker: () => { range(14, (i) => noise({ at: i * 0.05, dur: 0.03, gain: 0.4, filter: ['bandpass', 900, 3], attack: 0.002 })); return 0.8; },
   penguin: () => { range(4, (i) => tone({ at: i * 0.25, dur: i === 3 ? 0.6 : 0.2, f: [[0, 520], [1, 640]], gain: 0.3, attack: 0.02, release: 0.1, vib: [10, 20], filter: ['bandpass', 1100, 2] })); return 1.4; },
 };
 

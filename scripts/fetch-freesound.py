@@ -13,7 +13,7 @@ def get(u,b=False):
             if e.code in (403,429,503): time.sleep(8*(i+1)); continue
             raise
     raise Exception('reintentos '+u)
-ALT={'ballena':'whale song','oso':'brown bear','panda':'giant panda','cuco':'cuckoo bird','canguro':'kangaroo grunt','tigre':'tiger','leon':'lion','lobo':'wolves howling','aguila':'eagle'}
+ALT={'cebra':'zebra bark','llama':'alpaca','alce':'moose','perezoso':'sloth sound','orangutan':'orangutan call','zorro':'red fox','morsa':'walrus sound','buho-nival':'owl','canguro':'wallaby','oso-polar':'bear roar','orca':'killer whale','nutria':'sea otter','leopardo':'leopard growl','cocodrilo':'crocodile growl','tortuga':'tortoise','zorro-artico':'fox bark','bufalo':'buffalo','ballena':'whale song','oso':'brown bear','panda':'giant panda','cuco':'cuckoo bird','canguro':'kangaroo grunt','tigre':'tiger','leon':'lion','lobo':'wolves howling','aguila':'eagle'}
 Q={'vaca':'cow moo','perro':'dog bark','gato':'cat meow','oveja':'sheep bleat','cerdo':'pig oink','caballo':'horse neigh','pato':'duck quack','gallo':'rooster crow',
 'ballena':'humpback whale','delfin':'dolphin','foca':'sea lion bark','leon':'lion roar','elefante':'elephant trumpet','mono':'chimpanzee','hipopotamo':'hippo',
 'lobo':'wolf howl','oso':'bear growl','loro':'parrot macaw','aguila':'eagle call','tigre':'tiger roar','panda':'panda bear','pavo-real':'peacock call',
@@ -21,7 +21,11 @@ Q={'vaca':'cow moo','perro':'dog bark','gato':'cat meow','oveja':'sheep bleat','
 'cabra':'goat bleat','gallina':'hen clucking','pollito':'chick peep','pavo':'turkey gobble','burro':'donkey bray','ganso':'goose honk','conejo':'rabbit','toro':'bull','orca':'orca','nutria':'otter','gaviota':'seagull',
 'cebra':'zebra','jirafa':'giraffe','rinoceronte':'rhino','gorila':'gorilla','leopardo':'leopard','flamenco':'flamingo','camello':'camel','bisonte':'bison','mapache':'raccoon','llama':'llama hum','serpiente':'rattlesnake',
 'alce':'moose call','perezoso':'sloth','orangutan':'orangutan','bufalo':'water buffalo','cobra':'snake hiss','grulla':'crane bird call','zorro':'fox scream','erizo':'hedgehog','ardilla':'squirrel chatter','abeja':'bee buzz',
-'grillo':'cricket chirp','cuervo':'crow caw','jabali':'wild boar','ciervo':'deer roar','paloma':'dove coo','cocodrilo':'crocodile','cacatua':'cockatoo','tortuga':'turtle','reno':'reindeer','morsa':'walrus','buho-nival':'snowy owl','zorro-artico':'arctic fox'}
+'grillo':'cricket chirp','cuervo':'crow caw','jabali':'wild boar','ciervo':'deer roar','paloma':'dove coo','cocodrilo':'crocodile','cacatua':'cockatoo','tortuga':'turtle','reno':'reindeer','morsa':'walrus','buho-nival':'snowy owl','zorro-artico':'arctic fox',
+'cordero':'lamb bleat','cachorro':'puppy whine','gatito':'kitten meow','raton':'mouse squeak','hamster':'hamster','periquito':'budgie','beluga':'beluga','cachalote':'sperm whale clicks','nu':'wildebeest','babuino':'baboon',
+'buitre':'vulture','jaguar':'jaguar','mono-aullador':'howler monkey','coyote':'coyote howl','caiman':'alligator','rana-arboricola':'tree frog','colibri':'hummingbird','gibon':'gibbon','cigarra':'cicada','yak':'yak',
+'leopardo-nieves':'snow leopard','murcielago':'bat echolocation','sapo':'toad','lechuza':'barn owl','ruisenor':'nightingale','pajaro-carpintero':'woodpecker','cisne':'swan','mosquito':'mosquito','dingo':'dingo howl',
+'ave-lira':'lyrebird','zorro-volador':'flying fox bat','lobo-artico':'wolf howl snow','foca-leopardo':'leopard seal','pinguino-emperador':'emperor penguin','buey-almizclero':'musk ox'}
 LIC={'"Creative Commons 0"':'CC0','"Attribution"':'CC BY'}
 BAD=re.compile(r'cartoon|toy|imitat|human|voice|vocal|kid|child|synth|fart|music|loop|beat|remix|song|game|sfx pack|robot|scream|angry|wolf|cat, |pack',re.I)
 def one(aid):

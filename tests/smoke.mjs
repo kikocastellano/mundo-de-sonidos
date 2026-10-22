@@ -38,7 +38,7 @@ for (const t of targets) {
   await tap('.big-btn.primary'); await shot('2-mapa'); await noHScroll('mapa');
   check((await page.locator('.zone').count()) === 8, '8 zonas en el mapa');
   await page.locator('.zone[data-go="/region/granja"]').click(); await shot('3-granja'); await noHScroll('región');
-  check((await page.locator('.card').count()) === 16, 'granja con 16 animales');
+  check((await page.locator('.card').count()) === 22, 'granja con 22 animales');
   await tap('.card[data-animal="vaca"]'); await shot('4-vaca'); await noHScroll('ficha');
   await tap('.fav-btn'); check(await page.locator('.fav-btn.on').count() === 1, 'favorito marcado');
   await tap('.nav-arrow.right'); await sleep(300); check(page.url().includes('/animal/perro'), 'flecha pasa al siguiente animal');
