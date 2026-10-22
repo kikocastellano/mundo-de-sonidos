@@ -218,5 +218,101 @@
  "reno": {
   "file": "05-freesound.mp3",
   "duration": 4
+ },
+ "orca": {
+  "file": "01-inat.wav",
+  "clean": true
+ },
+ "nutria": {
+  "file": "01-inat.m4a",
+  "clean": true
+ },
+ "alce": {
+  "file": "02-inat.m4a",
+  "clean": true
+ },
+ "bufalo": {
+  "file": "02-inat.wav",
+  "clean": true
+ },
+ "zorro": {
+  "file": "01-inat.mp3",
+  "clean": true
+ },
+ "tortuga": {
+  "file": "01-inat.wav",
+  "clean": true
+ },
+ "cordero": {
+  "file": "02-inat.m4a",
+  "clean": true
+ },
+ "periquito": {
+  "file": "01-inat.wav",
+  "clean": true
+ },
+ "nu": {
+  "file": "01-inat.wav",
+  "clean": true
+ },
+ "babuino": {
+  "file": "02-inat.m4a",
+  "clean": true
+ },
+ "mono-aullador": {
+  "file": "01-inat.m4a",
+  "clean": true
+ },
+ "coyote": {
+  "file": "02-inat.wav",
+  "clean": true
+ },
+ "rana-arboricola": {
+  "file": "01-inat.m4a",
+  "clean": true
+ },
+ "gibon": {
+  "file": "01-inat.wav",
+  "clean": true
+ },
+ "cigarra": {
+  "file": "01-inat.mp3",
+  "clean": true
+ },
+ "murcielago": {
+  "file": "01-inat.wav",
+  "clean": true
+ },
+ "lechuza": {
+  "file": "02-inat.m4a",
+  "clean": true
+ },
+ "ruisenor": {
+  "file": "01-inat.m4a",
+  "clean": true
+ },
+ "pajaro-carpintero": {
+  "file": "01-inat.wav",
+  "clean": true
+ },
+ "cisne": {
+  "file": "04-inat.mp3",
+  "clean": true
+ },
+ "mosquito": {
+  "file": "03-inat.wav",
+  "clean": true
+ },
+ "ave-lira": {
+  "file": "01-inat.m4a",
+  "clean": true
+ },
+ "zorro-volador": {
+  "file": "02-inat.mp3",
+  "clean": true
+ },
+ "pinguino-emperador": {
+  "file": "01-inat.wav",
+  "clean": true
  }
 }
