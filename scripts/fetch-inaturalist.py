@@ -16,6 +16,12 @@ TAXA = {
  'cisne': 'Cygnus', 'mosquito': 'Culicidae', 'dingo': 'Canis lupus dingo', 'ave-lira': 'Menura novaehollandiae', 'zorro-volador': 'Pteropus',
  'lobo-artico': 'Canis lupus', 'foca-leopardo': 'Hydrurga leptonyx', 'pinguino-emperador': 'Aptenodytes forsteri', 'buey-almizclero': 'Ovibos moschatus',
 }
+# Grupos más amplios para animales con pocas grabaciones (INAT_AMPLIO=1)
+WIDE = {'oso': 'Ursidae', 'oso-polar': 'Ursidae', 'canguro': 'Macropodiformes', 'llama': 'Camelidae', 'perezoso': 'Folivora', 'orangutan': 'Pongo',
+  'morsa': 'Pinnipedia', 'foca-leopardo': 'Phocidae', 'cocodrilo': 'Crocodylia', 'raton': 'Muridae', 'hamster': 'Cricetidae', 'beluga': 'Odontoceti',
+  'yak': 'Bos', 'leopardo-nieves': 'Panthera', 'buey-almizclero': 'Caprinae', 'buho-nival': 'Bubo', 'panda': 'Ailuridae'}
+if os.environ.get('INAT_AMPLIO'): TAXA.update(WIDE)
+SKIP = int(os.environ.get('INAT_SALTAR', '0'))  # salta los N primeros sonidos (ya vistos)
 LIC = {'cc0': 'CC0', 'cc-by': 'CC BY', 'cc-by-sa': 'CC BY-SA'}
 
 def get(u, b=False):
@@ -29,15 +35,18 @@ def get(u, b=False):
     raise Exception('reintentos ' + u)
 
 def one(aid):
-    q = {'taxon_name': TAXA[aid], 'sounds': 'true', 'sound_license': 'cc0,cc-by,cc-by-sa', 'per_page': 30, 'order_by': 'votes'}
+    q = {'taxon_name': TAXA[aid], 'sounds': 'true', 'sound_license': 'cc0,cc-by,cc-by-sa', 'per_page': 60, 'order_by': 'votes'}
     obs = get('https://api.inaturalist.org/v1/observations?' + urllib.parse.urlencode(q))['results']
     obs.sort(key=lambda o: (o.get('quality_grade') != 'research', -(o.get('faves_count') or 0)))
     d = f'{OUT}/{aid}'; os.makedirs(d, exist_ok=True); out = []
+    seen = 0
     for o in obs:
         for s in o.get('sounds') or []:
             lic = LIC.get((s.get('license_code') or '').lower())
             url = s.get('file_url')
             if not lic or not url or len(out) >= 6: continue
+            seen += 1
+            if seen <= SKIP: continue
             ext = url.split('?')[0].rsplit('.', 1)[-1].lower()[:4]
             fn = f'{len(out) + 1:02d}-inat.{ext}'
             try: open(f'{d}/{fn}', 'wb').write(get(url, True))
