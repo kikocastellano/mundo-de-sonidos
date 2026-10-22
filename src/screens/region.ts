@@ -1,3 +1,4 @@
+import { preload } from '../audio';
 import { animalsIn, regionById, type RegionId } from '../data';
 import { t } from '../i18n';
 import { store } from '../store';
@@ -13,6 +14,7 @@ export function region(root: HTMLElement, id: RegionId) {
         <button class="btn-round" data-go="/juego/${id}" aria-label="${t('game')}">${icon.play}</button></header>
       <div class="grid">${list.map((a, i) => card(a, i, store.lang)).join('')}</div>
     </section>`;
+  preload(list);
   root.querySelectorAll<HTMLElement>('[data-animal]').forEach((b) =>
     b.addEventListener('click', () => go(`/animal/${b.dataset.animal}`)));
 }

@@ -1,5 +1,5 @@
 // Juego «¿Quién suena?»: suena un animal y el niño elige entre 3 (o 4) imágenes. Sin vidas ni castigos.
-import { playAnimal, sayName, sfx } from '../audio';
+import { playAnimal, preload, sayName, sfx } from '../audio';
 import { ANIMALS, REGIONS, type Animal, type RegionId } from '../data';
 import { t } from '../i18n';
 import { addStar, isLocked, store } from '../store';
@@ -30,6 +30,7 @@ export function game(root: HTMLElement, where: RegionId | 'todo') {
   let streak = 0, round = 0, last = '';
   let target: Animal; let busy = false; let mistakes = 0;
 
+  preload(pool);
   root.innerHTML = `
     <section class="screen game" style="--accent:#7b5cff">
       <header class="topbar">${backBtn('/juego')}<h2>${t('game')}</h2><div class="star-count">${icon.star}<b class="sc">${store.stars[where] || 0}</b></div></header>

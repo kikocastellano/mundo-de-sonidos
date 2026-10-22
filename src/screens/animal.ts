@@ -1,5 +1,5 @@
 // Ficha del animal: imagen grande, sonido, nombre, dato curioso y deslizar al siguiente.
-import { playAnimal, sayName, sfx } from '../audio';
+import { playAnimal, preload, sayName, sfx } from '../audio';
 import { ANIMALS, animalById, animalsIn, regionById } from '../data';
 import { t } from '../i18n';
 import { isLocked, store, toggleFav } from '../store';
@@ -45,6 +45,7 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
     </section>`;
   delete root.dataset.dir;
 
+  preload(list);
   const portrait = $('.portrait', root);
   const play = () => {
     if (locked) { sfx('oops'); portrait.classList.remove('shake'); void portrait.offsetWidth; portrait.classList.add('shake'); return; }

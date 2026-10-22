@@ -1,1 +1,152 @@
-{}
+{
+  "vaca": {
+    "file": "vaca.mp3",
+    "author": "felix.blume",
+    "license": "CC0",
+    "source": "https://freesound.org/people/felix.blume/sounds/163727/"
+  },
+  "gato": {
+    "file": "gato.mp3",
+    "author": "tuberatanka",
+    "license": "CC0",
+    "source": "https://freesound.org/people/tuberatanka/sounds/110011/"
+  },
+  "oveja": {
+    "file": "oveja.mp3",
+    "author": "zachrau",
+    "license": "CC0",
+    "source": "https://freesound.org/people/zachrau/sounds/362283/"
+  },
+  "cerdo": {
+    "file": "cerdo.mp3",
+    "author": "qubodup",
+    "license": "CC0",
+    "source": "https://freesound.org/people/qubodup/sounds/442906/"
+  },
+  "caballo": {
+    "file": "caballo.mp3",
+    "author": "InspectorJ",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/InspectorJ/sounds/419231/"
+  },
+  "pato": {
+    "file": "pato.mp3",
+    "author": "dobroide",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/dobroide/sounds/185134/"
+  },
+  "gallo": {
+    "file": "gallo.mp3",
+    "author": "InspectorJ",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/InspectorJ/sounds/439472/"
+  },
+  "ballena": {
+    "file": "ballena.mp3",
+    "author": "be-steele",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/be-steele/sounds/713099/"
+  },
+  "delfin": {
+    "file": "delfin.mp3",
+    "author": "jfournier18",
+    "license": "CC0",
+    "source": "https://freesound.org/people/jfournier18/sounds/456151/"
+  },
+  "foca": {
+    "file": "foca.mp3",
+    "author": "RavenWolfProds",
+    "license": "CC0",
+    "source": "https://freesound.org/people/RavenWolfProds/sounds/503658/"
+  },
+  "leon": {
+    "file": "leon.mp3",
+    "author": "qubodup",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/qubodup/sounds/212764/"
+  },
+  "elefante": {
+    "file": "elefante.mp3",
+    "author": "D.jones",
+    "license": "CC0",
+    "source": "https://freesound.org/people/D.jones/sounds/527845/"
+  },
+  "mono": {
+    "file": "mono.mp3",
+    "author": "Radio_fragola_gorizia",
+    "license": "CC0",
+    "source": "https://freesound.org/people/Radio_fragola_gorizia/sounds/400086/"
+  },
+  "hipopotamo": {
+    "file": "hipopotamo.mp3",
+    "author": "toadie",
+    "license": "CC0",
+    "source": "https://freesound.org/people/toadie/sounds/194870/"
+  },
+  "lobo": {
+    "file": "lobo.mp3",
+    "author": "michael_kur95",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/michael_kur95/sounds/332996/"
+  },
+  "loro": {
+    "file": "loro.mp3",
+    "author": "Breviceps",
+    "license": "CC0",
+    "source": "https://freesound.org/people/Breviceps/sounds/535815/"
+  },
+  "aguila": {
+    "file": "aguila.mp3",
+    "author": "PRINCEofWORMS",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/PRINCEofWORMS/sounds/571273/"
+  },
+  "tigre": {
+    "file": "tigre.mp3",
+    "author": "videog",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/videog/sounds/149190/"
+  },
+  "pavo-real": {
+    "file": "pavo-real.mp3",
+    "author": "Kinoton",
+    "license": "CC0",
+    "source": "https://freesound.org/people/Kinoton/sounds/688203/"
+  },
+  "buho": {
+    "file": "buho.mp3",
+    "author": "Breviceps",
+    "license": "CC0",
+    "source": "https://freesound.org/people/Breviceps/sounds/465697/"
+  },
+  "rana": {
+    "file": "rana.mp3",
+    "author": "egomassive",
+    "license": "CC0",
+    "source": "https://freesound.org/people/egomassive/sounds/536759/"
+  },
+  "cuco": {
+    "file": "cuco.mp3",
+    "author": "MeicalJones",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/MeicalJones/sounds/474062/"
+  },
+  "koala": {
+    "file": "koala.mp3",
+    "author": "hello_flowers",
+    "license": "CC0",
+    "source": "https://freesound.org/people/hello_flowers/sounds/39587/"
+  },
+  "kookaburra": {
+    "file": "kookaburra.mp3",
+    "author": "pocket",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/pocket/sounds/44554/"
+  },
+  "pinguino": {
+    "file": "pinguino.mp3",
+    "author": "hackerb9",
+    "license": "CC BY",
+    "source": "https://freesound.org/people/hackerb9/sounds/110116/"
+  }
+}

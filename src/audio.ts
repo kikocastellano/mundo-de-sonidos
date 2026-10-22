@@ -130,14 +130,25 @@ const RECIPES: Record<string, () => number> = {
   penguin: () => { range(4, (i) => tone({ at: i * 0.25, dur: i === 3 ? 0.6 : 0.2, f: [[0, 520], [1, 640]], gain: 0.3, attack: 0.02, release: 0.1, vib: [10, 20], filter: ['bandpass', 1100, 2] })); return 1.4; },
 };
 
+const raw = new Map<string, Promise<ArrayBuffer>>();
+const fetchRaw = (url: string) => {
+  let p = raw.get(url);
+  if (!p) { p = fetch(url).then((r) => r.arrayBuffer()); raw.set(url, p); p.catch(() => raw.delete(url)); }
+  return p;
+};
+
+/** Descarga (y decodifica si ya hay audio) las grabaciones para que suenen al instante. */
+export function preload(list: Animal[]) {
+  for (const a of list) if (a.audio && !decoded.has(a.audio)) {
+    const url = a.audio;
+    void fetchRaw(url).then(async (b) => { if (ctx && !decoded.has(url)) decoded.set(url, await ctx.decodeAudioData(b.slice(0))); }).catch(() => {});
+  }
+}
+
 async function playFile(url: string) {
   const c = ctx!;
   let buf = decoded.get(url);
-  if (!buf) {
-    const res = await fetch(url);
-    buf = await c.decodeAudioData(await res.arrayBuffer());
-    decoded.set(url, buf);
-  }
+  if (!buf) { buf = await c.decodeAudioData((await fetchRaw(url)).slice(0)); decoded.set(url, buf); }
   const src = c.createBufferSource(); src.buffer = buf; src.connect(master); src.start(); live.push(src);
   return buf.duration;
 }
@@ -147,7 +158,11 @@ export function playAnimal(a: Animal): number {
   unlockAudio();
   if (!ctx || store.muted) return 0;
   stopAll();
-  if (a.audio) { void playFile(a.audio).catch(() => RECIPES[a.sound]?.()); return 1.5; }
+  if (a.audio) {
+    const known = decoded.get(a.audio);
+    void playFile(a.audio).catch(() => RECIPES[a.sound]?.());
+    return known ? known.duration : 3;
+  }
   return RECIPES[a.sound]?.() ?? 0;
 }
 

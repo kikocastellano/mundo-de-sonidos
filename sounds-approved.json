@@ -1,0 +1,102 @@
+{
+ "vaca": {
+  "file": "02-freesound.mp3",
+  "duration": 4
+ },
+ "gato": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "oveja": {
+  "file": "02-freesound.mp3",
+  "duration": 4
+ },
+ "cerdo": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "caballo": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "pato": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "gallo": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "ballena": {
+  "file": "05-freesound.mp3",
+  "duration": 5
+ },
+ "delfin": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "foca": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "leon": {
+  "file": "02-freesound.mp3",
+  "duration": 4
+ },
+ "elefante": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "mono": {
+  "file": "03-freesound.mp3",
+  "duration": 4
+ },
+ "hipopotamo": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "lobo": {
+  "file": "03-freesound.mp3",
+  "duration": 5
+ },
+ "loro": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "aguila": {
+  "file": "03-freesound.mp3",
+  "duration": 4
+ },
+ "tigre": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "pavo-real": {
+  "file": "02-freesound.mp3",
+  "duration": 4
+ },
+ "buho": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "rana": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "cuco": {
+  "file": "06-freesound.mp3",
+  "duration": 4
+ },
+ "koala": {
+  "file": "01-freesound.mp3",
+  "duration": 4
+ },
+ "kookaburra": {
+  "file": "01-freesound.mp3",
+  "duration": 5
+ },
+ "pinguino": {
+  "file": "02-freesound.mp3",
+  "duration": 4
+ }
+}
