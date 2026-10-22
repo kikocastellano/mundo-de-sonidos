@@ -1,6 +1,7 @@
 // Ficha del animal: imagen grande, sonido, nombre, dato curioso y deslizar al siguiente.
-import { playAnimal, preload, sayName, sfx } from '../audio';
+import { playAnimal, preload, sayName, sfx, stopAll } from '../audio';
 import { ANIMALS, animalById, animalsIn, regionById } from '../data';
+import { INFO } from '../info';
 import { t } from '../i18n';
 import { isLocked, store, toggleFav } from '../store';
 import { $, backBtn, esc, go, icon, soundRings } from '../ui';
@@ -41,7 +42,8 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
       </div>
       ${locked
         ? `<div class="fact locked-note">${icon.lock}<p>${t('locked')}</p><button class="pill" data-go="/padres?next=premium">${t('parents')}</button></div>`
-        : `<div class="fact"><span class="fact-emoji">💡</span><p>${esc(a.fact[L])}</p></div>`}
+        : `<div class="fact"><span class="fact-emoji">💡</span><p>${esc(a.fact[L])}</p></div>
+           ${INFO[a.id] ? `<button class="more-btn">📖 ${t('more')}</button>` : ''}`}
     </section>`;
   delete root.dataset.dir;
 
@@ -64,6 +66,8 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
     if (on) { fav.classList.remove('pop'); void fav.offsetWidth; fav.classList.add('pop'); }
   });
 
+  root.querySelector('.more-btn')?.addEventListener('click', () => { sfx('tap'); openInfo(a, r.accent); });
+
   // Deslizar para cambiar de animal
   const stage = $('.stage', root);
   let x0 = 0, y0 = 0, tracking = false;
@@ -82,4 +86,46 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
   // Suena automáticamente al abrir, como sorpresa
   if (!locked) setTimeout(() => { if (document.body.contains(portrait)) play(); }, 350);
   return () => window.removeEventListener('keydown', onKey);
+}
+
+const DIET = { h: ['🌿', 'dietH'], c: ['🍖', 'dietC'], o: ['🍽️', 'dietO'], i: ['🐛', 'dietI'] } as const;
+
+/** Panel «Saber más»: tarjetas grandes que se leen en voz alta al tocarlas. */
+function openInfo(a: (typeof ANIMALS)[number], accent: string) {
+  const info = INFO[a.id];
+  if (!info) return;
+  const L = store.lang, x = info[L];
+  const [dEmoji, dKey] = DIET[info.diet];
+  const tiles: [string, string, string][] = [
+    ['🏠', t('home'), x.home], ['🍽️', t('food'), x.food], ['👶', t('baby'), x.baby],
+    ['📏', t('size'), x.size], ['⚖️', t('weight'), info.weight], ['⏳', t('life'), `${info.life} ${t('years')}`],
+  ];
+  const facts = [a.fact[L], ...x.more];
+  const sheet = document.createElement('div');
+  sheet.className = 'sheet-wrap';
+  sheet.innerHTML = `
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(a.name[L])}" style="--accent:${accent}">
+      <div class="sheet-head"><span class="sheet-emoji">${a.emoji}</span><h3>${esc(a.name[L])}</h3>
+        <button class="btn-round close" aria-label="${t('close')}">${icon.close}</button></div>
+      <button class="diet say" data-say="${esc(t(dKey))}"><span>${dEmoji}</span>${esc(t(dKey))}</button>
+      <p class="hint-tap">🔊 ${t('tapToHear')}</p>
+      <div class="tiles">${tiles.map(([e, k, v], i) => `<button class="tile say" style="--i:${i}" data-say="${esc(k)}: ${esc(v)}"><span class="tile-emoji">${e}</span><small>${esc(k)}</small><b>${esc(v)}</b></button>`).join('')}</div>
+      <h4>${t('didYouKnow')}</h4>
+      <div class="facts">${facts.map((f, i) => `<button class="fact-card say" style="--i:${i}" data-say="${esc(f)}"><span>${['💡', '⭐', '🌍'][i]}</span>${esc(f)}</button>`).join('')}</div>
+    </div>`;
+  document.body.appendChild(sheet);
+  const close = () => { stopAll(); sheet.classList.add('out'); setTimeout(() => sheet.remove(), 250); window.removeEventListener('keydown', onEsc); };
+  const onEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
+  window.addEventListener('keydown', onEsc);
+  sheet.addEventListener('click', (e) => {
+    const el = e.target as HTMLElement;
+    if (el === sheet || el.closest('.close')) return close();
+    const s = el.closest<HTMLElement>('.say');
+    if (s) {
+      sheet.querySelectorAll('.say.speaking').forEach((n) => n.classList.remove('speaking'));
+      s.classList.add('speaking'); sayName(s.dataset.say!);
+      setTimeout(() => s.classList.remove('speaking'), 2500);
+    }
+  });
+  sheet.querySelector<HTMLElement>('.close')!.focus();
 }

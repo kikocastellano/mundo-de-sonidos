@@ -43,6 +43,8 @@ for (const t of targets) {
   await page.locator('.zone[data-go="/region/granja"]').click(); await shot('3-granja'); await noHScroll('región');
   check((await page.locator('.card').count()) >= 20, 'granja con todos sus animales');
   await tap('.card[data-animal="vaca"]'); await shot('4-vaca'); await noHScroll('ficha');
+  await tap('.more-btn'); await shot('4b-saber-mas'); check((await page.locator('.sheet .tile').count()) === 6, 'panel «Saber más» con 6 tarjetas');
+  await page.locator('.sheet .close').click(); await sleep(400);
   await tap('.fav-btn'); check(await page.locator('.fav-btn.on').count() === 1, 'favorito marcado');
   await tap('.nav-arrow.right'); await sleep(300); check(page.url().includes('/animal/perro'), 'flecha pasa al siguiente animal');
   await page.goto(BASE + '#/animal/loro'); await shot('5-bloqueado'); check(await page.isVisible('.portrait-lock'), 'candado en animal de pago');
