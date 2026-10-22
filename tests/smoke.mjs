@@ -66,7 +66,12 @@ for (const t of targets) {
   await page.evaluate(() => { const k = 'mundo-sonidos-v1'; const s = JSON.parse(localStorage.getItem(k) || '{}'); s.premium = true; localStorage.setItem(k, JSON.stringify(s)); });
   await page.reload(); await page.goto(BASE + '#/calma'); await page.reload();
   check(await page.isVisible('.calm-play'), 'modo calma con premium'); await tap('.calm-play'); await shot('13-calma');
-  await page.goto(BASE + '#/profe'); await sleep(600); check(await page.locator('.teacher-name').textContent() !== '', 'modo profe muestra animal'); await shot('14-profe');
+  await page.goto(BASE + '#/profe/ver'); await sleep(600); check(await page.locator('.teacher-name').textContent() !== '', 'modo profe muestra animal'); await shot('14-profe');
+  await page.goto(BASE + '#/profe'); check(await page.isVisible('text=Preguntas'), 'menú del modo profe');
+  await page.goto(BASE + '#/profe/preguntas'); await sleep(500); await shot('14b-preguntas');
+  check((await page.locator('.q-opt').count()) === 3, 'pregunta con 3 opciones');
+  for (let k = 0; k < 3 && !(await page.locator('.q-opt.right').count()); k++) { await page.locator('.q-opt:not(.fade)').first().click(); await sleep(200); }
+  check((await page.locator('.q-opt.right').count()) === 1, 'se puede acertar la pregunta');
   await page.goto(BASE + '#/creditos'); check((await page.locator('.credit-item').count()) >= 70, 'créditos de todos los animales'); await shot('15-creditos');
   check(errors.length === 0, `sin errores JS ${errors.join(' | ')}`);
   await ctx.close();

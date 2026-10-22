@@ -6,6 +6,7 @@ import { animal } from './screens/animal';
 import { calm } from './screens/calm';
 import { credits } from './screens/credits';
 import { teacher } from './screens/teacher';
+import { quiz, teacherMenu } from './screens/quiz';
 import { favorites } from './screens/favorites';
 import { game, gamePicker } from './screens/game';
 import { home } from './screens/home';
@@ -40,7 +41,13 @@ function route() {
     case 'juego': if (parts[1]) { game(view, parts[1] as RegionId | 'todo'); scene = regionById(parts[1])?.id ?? 'asia'; } else { gamePicker(view); scene = 'asia'; } break;
     case 'favoritos': favorites(view); scene = 'europa'; break;
     case 'calma': cleanup = calm(view); scene = 'noche'; break;
-    case 'profe': cleanup = teacher(view, params.get('src')); scene = regionById(params.get('src') ?? '')?.id ?? 'europa'; break;
+    case 'profe': {
+      const src = params.get('src');
+      if (parts[1] === 'ver') cleanup = teacher(view, src);
+      else if (parts[1] === 'preguntas') cleanup = quiz(view, src);
+      else teacherMenu(view, src);
+      scene = regionById(src ?? '')?.id ?? 'europa'; break;
+    }
     case 'creditos': credits(view); scene = 'polos'; break;
     case 'padres': parents(view, params.get('next')); scene = 'polos'; break;
     default: home(view);
