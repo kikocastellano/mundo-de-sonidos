@@ -264,3 +264,51 @@ svg { display: block; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
 }
+
+/* ---------- Noche (modo calma) ---------- */
+.scene[data-region='noche'] :is(.deco-night, .deco-trees, .deco-pond) { display: inline; }
+.scene[data-region='noche'] :is(.sun, .birds) { display: none; }
+.scene[data-region='noche'] .cloud { opacity: .18; }
+.scene[data-region='noche'] .mount { fill: #33457a; }
+.scene[data-region='noche'] .snowcaps { opacity: .35; }
+.scene[data-region='noche'] .leaf1 { fill: #1f4a4a; } .scene[data-region='noche'] .leaf2 { fill: #183c3e; }
+.moon-cut { fill: var(--sky-top); transition: fill 1s; }
+.twinkle { fill: #fff; animation: twinkle 3s ease-in-out infinite; }
+@keyframes twinkle { 50% { opacity: .2; } }
+.firefly { fill: #fff39a; filter: drop-shadow(0 0 6px #fff39a); animation: firefly 6s ease-in-out infinite; }
+@keyframes firefly { 0%, 100% { transform: translate(0, 0); opacity: .2; } 30% { opacity: 1; } 50% { transform: translate(30px, -40px); } 80% { transform: translate(-20px, -15px); opacity: .9; } }
+
+/* ---------- Calma ---------- */
+.calm .topbar h2, .calm .subtitle { color: #fff3c4; }
+.calm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; width: 100%; max-width: 760px; }
+.calm-opt { border-radius: var(--radius); padding: 18px 10px; background: rgba(255, 255, 255, .12); border: 3px solid rgba(255, 255, 255, .25); color: #fff; font-weight: 800; font-size: 20px; display: flex; flex-direction: column; align-items: center; gap: 4px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: transform .15s, background .3s; }
+.calm-opt span { font-family: var(--emoji); font-size: 54px; }
+.calm-opt.on { background: rgba(255, 243, 196, .3); border-color: #fff3c4; transform: scale(1.04); }
+.timer-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.timer-row button { min-width: 72px; min-height: 52px; border-radius: 99px; background: rgba(255, 255, 255, .14); color: #fff; font-weight: 800; font-size: 18px; border: 2px solid transparent; }
+.timer-row button.on { border-color: #fff3c4; background: rgba(255, 243, 196, .28); }
+.calm-play { width: clamp(110px, 26vmin, 160px); aspect-ratio: 1; border-radius: 50%; background: #fff3c4; box-shadow: 0 0 60px rgba(255, 243, 196, .5); display: grid; place-items: center; }
+.calm-play svg { width: 44%; fill: #2b2f6b; stroke: #2b2f6b; stroke-width: 2; }
+.calm-play.playing { animation: breatheGlow 5s ease-in-out infinite; }
+@keyframes breatheGlow { 50% { transform: scale(1.08); box-shadow: 0 0 110px rgba(255, 243, 196, .75); } }
+.countdown { color: #fff3c4; font-size: 28px; font-weight: 800; min-height: 1.2em; margin: 0; }
+.calm .btn-round { background: rgba(255, 255, 255, .85); }
+
+/* ---------- Modo profe ---------- */
+.teacher { justify-content: center; gap: 2vh; }
+.teacher .portrait { width: min(80vw, 62vh); }
+.teacher .portrait-emoji { font-size: min(48vw, 38vh); }
+.teacher-name { margin: 0; font-size: clamp(40px, 10vmin, 96px); font-weight: 800; color: #fff; text-shadow: 0 5px 0 rgba(0, 0, 0, .15), 0 6px 24px rgba(0, 0, 0, .25); }
+.teacher-bar { display: flex; gap: 12px; }
+.teacher .topbar { position: absolute; top: calc(12px + var(--safe-t)); left: 16px; right: 16px; width: auto; }
+
+/* ---------- Bloqueo premium y créditos ---------- */
+.premium-lock { margin: auto; }
+.credit-list { width: 100%; max-width: 760px; display: grid; gap: 10px; text-align: left; }
+.credit-item { display: flex; gap: 12px; align-items: center; background: rgba(255, 255, 255, .94); border-radius: 18px; padding: 10px 14px; box-shadow: var(--shadow); font-size: 15px; }
+.credit-item > span { font-family: var(--emoji); font-size: 34px; }
+.credit-item b { display: block; font-size: 17px; } .credit-item a { color: #3a6fd8; word-break: break-all; }
+.link-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+.big-btn.calm-btn { background: linear-gradient(#5d63c9, #2f3486); color: #fff3c4; }
+.big-btn.teach-btn { background: linear-gradient(#ffb48a, #ff7d4a); color: #fff; }
+.home-menu.extra { max-width: 900px; } .home-menu.extra .big-btn { min-height: clamp(64px, 11vmin, 90px); font-size: clamp(20px, 4.4vmin, 28px); }

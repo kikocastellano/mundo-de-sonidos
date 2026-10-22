@@ -62,6 +62,11 @@ const SVG = `
     <g class="rays">${Array.from({ length: 12 }, (_, i) => `<rect x="-6" y="-150" width="12" height="44" rx="6" fill="#ffe066" opacity=".55" transform="rotate(${i * 30})"/>`).join('')}</g>
     <circle cx="1290" cy="170" r="78" fill="#ffd93b"/><circle cx="1268" cy="150" r="26" fill="#fff3a8" opacity=".7"/>
   </g>
+  <g class="deco deco-night">
+    ${Array.from({ length: 70 }, (_, i) => `<circle class="twinkle" cx="${(i * 233) % 1600}" cy="${(i * 137) % 520}" r="${1 + (i % 3) * 0.8}" style="animation-delay:${(i * 0.29) % 4}s"/>`).join('')}
+    <g class="moon"><circle cx="300" cy="180" r="120" fill="#fff8d6" opacity=".12"/><circle cx="300" cy="180" r="62" fill="#fff4c4"/><circle cx="326" cy="164" r="54" class="moon-cut"/></g>
+    <g class="fireflies">${Array.from({ length: 14 }, (_, i) => `<circle class="firefly" cx="${80 + i * 110}" cy="${700 + (i * 53) % 150}" r="4" style="animation-delay:${i * 0.6}s"/>`).join('')}</g>
+  </g>
   <g class="clouds far">${cloud(-200, 150, 0.8, 'c1')}${cloud(-200, 260, 0.6, 'c2')}${cloud(-200, 90, 0.5, 'c3')}</g>
   <g class="birds">${bird(0, 220, 0, 26)}${bird(40, 250, 0.4, 26)}${bird(-30, 265, 0.8, 26)}${bird(0, 140, 9, 34)}</g>
   <path class="mount" d="M0 560 L180 380 L300 470 L470 300 L640 480 L780 390 L960 520 L1120 340 L1300 470 L1450 380 L1600 470 L1600 900 L0 900Z"/>
@@ -98,9 +103,11 @@ export function mountScene(host: HTMLElement) {
 }
 
 /** Aplica el tema de una región al paisaje (null = paisaje de inicio). */
-export function setSceneRegion(id: RegionId | null) {
+const NIGHT = { sky: ['#0b1440', '#3a3f8f'], hills: ['#26406b', '#162a4d'] };
+
+export function setSceneRegion(id: RegionId | 'noche' | null) {
   if (!el) return;
-  const r = REGIONS.find((x) => x.id === id) ?? REGIONS[0];
+  const r = id === 'noche' ? NIGHT : REGIONS.find((x) => x.id === id) ?? REGIONS[0];
   const s = el.style;
   s.setProperty('--sky-top', r.sky[0]); s.setProperty('--sky-bot', r.sky[1]);
   s.setProperty('--hill1', r.hills[0]); s.setProperty('--hill2', r.hills[1]);

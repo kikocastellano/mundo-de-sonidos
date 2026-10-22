@@ -21,6 +21,10 @@ export function home(root: HTMLElement) {
         <button class="big-btn game" data-go="/juego"><span class="big-emoji">👂</span><span>${t('game')}</span></button>
         <button class="big-btn fav" data-go="/favoritos"><span class="big-emoji">💖</span><span>${t('favorites')}</span></button>
       </nav>
+      <nav class="home-menu extra">
+        <button class="big-btn calm-btn" data-go="/calma"><span class="big-emoji">🌙</span><span>${t('calm')}</span></button>
+        <button class="big-btn teach-btn" data-go="/profe"><span class="big-emoji">🧑‍🏫</span><span>${store.lang === 'es' ? 'Modo profe' : 'Teacher mode'}</span></button>
+      </nav>
       <p class="tagline">${ANIMALS.length} ${store.lang === 'es' ? 'animales' : 'animals'} · ${t('privacy')}</p>
     </section>`;
 }

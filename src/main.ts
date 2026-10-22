@@ -3,6 +3,9 @@ import type { RegionId } from './data';
 import { regionById, animalById } from './data';
 import { mountScene, setSceneRegion } from './scenery';
 import { animal } from './screens/animal';
+import { calm } from './screens/calm';
+import { credits } from './screens/credits';
+import { teacher } from './screens/teacher';
 import { favorites } from './screens/favorites';
 import { game, gamePicker } from './screens/game';
 import { home } from './screens/home';
@@ -25,7 +28,7 @@ function route() {
   const [path, query = ''] = location.hash.replace(/^#/, '').split('?');
   const params = new URLSearchParams(query);
   const parts = path.split('/').filter(Boolean);
-  let scene: RegionId | null = null;
+  let scene: RegionId | 'noche' | null = null;
   const view = document.createElement('div');
   view.className = 'view';
 
@@ -35,6 +38,9 @@ function route() {
     case 'animal': cleanup = animal(view, parts[1], params.get('from') === 'fav'); scene = animalById(parts[1])?.region ?? null; break;
     case 'juego': if (parts[1]) { game(view, parts[1] as RegionId | 'todo'); scene = regionById(parts[1])?.id ?? 'asia'; } else { gamePicker(view); scene = 'asia'; } break;
     case 'favoritos': favorites(view); scene = 'europa'; break;
+    case 'calma': cleanup = calm(view); scene = 'noche'; break;
+    case 'profe': cleanup = teacher(view, params.get('src')); scene = regionById(params.get('src') ?? '')?.id ?? 'europa'; break;
+    case 'creditos': credits(view); scene = 'polos'; break;
     case 'padres': parents(view, params.get('next')); scene = 'polos'; break;
     default: home(view);
   }

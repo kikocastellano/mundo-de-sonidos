@@ -57,6 +57,12 @@ for (const t of targets) {
   await page.goto(BASE + '#/region/polos'); await shot('10-polos');
   await page.goto(BASE + '#/region/oceano'); await shot('11-oceano');
   await page.goto(BASE + '#/region/africa'); await shot('12-africa');
+  await page.goto(BASE + '#/calma'); check(await page.isVisible('.premium-lock'), 'modo calma bloqueado sin premium');
+  await page.evaluate(() => { const k = 'mundo-sonidos-v1'; const s = JSON.parse(localStorage.getItem(k) || '{}'); s.premium = true; localStorage.setItem(k, JSON.stringify(s)); });
+  await page.reload(); await page.goto(BASE + '#/calma'); await page.reload();
+  check(await page.isVisible('.calm-play'), 'modo calma con premium'); await tap('.calm-play'); await shot('13-calma');
+  await page.goto(BASE + '#/profe'); await sleep(600); check(await page.locator('.teacher-name').textContent() !== '', 'modo profe muestra animal'); await shot('14-profe');
+  await page.goto(BASE + '#/creditos'); check((await page.locator('.credit-item').count()) === 30, 'créditos de 30 animales'); await shot('15-creditos');
   check(errors.length === 0, `sin errores JS ${errors.join(' | ')}`);
   await ctx.close();
 }

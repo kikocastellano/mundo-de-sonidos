@@ -174,3 +174,49 @@ export function sfx(kind: 'tap' | 'win' | 'oops' | 'star') {
 }
 
 export const hasRecipe = (k: string) => k in RECIPES;
+
+// ---------- Modo calma: paisajes sonoros continuos ----------
+export type Ambience = 'lluvia' | 'olas' | 'noche' | 'viento';
+let amb: { out: GainNode; nodes: AudioScheduledSourceNode[]; timers: number[] } | null = null;
+
+export function startAmbience(kind: Ambience, volume = 0.8) {
+  unlockAudio();
+  stopAmbience(0.2);
+  if (!ctx) return;
+  const c = ctx; const out = c.createGain();
+  out.gain.setValueAtTime(0.0001, c.currentTime);
+  out.gain.exponentialRampToValueAtTime(volume, c.currentTime + 2.5);
+  out.connect(master);
+  const nodes: AudioScheduledSourceNode[] = []; const timers: number[] = [];
+  const bed = (type: BiquadFilterType, f: number, q: number, g: number, lfo?: [number, number]) => {
+    const src = c.createBufferSource(); src.buffer = noiseBuf; src.loop = true;
+    const bq = c.createBiquadFilter(); bq.type = type; bq.frequency.value = f; bq.Q.value = q;
+    const gn = c.createGain(); gn.gain.value = g;
+    src.connect(bq).connect(gn).connect(out); src.start(); nodes.push(src);
+    if (lfo) { const l = c.createOscillator(); const lg = c.createGain(); l.frequency.value = lfo[0]; lg.gain.value = lfo[1]; l.connect(lg).connect(gn.gain); l.start(); nodes.push(l); }
+    return bq;
+  };
+  const every = (ms: number, fn: () => void) => { const tick = () => { if (!amb || amb.out !== out) return; fn(); timers.push(window.setTimeout(tick, ms * (0.5 + Math.random()))); }; tick(); };
+  if (kind === 'lluvia') {
+    bed('lowpass', 1200, 0.5, 0.35); bed('highpass', 5000, 0.5, 0.06);
+    every(140, () => tone({ type: 'sine', dur: 0.05, f: [[0, 1800 + Math.random() * 2500], [1, 900]], gain: 0.03, attack: 0.002, release: 0.04, out }));
+  }
+  if (kind === 'olas') bed('lowpass', 600, 0.7, 0.3, [0.09, 0.28]);
+  if (kind === 'viento') { const f = bed('bandpass', 500, 2, 0.35, [0.05, 0.2]); const l = c.createOscillator(); const lg = c.createGain(); l.frequency.value = 0.07; lg.gain.value = 300; l.connect(lg).connect(f.frequency); l.start(); nodes.push(l); }
+  if (kind === 'noche') {
+    bed('lowpass', 300, 0.5, 0.08);
+    every(1600, () => range(3, (i) => tone({ type: 'sine', at: i * 0.06, dur: 0.04, f: [[0, 4400], [1, 4300]], gain: 0.025, attack: 0.005, release: 0.02, out })));
+    every(14000, () => { const n: [number, number][] = [[0, 0.45], [0.75, 0.22], [1.05, 0.55]]; for (const [at, dur] of n) tone({ type: 'sine', at, dur, f: [[0, 400], [1, 360]], gain: 0.06, attack: 0.06, release: 0.2, out }); });
+  }
+  amb = { out, nodes, timers };
+}
+
+export function stopAmbience(fade = 2) {
+  if (!amb || !ctx) return;
+  const a = amb; amb = null;
+  a.timers.forEach(clearTimeout);
+  const t = ctx.currentTime;
+  a.out.gain.cancelScheduledValues(t); a.out.gain.setValueAtTime(Math.max(a.out.gain.value, 0.0001), t);
+  a.out.gain.exponentialRampToValueAtTime(0.0001, t + fade);
+  a.nodes.forEach((n) => { try { n.stop(t + fade + 0.1); } catch { /* ya parado */ } });
+}

@@ -1,4 +1,6 @@
 // Ficha de datos de animales y regiones.
+import SOUNDS from './sounds.json';
+
 // Fase 4 sustituirá `sound` (sonido sintetizado de prueba) por `audio` (grabación real con licencia).
 
 export type Lang = 'es' | 'en';
@@ -84,6 +86,13 @@ export const ANIMALS: Animal[] = [
   A('pinguino', '🐧', 'polos', false, 'penguin', 'Pingüino', 'Penguin', 'Los pingüinos no vuelan, pero nadan rapidísimo.', "Penguins can't fly, but they swim super fast."),
   A('oso-polar', '🐻‍❄️', 'polos', true, 'polar', 'Oso polar', 'Polar bear', 'Bajo su pelo blanco, la piel del oso polar es negra.', "Under its white fur, a polar bear's skin is black."),
 ];
+
+// Grabaciones reales aprobadas (las genera scripts/process-sounds.mjs).
+const REAL = SOUNDS as Record<string, { file: string; author: string; license: string; source: string }>;
+for (const a of ANIMALS) {
+  const r = REAL[a.id];
+  if (r) { a.audio = `./sounds/${r.file}`; a.credit = { author: r.author, license: r.license, source: r.source }; }
+}
 
 export const regionById = (id: string) => REGIONS.find((r) => r.id === id);
 export const animalById = (id: string) => ANIMALS.find((a) => a.id === id);
