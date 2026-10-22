@@ -22,3 +22,10 @@ Gratis con más de 50 animales. Con un **pago único** (sin suscripción) desblo
 - Público objetivo: menores de 13 (programa de familias). Sin anuncios. Sin identificador publicitario.
 - Seguridad de datos: «No se recogen ni comparten datos».
 - Clasificación: PEGI 3.
+
+## Gráficos (en `docs/tienda/`)
+- Icono 512×512: `assets/icon-only.png` (redúcelo a 512 o súbelo tal cual si Play lo acepta).
+- Imagen destacada 1024×500: `destacada.png`.
+- Capturas de móvil 1080×1920: `movil-1-inicio.png` … `movil-6-calma.png`.
+- Capturas de tablet 1920×1200: `tablet-*.png`.
+Regenerar: `npm run assets` (icono y pantalla de carga) y `npm run store:shots` (capturas).

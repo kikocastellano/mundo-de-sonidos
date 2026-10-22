@@ -10,6 +10,8 @@
     "preview": "vite preview --host",
     "typecheck": "tsc --noEmit",
     "test:e2e": "node tests/smoke.mjs",
+    "assets": "node scripts/app-assets.mjs && npx @capacitor/assets@3 generate --android --iconBackgroundColor \"#6fc0ff\" --splashBackgroundColor \"#d9f1ff\"",
+    "store:shots": "npm run build && node scripts/store-shots.mjs",
     "android": "npm run build && cap sync android && cap open android",
     "cap:sync": "npm run build && cap sync",
     "test:licenses": "node tests/licenses.mjs",
