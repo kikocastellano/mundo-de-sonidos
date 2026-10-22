@@ -314,5 +314,25 @@
  "pinguino-emperador": {
   "file": "01-inat.wav",
   "clean": true
+ },
+ "buho-nival": {
+  "file": "04-inat.mp3",
+  "clean": true
+ },
+ "gatito": {
+  "file": "01-inat.mp3",
+  "clean": true
+ },
+ "raton": {
+  "file": "02-inat.wav",
+  "clean": true
+ },
+ "colibri": {
+  "file": "01-inat.mp3",
+  "clean": true
+ },
+ "yak": {
+  "file": "01-inat.m4a",
+  "clean": true
  }
 }

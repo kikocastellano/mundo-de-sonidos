@@ -141,10 +141,8 @@ export const ANIMALS: Animal[] = [
   // ---- Ampliación 2 ----
   // Granja y mascotas
   A('cordero', '🐑', 'granja', false, 'baa', 'Cordero', 'Lamb', 'Cada cordero reconoce el balido de su mamá entre cientos.', 'Every lamb knows its mum’s bleat among hundreds.'),
-  A('cachorro', '🐶', 'granja', false, 'squeak', 'Cachorro', 'Puppy', 'Los cachorros nacen con los ojos cerrados.', 'Puppies are born with their eyes closed.'),
   A('gatito', '🐱', 'granja', false, 'meow', 'Gatito', 'Kitten', 'Los gatitos ronronean desde que tienen una semana.', 'Kittens can purr when they are just one week old.'),
   A('raton', '🐁', 'granja', false, 'squeak', 'Ratón', 'Mouse', 'Los ratones cantan canciones que nosotros no podemos oír.', 'Mice sing songs that we can’t hear.'),
-  A('hamster', '🐹', 'granja', true, 'squeak', 'Hámster', 'Hamster', 'El hámster guarda la comida en sus mofletes.', 'Hamsters store food in their cheeks.'),
   A('periquito', '🦜', 'granja', true, 'parrot', 'Periquito', 'Budgie', 'Los periquitos pueden aprender palabras.', 'Budgies can learn words.'),
   // Océano
   A('beluga', '🐳', 'oceano', false, 'dolphin', 'Beluga', 'Beluga', 'La llaman «el canario del mar» porque canta mucho.', 'It’s called "the canary of the sea" because it sings so much.'),
@@ -164,21 +162,17 @@ export const ANIMALS: Animal[] = [
   A('gibon', '🐒', 'asia', false, 'monkey', 'Gibón', 'Gibbon', 'Las familias de gibones cantan juntas cada mañana.', 'Gibbon families sing together every morning.'),
   A('cigarra', '🦗', 'asia', false, 'cricket', 'Cigarra', 'Cicada', 'La cigarra canta cuando hace mucho calor.', 'Cicadas sing when it’s very hot.'),
   A('yak', '🐂', 'asia', true, 'growl', 'Yak', 'Yak', 'Los yaks gruñen en lugar de mugir.', 'Yaks grunt instead of mooing.'),
-  A('leopardo-nieves', '🐆', 'asia', true, 'saw', 'Leopardo de las nieves', 'Snow leopard', 'Usa su cola larga como bufanda.', 'It uses its long tail as a scarf.'),
   // Europa
   A('murcielago', '🦇', 'europa', false, 'squeak', 'Murciélago', 'Bat', 'Los murciélagos «ven» con el sonido de su eco.', 'Bats "see" using the echo of their calls.'),
-  A('sapo', '🐸', 'europa', false, 'frog', 'Sapo', 'Toad', 'Los sapos cantan en primavera junto a las charcas.', 'Toads sing by the ponds in spring.'),
   A('lechuza', '🦉', 'europa', false, 'hiss', 'Lechuza', 'Barn owl', 'La lechuza no ulula: ¡bufa y chilla!', 'Barn owls don’t hoot – they hiss and screech!'),
   A('ruisenor', '🐦', 'europa', false, 'parrot', 'Ruiseñor', 'Nightingale', 'El ruiseñor sabe más de 200 canciones.', 'A nightingale knows more than 200 songs.'),
   A('pajaro-carpintero', '🐦', 'europa', true, 'woodpecker', 'Pájaro carpintero', 'Woodpecker', 'Golpea los árboles 20 veces por segundo.', 'It taps on trees 20 times a second.'),
   A('cisne', '🦢', 'europa', true, 'honk', 'Cisne', 'Swan', 'Las crías del cisne viajan en la espalda de sus padres.', 'Baby swans ride on their parents’ backs.'),
   A('mosquito', '🦟', 'europa', true, 'buzz', 'Mosquito', 'Mosquito', 'Su zumbido es el ruido de sus alas.', 'Its buzz is the sound of its wings.'),
   // Oceanía
-  A('dingo', '🐕', 'oceania', false, 'howl', 'Dingo', 'Dingo', 'Los dingos no ladran: aúllan.', 'Dingoes don’t bark – they howl.'),
   A('ave-lira', '🐦', 'oceania', true, 'kookaburra', 'Ave lira', 'Lyrebird', 'Imita cualquier sonido, ¡hasta una cámara de fotos!', 'It can copy any sound – even a camera!'),
   A('zorro-volador', '🦇', 'oceania', true, 'squeak', 'Zorro volador', 'Flying fox', 'Es un murciélago gigante que come fruta.', 'It’s a giant bat that eats fruit.'),
   // Polos
-  A('lobo-artico', '🐺', 'polos', false, 'howl', 'Lobo ártico', 'Arctic wolf', 'Su pelo blanco lo esconde en la nieve.', 'Its white fur hides it in the snow.'),
   A('foca-leopardo', '🦭', 'polos', true, 'whale', 'Foca leopardo', 'Leopard seal', 'Canta bajo el hielo canciones muy extrañas.', 'It sings strange songs under the ice.'),
   A('pinguino-emperador', '🐧', 'polos', false, 'penguin', 'Pingüino emperador', 'Emperor penguin', 'Los papás cuidan el huevo sobre sus patas.', 'Dads keep the egg warm on their feet.'),
   A('buey-almizclero', '🐂', 'polos', true, 'growl', 'Buey almizclero', 'Musk ox', 'Forman un círculo para proteger a sus crías.', 'They form a circle to protect their babies.'),
