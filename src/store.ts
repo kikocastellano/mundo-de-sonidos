@@ -1,12 +1,12 @@
 // Preferencias, favoritos y estrellas guardados solo en el dispositivo.
 import type { Lang } from './data';
 
-interface State { lang: Lang; muted: boolean; favs: string[]; stars: Record<string, number>; premium: boolean }
+interface State { lang: Lang; muted: boolean; favs: string[]; stars: Record<string, number>; premium: boolean; voice: Record<Lang, string> }
 
 const KEY = 'mundo-sonidos-v1';
 const defaults = (): State => ({
   lang: (navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en',
-  muted: false, favs: [], stars: {}, premium: false,
+  muted: false, favs: [], stars: {}, premium: false, voice: { es: '', en: '' },
 });
 
 function load(): State {

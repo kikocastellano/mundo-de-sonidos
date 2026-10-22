@@ -54,6 +54,8 @@ const T = {
   dietO: { es: 'Omnívoro: come de todo', en: 'Omnivore: eats everything' },
   dietI: { es: 'Insectívoro: come bichitos', en: 'Insectivore: eats bugs' },
   tapToHear: { es: 'Toca una tarjeta para escucharla', en: 'Tap a card to hear it' },
+  voice: { es: 'Voz', en: 'Voice' },
+  voiceTry: { es: 'Hola, vamos a descubrir animales', en: 'Hello, let’s discover animals' },
   calm: { es: 'Modo calma', en: 'Calm mode' },
   locked: { es: 'Contenido premium', en: 'Premium content' },
 } satisfies Record<string, Record<Lang, string>>;

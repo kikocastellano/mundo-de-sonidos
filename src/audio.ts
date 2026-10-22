@@ -187,15 +187,53 @@ export function playAnimal(a: Animal): number {
   return RECIPES[a.sound]?.() ?? 0;
 }
 
-/** Dice el nombre del animal con la voz del sistema en el idioma elegido. */
+// ---------- Voz ----------
+// Se usa la voz del sistema más natural disponible, de mujer si existe. Los padres pueden cambiarla.
+const FEMALE = /(female|mujer|woman|m[oó]nica|paulina|helena|elvira|laura|lucia|luc[ií]a|elena|marisol|sabina|dalia|paloma|ximena|camila|ines|in[eé]s|isabela|salome|google espa|samantha|serena|karen|moira|tessa|fiona|victoria|susan|hazel|zira|aria|jenny|libby|sonia|emma|ava|allison|martha|kate)/i;
+const MALE = /(male|hombre|jorge|diego|juan|pablo|carlos|enrique|alvaro|raul|daniel|alex|fred|tom|david|mark|george|james|guy|ryan|thomas|oliver|arthur|rishi)/i;
+
+function langVoices(lang: Lang) {
+  if (!('speechSynthesis' in window)) return [];
+  return speechSynthesis.getVoices().filter((v) => v.lang.toLowerCase().replace('_', '-').startsWith(lang));
+}
+
+/** Puntúa una voz: natural/neuronal y de mujer primero; español de España e inglés británico como acento por defecto. */
+function voiceScore(v: SpeechSynthesisVoice, lang: Lang) {
+  let s = 0;
+  if (/natural|neural|online|enhanced|premium|siri/i.test(v.name)) s += 40;
+  if (FEMALE.test(v.name) && !/\bmale\b/i.test(v.name.replace(/female/i, ''))) s += 30;
+  if (MALE.test(v.name.replace(/female/i, ''))) s -= 30;
+  if (/google/i.test(v.name)) s += 10;
+  if (!v.localService) s += 5;
+  const tag = v.lang.toLowerCase().replace('_', '-');
+  if (tag === (lang === 'es' ? 'es-es' : 'en-gb')) s += 8;
+  if (/espeak|compact|eloquence/i.test(v.name)) s -= 50;
+  return s;
+}
+
+export function availableVoices(lang: Lang = store.lang) {
+  return langVoices(lang).sort((a, b) => voiceScore(b, lang) - voiceScore(a, lang));
+}
+
+function pickVoice(lang: Lang) {
+  const list = availableVoices(lang);
+  return list.find((v) => v.name === store.voice[lang]) ?? list[0];
+}
+
+if ('speechSynthesis' in window) {
+  speechSynthesis.getVoices();
+  speechSynthesis.addEventListener?.('voiceschanged', () => speechSynthesis.getVoices());
+}
+
+/** Lee un texto con una voz natural (de mujer si hay) y a ritmo tranquilo para niños. */
 export function sayName(text: string, lang: Lang = store.lang) {
   if (store.muted || !('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
-  const v = speechSynthesis.getVoices().find((x) => x.lang.toLowerCase().startsWith(lang));
-  if (v) u.voice = v;
-  u.rate = 0.85; u.pitch = 1.15;
+  const v = pickVoice(lang);
+  if (v) { u.voice = v; u.lang = v.lang; }
+  u.rate = 0.92; u.pitch = 1;
   speechSynthesis.speak(u);
 }
 

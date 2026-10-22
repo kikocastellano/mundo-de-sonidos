@@ -1,5 +1,5 @@
 // Puerta para padres (mantener pulsado el número dicho en palabras) y zona de padres.
-import { sfx } from '../audio';
+import { availableVoices, sayName, sfx } from '../audio';
 import { buy, canBuy, onBillingChange, price, restore } from '../billing';
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
@@ -64,6 +64,8 @@ function parentArea(root: HTMLElement, next: string | null) {
       <div class="panel settings">
         <div class="row"><span>${t('language')}</span>
           <div class="seg">${(['es', 'en'] as const).map((l) => `<button data-lang="${l}" class="${store.lang === l ? 'on' : ''}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div></div>
+        <div class="row"><span>${t('voice')}</span>
+          <select class="voice-select" aria-label="${t('voice')}">${availableVoices().map((v, i) => `<option value="${v.name}" ${(store.voice[store.lang] ? store.voice[store.lang] === v.name : i === 0) ? 'selected' : ''}>${v.name.replace(/^(Microsoft|Google|Apple)\s*/i, '').replace(/\s*-\s*.*$/, '')} (${v.lang})</option>`).join('') || '<option>—</option>'}</select></div>
         <div class="row"><span>${t('sound')}</span>
           <button class="toggle ${store.muted ? '' : 'on'}" aria-pressed="${!store.muted}">${store.muted ? icon.mute : icon.speaker}</button></div>
       </div>
@@ -79,6 +81,9 @@ function parentArea(root: HTMLElement, next: string | null) {
   root.querySelector('.restore')?.addEventListener('click', () => void restore());
   offBilling?.();
   offBilling = onBillingChange(() => { offBilling?.(); offBilling = null; if (document.body.contains(root)) parentArea(root, next); });
+  root.querySelector<HTMLSelectElement>('.voice-select')?.addEventListener('change', (e) => {
+    store.voice[store.lang] = (e.target as HTMLSelectElement).value; save(); sayName(t('voiceTry'));
+  });
   root.querySelector('.premium-test')?.addEventListener('click', () => { store.premium = !store.premium; save(); parentArea(root, next); });
   $('.toggle', root).addEventListener('click', () => { store.muted = !store.muted; save(); parentArea(root, next); });
 }

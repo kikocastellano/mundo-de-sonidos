@@ -345,3 +345,4 @@ svg { display: block; }
 .fact-card { display: flex; gap: 12px; align-items: center; text-align: left; background: #fff; border-radius: 20px; padding: 14px; font-size: 17px; font-weight: 600; line-height: 1.3; box-shadow: 0 4px 12px rgba(20, 40, 80, .1); border: 3px solid transparent; animation: popIn .4s backwards; animation-delay: calc(.3s + var(--i) * 80ms); }
 .fact-card span { font-family: var(--emoji); font-size: 30px; }
 .say.speaking { border-color: var(--accent); transform: scale(1.03); transition: transform .2s; }
+.voice-select { max-width: 60%; min-height: 44px; border-radius: 14px; border: 2px solid #dfe7f5; background: #eef3ff; font: inherit; font-weight: 700; padding: 0 10px; color: var(--ink); }
