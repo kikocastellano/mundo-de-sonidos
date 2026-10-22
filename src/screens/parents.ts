@@ -51,7 +51,7 @@ function parentArea(root: HTMLElement, next: string | null) {
       <header class="topbar">${backBtn('/')}<h2>${t('parents')}</h2><span class="spacer"></span></header>
       <div class="panel premium ${next === 'premium' ? 'highlight' : ''}">
         <button class="btn-round close" data-go="/" aria-label="${t('close')}">${icon.close}</button>
-        <div class="premium-emojis">🦁🐼🐨🦜🐻‍❄️</div>
+        <div class="premium-emojis">🦁🐘🐨🦜🐧</div>
         <h3>${store.premium ? t('owned') : t('premiumTitle')}</h3>
         ${store.premium ? '' : `<p>${t('premiumBody')}</p>
         <p class="muted">+${premiumCount} ${store.lang === 'es' ? 'animales y modos extra' : 'animals and extra modes'}</p>

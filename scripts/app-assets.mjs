@@ -26,7 +26,7 @@ const fg = `<!doctype html><html><body style="margin:0;background:transparent">$
 // Pantalla de carga
 await shot(scene(2732, 2732, emoji('🦁', 700, 1016, 900) + `<div style="position:absolute;left:0;right:0;top:1680px;text-align:center;font-size:200px;font-weight:800;color:#fff;text-shadow:0 10px 0 #e2457a">Mundo de Sonidos</div>`), 2732, 2732, 'assets/splash.png');
 // Imagen destacada de Google Play (1024x500)
-const parade = ['🐄', '🦁', '🐘', '🐧', '🐸', '🐼', '🦉', '🐬'].map((e, i) => emoji(e, 92, 70 + i * 112, 330)).join('');
+const parade = ['🐄', '🦁', '🐘', '🐧', '🐸', '🦒', '🦉', '🐬'].map((e, i) => emoji(e, 92, 70 + i * 112, 330)).join('');
 await shot(scene(1024, 500, `<div style="position:absolute;left:0;right:0;top:70px;text-align:center;color:#fff;font-weight:800;font-size:92px;line-height:.95;text-shadow:0 7px 0 #e2457a,0 12px 24px rgba(0,0,0,.2)"><div style="font-size:44px;color:#fff7c2;text-shadow:0 4px 0 #f08a24">Mundo de</div>Sonidos</div><div style="position:absolute;left:0;right:0;top:240px;text-align:center;font-size:30px;font-weight:800;color:#23324a">Sonidos reales · Sin anuncios · Pago único</div>${parade}`), 1024, 500, 'docs/tienda/destacada.png');
 await b.close();
 console.log('assets listos');

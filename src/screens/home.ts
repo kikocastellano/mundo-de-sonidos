@@ -4,7 +4,7 @@ import { store } from '../store';
 import { icon } from '../ui';
 
 export function home(root: HTMLElement) {
-  const parade = ['🐄', '🦁', '🐘', '🐧', '🐸', '🐼', '🦉', '🐬'];
+  const parade = ['🐄', '🦁', '🐘', '🐧', '🐸', '🦒', '🦉', '🐬'];
   const total = Object.values(store.stars).reduce((a, b) => a + b, 0);
   root.innerHTML = `
     <section class="screen home">
