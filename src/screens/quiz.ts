@@ -3,7 +3,7 @@ import { sayName, sfx } from '../audio';
 import { ANIMALS, REGIONS, animalsIn, regionById, type Animal, type Lang, type RegionId } from '../data';
 import { INFO } from '../info';
 import { CLASE, type Clase } from '../info/clases';
-import { discover, isLocked, store } from '../store';
+import { discover, isLocked, logAct, store } from '../store';
 import { $, backBtn, confetti, esc, icon } from '../ui';
 import { premiumWall } from './premium';
 
@@ -117,7 +117,7 @@ export function quiz(root: HTMLElement, src: string | null) {
     if (!q || b.classList.contains('right') || opts.querySelector('.right')) return;
     const i = Number(b.dataset.i);
     if (i === q.answer) {
-      b.classList.add('right'); total++; discover(q.animal.id); if (tries === 0) score++;
+      b.classList.add('right'); total++; discover(q.animal.id); logAct('right', q.animal.id); if (tries === 0) score++;
       $('.qs', root).textContent = String(score);
       opts.querySelectorAll('.q-opt:not(.right)').forEach((o) => o.classList.add('fade'));
       fb.textContent = L === 'es' ? '¡Correcto! 🎉' : 'Correct! 🎉';

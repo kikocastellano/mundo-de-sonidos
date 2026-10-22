@@ -3,7 +3,7 @@ import { playAnimal, preload, sayName, sfx, stopAll } from '../audio';
 import { ANIMALS, animalById, animalsIn, regionById } from '../data';
 import { INFO } from '../info';
 import { t } from '../i18n';
-import { discover, isLocked, store, toggleFav } from '../store';
+import { discover, isLocked, logAct, store, toggleFav } from '../store';
 import { $, backBtn, esc, go, icon, lockedModal, soundRings } from '../ui';
 
 export function animal(root: HTMLElement, id: string, fromFav: boolean) {
@@ -51,7 +51,7 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
   const portrait = $('.portrait', root);
   const play = () => {
     if (locked) { portrait.classList.remove('shake'); void portrait.offsetWidth; portrait.classList.add('shake'); lockedModal(a.emoji); return; }
-    soundRings(portrait, playAnimal(a));
+    soundRings(portrait, playAnimal(a)); logAct('listen', a.id);
     setTimeout(() => discover(a.id), 900);
   };
   portrait.addEventListener('click', play);

@@ -1,11 +1,19 @@
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
-import { store } from '../store';
-import { icon } from '../ui';
+import { isLocked, store } from '../store';
+import { esc, icon } from '../ui';
+
+/** Mismo animal para todo el día; si no hay compra, uno de los gratuitos. */
+export function animalOfDay() {
+  const pool = ANIMALS.filter((a) => !isLocked(a));
+  const d = new Date(); const n = d.getFullYear() * 400 + d.getMonth() * 31 + d.getDate();
+  return pool[(n * 7919) % pool.length];
+}
 
 export function home(root: HTMLElement) {
   const parade = ['🐄', '🦁', '🐘', '🐧', '🐸', '🦒', '🦉', '🐬'];
   const total = Object.values(store.stars).reduce((a, b) => a + b, 0);
+  const day = animalOfDay();
   root.innerHTML = `
     <section class="screen home">
       <header class="topbar">
@@ -16,6 +24,7 @@ export function home(root: HTMLElement) {
         <h1><span>${store.lang === 'es' ? 'Mundo de' : 'World of'}</span>${store.lang === 'es' ? 'Sonidos' : 'Sounds'}</h1>
         <div class="parade">${parade.map((e, i) => `<span style="--i:${i}">${e}</span>`).join('')}</div>
       </div>
+      <button class="aotd" data-go="/animal/${day.id}"><span class="aotd-emoji">${day.emoji}</span><span><small>🌟 ${t('today')}</small><b>${esc(day.name[store.lang])}</b></span><span class="aotd-play">${icon.play}</span></button>
       <nav class="home-menu">
         <button class="big-btn primary" data-go="/mundo"><span class="big-emoji">🌍</span><span>${t('play')}</span></button>
         <button class="big-btn game" data-go="/juego"><span class="big-emoji">👂</span><span>${t('game')}</span></button>

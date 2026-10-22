@@ -3,8 +3,8 @@ import { availableVoices, sayName, sfx } from '../audio';
 import { buy, canBuy, onBillingChange, price, restore } from '../billing';
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
-import { save, store } from '../store';
-import { $, backBtn, go, icon } from '../ui';
+import { save, store, weekSummary } from '../store';
+import { $, backBtn, esc, go, icon } from '../ui';
 
 const WORDS = {
   es: ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'],
@@ -49,6 +49,8 @@ function parentArea(root: HTMLElement, next: string | null) {
   root.innerHTML = `
     <section class="screen parents">
       <header class="topbar">${backBtn('/')}<h2>${t('parents')}</h2><span class="spacer"></span></header>
+      ${weekPanel()}
+      ${next === 'valorar' ? ratePanel() : ''}
       ${(() => {
         const es = store.lang === 'es';
         const lockedList = ANIMALS.filter((a) => a.premium);
@@ -87,6 +89,7 @@ function parentArea(root: HTMLElement, next: string | null) {
       <div class="panel settings">
         <div class="row"><span>${t('language')}</span>
           <div class="seg">${(['es', 'en'] as const).map((l) => `<button data-lang="${l}" class="${store.lang === l ? 'on' : ''}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div></div>
+        <div class="row"><span>${t('kidName')}</span><input class="kid-name" maxlength="20" value="${esc(store.kid)}" autocomplete="off" /></div>
         <div class="row"><span>${t('voice')}</span>
           <select class="voice-select" aria-label="${t('voice')}">${availableVoices().map((v, i) => `<option value="${v.name}" ${(store.voice[store.lang] ? store.voice[store.lang] === v.name : i === 0) ? 'selected' : ''}>${v.name.replace(/^(Microsoft|Google|Apple)\s*/i, '').replace(/\s*-\s*.*$/, '')} (${v.lang})</option>`).join('') || '<option>—</option>'}</select></div>
         <div class="row"><span>${t('sound')}</span>
@@ -104,9 +107,38 @@ function parentArea(root: HTMLElement, next: string | null) {
   root.querySelector('.restore')?.addEventListener('click', () => void restore());
   offBilling?.();
   offBilling = onBillingChange(() => { offBilling?.(); offBilling = null; if (document.body.contains(root)) parentArea(root, next); });
+  root.querySelector<HTMLInputElement>('.kid-name')?.addEventListener('change', (e) => { store.kid = (e.target as HTMLInputElement).value.trim(); save(); parentArea(root, next); });
+  root.querySelector('.rate-btn')?.addEventListener('click', () => { store.rated = Date.now(); save(); window.open('https://play.google.com/store/apps/details?id=com.kikocastellano.mundodesonidos', '_blank'); });
   root.querySelector<HTMLSelectElement>('.voice-select')?.addEventListener('change', (e) => {
     store.voice[store.lang] = (e.target as HTMLSelectElement).value; save(); sayName(t('voiceTry'));
   });
   root.querySelector('.premium-test')?.addEventListener('click', () => { store.premium = !store.premium; save(); parentArea(root, next); });
   $('.toggle', root).addEventListener('click', () => { store.muted = !store.muted; save(); parentArea(root, next); });
+}
+
+/** Resumen de la semana para los padres (calculado en el dispositivo, nunca sale de él). */
+function weekPanel() {
+  const w = weekSummary(); const es = store.lang === 'es';
+  const who = store.kid || (es ? 'Tu peque' : 'Your child');
+  const fav = w.fav ? ANIMALS.find((a) => a.id === w.fav) : undefined;
+  const max = Math.max(1, ...w.perDay);
+  const days = es ? ['L', 'M', 'X', 'J', 'V', 'S', 'D'] : ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  const label = (i: number) => days[(new Date(Date.now() - (6 - i) * 864e5).getDay() + 6) % 7];
+  const total = Object.keys(store.seen).length;
+  return `<div class="panel week">
+    <h3>📊 ${t('weekTitle')}</h3>
+    <p class="week-lead">${esc(who)} ${es ? `ha descubierto <b>${w.seen}</b> animales nuevos y ha acertado <b>${w.right}</b> preguntas.` : `discovered <b>${w.seen}</b> new animals and got <b>${w.right}</b> answers right.`}</p>
+    <div class="week-stats">
+      <div><b>${w.listen}</b><small>${es ? 'sonidos escuchados' : 'sounds played'}</small></div>
+      <div><b>${w.days}/7</b><small>${es ? 'días jugando' : 'days playing'}</small></div>
+      <div><b>${total}</b><small>${es ? 'pegatinas en total' : 'stickers in total'}</small></div>
+    </div>
+    <div class="week-bars">${w.perDay.map((v, i) => `<div><i style="height:${Math.round((v / max) * 100)}%"></i><small>${label(i)}</small></div>`).join('')}</div>
+    ${fav ? `<p class="muted">${es ? 'Su animal favorito esta semana' : 'Favourite animal this week'}: <b>${fav.emoji} ${esc(fav.name[store.lang])}</b></p>` : ''}
+    <p class="muted small">${es ? 'Estos datos solo se guardan en este dispositivo.' : 'This data stays on this device only.'}</p>
+  </div>`;
+}
+
+function ratePanel() {
+  return `<div class="panel rate highlight"><div class="premium-emojis">⭐⭐⭐⭐⭐</div><h3>${t('rateTitle')}</h3><p>${t('rateBody')}</p><button class="buy-btn rate-btn">${t('rateBtn')}</button></div>`;
 }

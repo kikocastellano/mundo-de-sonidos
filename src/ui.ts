@@ -3,7 +3,7 @@ import { sfx, stopAll, unlockAudio } from './audio';
 import type { Animal } from './data';
 import { t } from './i18n';
 import { animalById } from './data';
-import { isLocked, onSticker, store } from './store';
+import { isLocked, onSticker, save, store } from './store';
 
 export const $ = <T extends HTMLElement = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel)!;
 
@@ -113,4 +113,27 @@ onSticker((id) => {
   document.body.appendChild(el);
   setTimeout(() => sfx('star'), 150);
   setTimeout(() => el.remove(), 2600);
+  // Pedir valoración en momentos felices (15, 40 y 80 pegatinas), como mucho 3 veces y siempre a través de un adulto
+  const n = Object.keys(store.seen).length;
+  if (!store.rated && store.asked < 3 && [15, 40, 80].includes(n)) {
+    store.asked++; save();
+    setTimeout(() => askRating(a.emoji), 2800);
+  }
 });
+
+function askRating(emoji: string) {
+  const m = document.createElement('div');
+  m.className = 'sheet-wrap';
+  m.innerHTML = `<div class="sheet locked-modal" role="dialog" aria-modal="true">
+    <div class="lm-emoji" style="filter:none">${emoji}</div><div class="premium-emojis">⭐⭐⭐⭐⭐</div>
+    <h3>${t('rateAsk')}</h3>
+    <button class="buy-btn" data-act="adult">👨‍👩‍👧 ${t('askAdult')}</button>
+    <button class="link-btn" data-act="close">${t('later')}</button></div>`;
+  document.body.appendChild(m);
+  const close = () => { m.classList.add('out'); setTimeout(() => m.remove(), 250); };
+  m.addEventListener('click', (e) => {
+    const act = (e.target as HTMLElement).closest<HTMLElement>('[data-act]')?.dataset.act;
+    if (e.target === m || act === 'close') close();
+    if (act === 'adult') { close(); go('/padres?next=valorar'); }
+  });
+}

@@ -2,7 +2,7 @@
 import { playAnimal, preload, sayName, sfx } from '../audio';
 import { ANIMALS, REGIONS, type Animal, type RegionId } from '../data';
 import { t } from '../i18n';
-import { addStar, discover, isLocked, save, store } from '../store';
+import { addStar, discover, isLocked, logAct, save, store } from '../store';
 import { $, backBtn, confetti, esc, icon, soundRings } from '../ui';
 
 const shuffle = <T,>(arr: T[]) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -71,7 +71,7 @@ export function game(root: HTMLElement, where: RegionId | 'todo') {
       sfx('win'); confetti();
       setTimeout(() => sayName(target.name[L]), 500);
       if (mistakes === 0) streak++;
-      addStar(where); setTimeout(() => discover(target.id), 1200);
+      addStar(where); logAct('right', target.id); setTimeout(() => discover(target.id), 1200);
       store.rounds = (store.rounds || 0) + 1; save();
       if (!store.premium && store.rounds % 8 === 0) setTimeout(() => upsell(root), 2400);
       const sc = $('.sc', root); sc.textContent = String(store.stars[where]); sc.parentElement!.classList.add('pop');

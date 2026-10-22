@@ -421,3 +421,23 @@ svg { display: block; }
 .album-btn .hb-count { display: block; }
 .stickers { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
 .sticker .s-emoji { font-size: 34px; }
+
+/* ---------- Animal del día ---------- */
+.aotd { width: 100%; max-width: 520px; display: flex; align-items: center; gap: 14px; background: rgba(255, 255, 255, .92); border-radius: 24px; padding: 8px 14px; box-shadow: var(--shadow); border: 3px solid #ffd75e; text-align: left; animation: popIn .6s backwards .3s; }
+.aotd-emoji { font-family: var(--emoji); font-size: 52px; line-height: 1; animation: hop 2.4s ease-in-out infinite; }
+.aotd small { display: block; font-weight: 800; color: #c07a00; font-size: 14px; }
+.aotd b { font-size: clamp(20px, 5vmin, 28px); }
+.aotd-play { margin-left: auto; width: 46px; height: 46px; border-radius: 50%; background: #ffd75e; display: grid; place-items: center; }
+.aotd-play svg { width: 50%; fill: #6a3d00; } .aotd-play svg .fill { fill: #6a3d00; }
+
+/* ---------- Resumen semanal ---------- */
+.week h3 { margin-top: 0; }
+.week-lead { font-size: 19px; }
+.week-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
+.week-stats div { background: #f6f9ff; border-radius: 16px; padding: 10px 6px; display: flex; flex-direction: column; }
+.week-stats b { font-size: 26px; color: #3a6fd8; } .week-stats small { font-size: 13px; color: var(--ink-soft); font-weight: 700; }
+.week-bars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; height: 90px; align-items: end; margin: 8px 0; }
+.week-bars div { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; }
+.week-bars i { width: 70%; min-height: 4px; border-radius: 8px 8px 3px 3px; background: linear-gradient(#7cc4ff, #3a95f0); }
+.week-bars small { font-weight: 800; color: var(--ink-soft); font-size: 12px; }
+.kid-name { max-width: 50%; min-height: 44px; border-radius: 14px; border: 2px solid #dfe7f5; background: #eef3ff; font: inherit; font-weight: 700; padding: 0 12px; color: var(--ink); }

@@ -65,6 +65,13 @@ const T = {
   askAdult: { es: 'Avisar a un adulto', en: 'Tell a grown-up' },
   later: { es: 'Ahora no', en: 'Not now' },
   moreWaiting: { es: 'animales más te esperan en el álbum', en: 'more animals are waiting in the album' },
+  today: { es: 'Animal del día', en: 'Animal of the day' },
+  weekTitle: { es: 'Esta semana', en: 'This week' },
+  kidName: { es: 'Nombre del peque (opcional)', en: 'Child’s name (optional)' },
+  rateAsk: { es: '¿Te gusta la app? Pide a un adulto que nos ponga 5 estrellas', en: 'Do you like the app? Ask a grown-up to give us 5 stars' },
+  rateTitle: { es: '¿Os gusta Mundo de Sonidos?', en: 'Enjoying World of Sounds?' },
+  rateBody: { es: 'Una valoración en Google Play nos ayuda muchísimo a seguir añadiendo animales. ¡Gracias!', en: 'A Google Play review helps us keep adding animals. Thank you!' },
+  rateBtn: { es: 'Valorar en Google Play', en: 'Rate on Google Play' },
   calm: { es: 'Modo calma', en: 'Calm mode' },
   locked: { es: 'Contenido premium', en: 'Premium content' },
 } satisfies Record<string, Record<Lang, string>>;

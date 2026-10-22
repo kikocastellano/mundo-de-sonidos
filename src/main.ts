@@ -27,6 +27,8 @@ let cleanup: void | (() => void);
 
 function route() {
   if (typeof cleanup === 'function') cleanup();
+  // Paneles y avisos flotantes no deben sobrevivir al cambio de pantalla
+  document.querySelectorAll('.sheet-wrap, .upsell').forEach((n) => n.remove());
   cleanup = undefined;
   const [path, query = ''] = location.hash.replace(/^#/, '').split('?');
   const params = new URLSearchParams(query);

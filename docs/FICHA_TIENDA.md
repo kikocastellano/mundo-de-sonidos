@@ -29,3 +29,8 @@ Gratis con más de 50 animales. Con un **pago único** (sin suscripción) desblo
 - Capturas de móvil 1080×1920: `movil-1-inicio.png` … `movil-6-calma.png`.
 - Capturas de tablet 1920×1200: `tablet-*.png`.
 Regenerar: `npm run assets` (icono y pantalla de carga) y `npm run store:shots` (capturas).
+
+## Capturas con frase (recomendadas)
+- `docs/tienda/es/captura-1.png` … `captura-8.png` (español) y `docs/tienda/en/` (inglés), 1080×1920.
+- Vídeo vertical de 25 s: `docs/tienda/promo.mp4`. Google Play pide un enlace de YouTube: súbelo como vídeo «no listado».
+- Regenerar: `npm run store:shots` y `npm run promo`.
