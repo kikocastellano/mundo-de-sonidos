@@ -30,7 +30,10 @@ for (const t of targets) {
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
   const shot = async (n) => { await sleep(700); await page.screenshot({ path: `${OUT}${t.name}-${n}.png` }); };
-  const noHScroll = async (n) => check(await page.evaluate(() => [...document.querySelectorAll('.view')].every((v) => v.scrollWidth <= v.clientWidth + 1)), `${n}: sin scroll horizontal`);
+  const noHScroll = async (n) => {
+    const bad = await page.evaluate(() => [...document.querySelectorAll('.view')].flatMap((v) => v.scrollWidth <= v.clientWidth + 1 ? [] : [...v.querySelectorAll('*')].filter((e) => e.getBoundingClientRect().right > v.clientWidth + 1).map((e) => String(e.className.baseVal ?? e.className) + JSON.stringify([Math.round(e.getBoundingClientRect().left), Math.round(e.getBoundingClientRect().width), e.children.length])).slice(0, 5)));
+    check(bad.length === 0, `${n}: sin scroll horizontal ${bad.join(', ')}`);
+  };
   const tap = (sel) => (t.opts.hasTouch ? page.tap(sel) : page.click(sel));
 
   await page.goto(BASE); await shot('1-inicio'); await noHScroll('inicio');

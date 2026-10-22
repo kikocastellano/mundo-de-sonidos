@@ -155,7 +155,7 @@ svg { display: block; }
 .empty-emoji { font-family: var(--emoji); font-size: 80px; animation: hop 2s infinite; }
 
 /* ---------- Ficha del animal ---------- */
-.animal { justify-content: flex-start; }
+.animal { justify-content: flex-start; overflow-x: clip; }
 .stage { flex: 1; width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 0; touch-action: pan-y; }
 .stage.next .portrait { animation: slideL .45s cubic-bezier(.2, 1.3, .4, 1); } .stage.prev .portrait { animation: slideR .45s cubic-bezier(.2, 1.3, .4, 1); }
 @keyframes slideL { from { transform: translateX(60vw) rotate(10deg); } } @keyframes slideR { from { transform: translateX(-60vw) rotate(-10deg); } }
@@ -177,8 +177,8 @@ svg { display: block; }
 @keyframes shake { 20%, 60% { transform: translateX(-12px); } 40%, 80% { transform: translateX(12px); } }
 .nav-arrow { width: calc(var(--tap) * .85); height: calc(var(--tap) * .85); flex: none; border-radius: 50%; background: rgba(255, 255, 255, .85); display: grid; place-items: center; box-shadow: var(--shadow); }
 .nav-arrow:active { transform: scale(.88); }
-.dots { display: flex; gap: 8px; } .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, .6); transition: all .3s; }
-.dots i.on { background: #fff; width: 28px; border-radius: 6px; }
+.dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; max-width: min(92vw, 520px); } .dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, .6); transition: all .3s; }
+.dots i.on { background: #fff; width: 22px; border-radius: 6px; }
 .actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
 .action { min-width: calc(var(--tap) * 1.3); height: calc(var(--tap) * 1.3); border-radius: 99px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 0 26px; font-weight: 800; font-size: clamp(22px, 5vmin, 30px);
   box-shadow: var(--shadow), inset 0 -7px 0 rgba(0, 0, 0, .14); transition: transform .12s; }
@@ -197,7 +197,7 @@ svg { display: block; }
 @keyframes heart { 40% { transform: scale(1.35); } }
 
 /* ---------- Juego ---------- */
-.game { justify-content: flex-start; }
+.game { justify-content: flex-start; overflow-x: clip; }
 .question { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .listen-btn { position: relative; width: clamp(110px, 24vmin, 170px); aspect-ratio: 1; border-radius: 50%; background: linear-gradient(#b8a4ff, #7b5cff); border: 7px solid #fff; box-shadow: var(--shadow), inset 0 -10px 0 rgba(0, 0, 0, .12); display: grid; place-items: center; --accent: #fff; }
 .ear { font-family: var(--emoji); font-size: clamp(54px, 12vmin, 84px); }
