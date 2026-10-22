@@ -97,7 +97,9 @@ function openInfo(a: (typeof ANIMALS)[number], accent: string) {
   const L = store.lang, x = info[L];
   const [dEmoji, dKey] = DIET[info.diet];
   const tiles: [string, string, string][] = [
-    ['🏠', t('home'), x.home], ['🍽️', t('food'), x.food], ['👶', t('baby'), x.baby],
+    ['🏠', t('home'), x.home], ['🍽️', t('food'), x.food],
+    // «Cría» a secas no enseña nada: solo se muestra si la cría tiene un nombre propio (ternero, potro…)
+    ...(/^cr[ií]a$/i.test(info.es.baby.trim()) ? [] : [['👶', t('baby'), x.baby] as [string, string, string]]),
     ['📏', t('size'), x.size], ['⚖️', t('weight'), info.weight], ['⏳', t('life'), `${info.life} ${t('years')}`],
   ];
   const facts = [a.fact[L], ...x.more];
