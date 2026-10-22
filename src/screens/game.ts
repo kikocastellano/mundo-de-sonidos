@@ -51,7 +51,8 @@ export function game(root: HTMLElement, where: RegionId | 'todo') {
     const cands = pool.filter((a) => a.id !== last);
     target = cands[Math.floor(Math.random() * cands.length)] ?? pool[0];
     last = target.id;
-    const others = shuffle(distractors.filter((a) => a.id !== target.id && a.sound !== target.sound)).slice(0, n - 1);
+    const others: Animal[] = [];
+    for (const a of shuffle(distractors)) if (others.length < n - 1 && a.emoji !== target.emoji && a.sound !== target.sound && !others.some((o) => o.emoji === a.emoji || o.sound === a.sound)) others.push(a);
     const opts = shuffle([target, ...others]);
     prompt.textContent = t('listen');
     choices.className = `choices n${opts.length}`;

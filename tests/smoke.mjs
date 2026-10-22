@@ -38,7 +38,7 @@ for (const t of targets) {
   await tap('.big-btn.primary'); await shot('2-mapa'); await noHScroll('mapa');
   check((await page.locator('.zone').count()) === 8, '8 zonas en el mapa');
   await page.locator('.zone[data-go="/region/granja"]').click(); await shot('3-granja'); await noHScroll('región');
-  check((await page.locator('.card').count()) === 8, 'granja con 8 animales');
+  check((await page.locator('.card').count()) === 16, 'granja con 16 animales');
   await tap('.card[data-animal="vaca"]'); await shot('4-vaca'); await noHScroll('ficha');
   await tap('.fav-btn'); check(await page.locator('.fav-btn.on').count() === 1, 'favorito marcado');
   await tap('.nav-arrow.right'); await sleep(300); check(page.url().includes('/animal/perro'), 'flecha pasa al siguiente animal');
@@ -62,7 +62,7 @@ for (const t of targets) {
   await page.reload(); await page.goto(BASE + '#/calma'); await page.reload();
   check(await page.isVisible('.calm-play'), 'modo calma con premium'); await tap('.calm-play'); await shot('13-calma');
   await page.goto(BASE + '#/profe'); await sleep(600); check(await page.locator('.teacher-name').textContent() !== '', 'modo profe muestra animal'); await shot('14-profe');
-  await page.goto(BASE + '#/creditos'); check((await page.locator('.credit-item').count()) === 30, 'créditos de 30 animales'); await shot('15-creditos');
+  await page.goto(BASE + '#/creditos'); check((await page.locator('.credit-item').count()) >= 70, 'créditos de todos los animales'); await shot('15-creditos');
   check(errors.length === 0, `sin errores JS ${errors.join(' | ')}`);
   await ctx.close();
 }

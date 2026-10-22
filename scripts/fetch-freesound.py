@@ -17,7 +17,11 @@ ALT={'ballena':'whale song','oso':'brown bear','panda':'giant panda','cuco':'cuc
 Q={'vaca':'cow moo','perro':'dog bark','gato':'cat meow','oveja':'sheep bleat','cerdo':'pig oink','caballo':'horse neigh','pato':'duck quack','gallo':'rooster crow',
 'ballena':'humpback whale','delfin':'dolphin','foca':'sea lion bark','leon':'lion roar','elefante':'elephant trumpet','mono':'chimpanzee','hipopotamo':'hippo',
 'lobo':'wolf howl','oso':'bear growl','loro':'parrot macaw','aguila':'eagle call','tigre':'tiger roar','panda':'panda bear','pavo-real':'peacock call',
-'buho':'owl hoot','rana':'frog croak','cuco':'cuckoo','canguro':'kangaroo','koala':'koala','kookaburra':'kookaburra','pinguino':'penguin','oso-polar':'polar bear'}
+'buho':'owl hoot','rana':'frog croak','cuco':'cuckoo','canguro':'kangaroo','koala':'koala','kookaburra':'kookaburra','pinguino':'penguin','oso-polar':'polar bear',
+'cabra':'goat bleat','gallina':'hen clucking','pollito':'chick peep','pavo':'turkey gobble','burro':'donkey bray','ganso':'goose honk','conejo':'rabbit','toro':'bull','orca':'orca','nutria':'otter','gaviota':'seagull',
+'cebra':'zebra','jirafa':'giraffe','rinoceronte':'rhino','gorila':'gorilla','leopardo':'leopard','flamenco':'flamingo','camello':'camel','bisonte':'bison','mapache':'raccoon','llama':'llama hum','serpiente':'rattlesnake',
+'alce':'moose call','perezoso':'sloth','orangutan':'orangutan','bufalo':'water buffalo','cobra':'snake hiss','grulla':'crane bird call','zorro':'fox scream','erizo':'hedgehog','ardilla':'squirrel chatter','abeja':'bee buzz',
+'grillo':'cricket chirp','cuervo':'crow caw','jabali':'wild boar','ciervo':'deer roar','paloma':'dove coo','cocodrilo':'crocodile','cacatua':'cockatoo','tortuga':'turtle','reno':'reindeer','morsa':'walrus','buho-nival':'snowy owl','zorro-artico':'arctic fox'}
 LIC={'"Creative Commons 0"':'CC0','"Attribution"':'CC BY'}
 BAD=re.compile(r'cartoon|toy|imitat|human|voice|vocal|kid|child|synth|fart|music|loop|beat|remix|song|game|sfx pack|robot|scream|angry|wolf|cat, |pack',re.I)
 def one(aid):
