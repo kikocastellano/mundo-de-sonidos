@@ -18,8 +18,18 @@ const QUERIES = {
   pinguino: { en: 'penguin call', xc: 'Spheniscus demersus' }, 'oso-polar': { en: 'polar bear' },
 };
 
-const UA = { 'User-Agent': 'MundoDeSonidos/0.1 (app educativa; kikocastellano94 en GitHub)' };
-const getJSON = async (u, h = {}) => { const r = await fetch(u, { headers: { ...UA, ...h } }); if (!r.ok) throw new Error(`${r.status} ${u}`); return r.json(); };
+const UA = { 'User-Agent': 'MundoDeSonidos/0.1 (app educativa infantil; https://github.com/kikocastellano/juegorana)' };
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+// Respeta los límites de las APIs: reintenta con la espera que indique el servidor.
+async function get(u, h = {}) {
+  for (let i = 0; i < 6; i++) {
+    const r = await fetch(u, { headers: { ...UA, ...h } });
+    if (r.status !== 429 && r.status < 500) { if (!r.ok) throw new Error(`${r.status} ${u}`); return r; }
+    await wait(1000 * Math.max(Number(r.headers.get('retry-after')) || 0, 5 * (i + 1)));
+  }
+  throw new Error(`demasiados reintentos ${u}`);
+}
+const getJSON = async (u, h = {}) => (await get(u, h)).json();
 
 async function commons(q) {
   const u = `https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=search&gsrnamespace=6&gsrlimit=15&gsrsearch=${encodeURIComponent(q + ' filetype:audio')}&prop=imageinfo&iiprop=url|extmetadata|size`;
@@ -58,7 +68,8 @@ for (const [id, q] of Object.entries(QUERIES)) {
     const ext = (c.url.split('?')[0].match(/\.(\w+)$/)?.[1] ?? 'mp3').toLowerCase();
     const file = `${String(i + 1).padStart(2, '0')}-${c.source}.${ext}`;
     if (!existsSync(`${dir}/${file}`)) {
-      const r = await fetch(c.url, { headers: UA }); if (!r.ok) continue;
+      const r = await get(c.url).catch(() => null); if (!r) continue;
+      await wait(1500);
       writeFileSync(`${dir}/${file}`, Buffer.from(await r.arrayBuffer()));
     }
     list.push({ file, ...c });
