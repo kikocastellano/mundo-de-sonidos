@@ -11,12 +11,12 @@
 - 💖 Favoritos, 🌙 modo calma para dormir y 🧑‍🏫 modo profe para clase.
 - 🚫 **Sin anuncios.** Sin cuentas, sin rastreo, **funciona sin conexión**.
 - 🔒 Pagos y ajustes detrás de una puerta para padres.
-Prueba gratis con decenas de animales; la suscripción (mensual o anual, 7 días gratis) desbloquea más de 190.
+Gratis con más de 50 animales. Con un **pago único** (sin suscripción) desbloqueas todos los animales, los que vayan llegando, el modo calma y el modo profe. Se puede compartir con la familia de Google Play.
 
 ## English
 **Title:** World of Sounds: Animals
 **Short:** Real animal sounds from around the world for kids. No ads, works offline.
-**Mensajes clave:** sin anuncios · sonidos reales · funciona sin conexión · para 2–8 años.
+**Mensajes clave:** pago único, sin suscripción · sin anuncios · sonidos reales · funciona sin conexión · para 2–8 años.
 
 ## Play Console
 - Público objetivo: menores de 13 (programa de familias). Sin anuncios. Sin identificador publicitario.

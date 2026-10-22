@@ -1,5 +1,6 @@
 // Puerta para padres (mantener pulsado el número dicho en palabras) y zona de padres.
 import { sfx } from '../audio';
+import { buy, canBuy, onBillingChange, price, restore } from '../billing';
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
 import { save, store } from '../store';
@@ -10,6 +11,7 @@ const WORDS = {
   en: ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'],
 };
 let unlockedUntil = 0;
+let offBilling: (() => void) | null = null;
 
 export function parents(root: HTMLElement, next: string | null) {
   if (Date.now() < unlockedUntil) return parentArea(root, next);
@@ -50,10 +52,14 @@ function parentArea(root: HTMLElement, next: string | null) {
       <div class="panel premium ${next === 'premium' ? 'highlight' : ''}">
         <button class="btn-round close" data-go="/" aria-label="${t('close')}">${icon.close}</button>
         <div class="premium-emojis">🦁🐼🐨🦜🐻‍❄️</div>
-        <h3>${t('premiumTitle')}</h3>
-        <p>${t('premiumBody')}</p>
-        <p class="muted">${t('premiumSoon')}</p>
-        <p class="muted">+${premiumCount} ${store.lang === 'es' ? 'animales ya preparados' : 'animals ready'}</p>
+        <h3>${store.premium ? t('owned') : t('premiumTitle')}</h3>
+        ${store.premium ? '' : `<p>${t('premiumBody')}</p>
+        <p class="muted">+${premiumCount} ${store.lang === 'es' ? 'animales y modos extra' : 'animals and extra modes'}</p>
+        <button class="buy-btn" ${canBuy() ? '' : 'disabled'}>${t('buy')} <b>${price()}</b></button>
+        <p class="one-time">${t('oneTime')}</p>
+        ${canBuy() ? '' : `<p class="muted">${t('webOnly')}</p>`}`}
+        ${canBuy() ? `<button class="link-btn restore">${t('restore')}</button>` : ''}
+        <p class="muted small">${t('family')}</p>
       </div>
       <div class="panel settings">
         <div class="row"><span>${t('language')}</span>
@@ -63,12 +69,16 @@ function parentArea(root: HTMLElement, next: string | null) {
       </div>
       <div class="panel credits"><h3>${t('credits')}</h3><p>${t('creditsBody')}</p><p class="muted">${t('privacy')}</p>
         <div class="link-row"><button class="pill" data-go="/creditos">${t('credits')}</button><a class="pill" href="./privacidad.html" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center">${store.lang === 'es' ? 'Privacidad' : 'Privacy'}</a></div></div>
-      <div class="panel settings"><div class="row"><span>${store.lang === 'es' ? 'Probar premium (solo pruebas, sin pago)' : 'Try premium (testing only, no payment)'}</span>
-        <button class="toggle premium-test ${store.premium ? 'on' : ''}" aria-pressed="${store.premium}">${icon.star}</button></div></div>
+      ${canBuy() ? '' : `<div class="panel settings"><div class="row"><span>${store.lang === 'es' ? 'Probar premium (solo pruebas, sin pago)' : 'Try premium (testing only, no payment)'}</span>
+        <button class="toggle premium-test ${store.premium ? 'on' : ''}" aria-pressed="${store.premium}">${icon.star}</button></div></div>`}
     </section>`;
   root.querySelectorAll<HTMLElement>('[data-lang]').forEach((b) => b.addEventListener('click', () => {
     store.lang = b.dataset.lang as 'es' | 'en'; save(); document.documentElement.lang = store.lang; parentArea(root, next);
   }));
-  $('.premium-test', root).addEventListener('click', () => { store.premium = !store.premium; save(); parentArea(root, next); });
+  root.querySelector('.buy-btn')?.addEventListener('click', () => void buy());
+  root.querySelector('.restore')?.addEventListener('click', () => void restore());
+  offBilling?.();
+  offBilling = onBillingChange(() => { offBilling?.(); offBilling = null; if (document.body.contains(root)) parentArea(root, next); });
+  root.querySelector('.premium-test')?.addEventListener('click', () => { store.premium = !store.premium; save(); parentArea(root, next); });
   $('.toggle', root).addEventListener('click', () => { store.muted = !store.muted; save(); parentArea(root, next); });
 }

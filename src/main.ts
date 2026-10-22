@@ -12,6 +12,7 @@ import { home } from './screens/home';
 import { map } from './screens/map';
 import { parents } from './screens/parents';
 import { region } from './screens/region';
+import { initBilling } from './billing';
 import { store } from './store';
 import { installGlobalHandlers } from './ui';
 
@@ -50,6 +51,7 @@ function route() {
   view.querySelector<HTMLElement>('h1, h2')?.setAttribute('tabindex', '-1');
 }
 
+void initBilling();
 window.addEventListener('hashchange', route);
 route();
 

@@ -19,7 +19,7 @@ npm run test:e2e   # recorre todas las pantallas en iPhone, Android, horizontal,
 - **Fase 1 ✅** estructura, colores y botones grandes para niños, navegación, español/inglés, ficha de datos (30 animales, 8 regiones).
 - **Fase 2 ✅** mapa del mundo táctil (continentes, granja, océano), región con tarjetas, ficha con imagen grande, sonido, nombre hablado, dato curioso, deslizar/flechas, favoritos guardados, candado en animales de pago.
 - **Fase 3 ✅** «¿Quién suena?»: 3 opciones (4 tras 5 aciertos seguidos), confeti al acertar, reintentar sin castigo, estrellas por región, sin vidas ni límites.
-- **Fase 5 (parcial)**: puerta para padres (mantener pulsado el número escrito en palabras) y pantalla informativa de suscripción con botón de cerrar. Falta conectar RevenueCat/Google Play.
+- **Modelo de pago: gratis + pago único** (sin suscripción, sin RevenueCat). `src/billing.ts` usa Google Play Billing con `cordova-plugin-purchase`; producto `desbloquear_todo`, pantalla en la zona de padres con precio real, «pago único», restaurar compra. Pasos en `docs/PAGO_UNICO.md`. Android: `npm run android`.
 - **Fase 4 (herramientas listas)**: los sonidos actuales siguen siendo **sintetizados de prueba**. Flujo para los reales:
   1. `npm run sounds:fetch` busca en Wikimedia Commons, Xeno-canto (`XC_KEY`) y Freesound (`FREESOUND_TOKEN`) solo licencias comerciales (CC0, dominio público, CC BY, CC BY-SA) y descarga candidatos a `sounds-raw/<animal>/`.
   2. Escuchas y apuntas el elegido en `sounds-approved.json`: `{ "vaca": { "file": "02-commons.ogg", "start": 0.4 } }`.

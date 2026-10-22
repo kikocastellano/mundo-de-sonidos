@@ -1,4 +1,4 @@
-// Contenido premium: si no hay suscripción, muestra un aviso que lleva a la zona de padres (nunca vende al niño).
+// Contenido premium: si no se ha hecho el pago único, muestra un aviso que lleva a la zona de padres (nunca vende al niño).
 import { t } from '../i18n';
 import { store } from '../store';
 import { backBtn, icon } from '../ui';

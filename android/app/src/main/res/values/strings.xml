@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Mundo de Sonidos</string>
+    <string name="title_activity_main">Mundo de Sonidos</string>
+    <string name="package_name">com.kikocastellano.mundodesonidos</string>
+    <string name="custom_url_scheme">com.kikocastellano.mundodesonidos</string>
+</resources>

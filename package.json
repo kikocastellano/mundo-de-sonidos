@@ -10,13 +10,21 @@
     "preview": "vite preview --host",
     "typecheck": "tsc --noEmit",
     "test:e2e": "node tests/smoke.mjs",
+    "android": "npm run build && cap sync android && cap open android",
+    "cap:sync": "npm run build && cap sync",
     "test:licenses": "node tests/licenses.mjs",
     "sounds:fetch": "node scripts/fetch-sounds.mjs",
     "sounds:process": "node scripts/process-sounds.mjs && node tests/licenses.mjs"
   },
   "devDependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/cli": "^8.5.3",
     "playwright": "1.56.1",
     "typescript": "^5.6.3",
     "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.5.3",
+    "cordova-plugin-purchase": "^13.19.1"
   }
 }
