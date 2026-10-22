@@ -176,7 +176,7 @@ export function sfx(kind: 'tap' | 'win' | 'oops' | 'star') {
 export const hasRecipe = (k: string) => k in RECIPES;
 
 // ---------- Modo calma: paisajes sonoros continuos ----------
-export type Ambience = 'lluvia' | 'olas' | 'noche' | 'viento';
+export type Ambience = 'lluvia' | 'olas' | 'noche' | 'viento' | 'selva';
 let amb: { out: GainNode; nodes: AudioScheduledSourceNode[]; timers: number[] } | null = null;
 
 export function startAmbience(kind: Ambience, volume = 0.8) {
@@ -207,6 +207,14 @@ export function startAmbience(kind: Ambience, volume = 0.8) {
     bed('lowpass', 300, 0.5, 0.08);
     every(1600, () => range(3, (i) => tone({ type: 'sine', at: i * 0.06, dur: 0.04, f: [[0, 4400], [1, 4300]], gain: 0.025, attack: 0.005, release: 0.02, out })));
     every(14000, () => { const n: [number, number][] = [[0, 0.45], [0.75, 0.22], [1.05, 0.55]]; for (const [at, dur] of n) tone({ type: 'sine', at, dur, f: [[0, 400], [1, 360]], gain: 0.06, attack: 0.06, release: 0.2, out }); });
+  }
+  if (kind === 'selva') {
+    // Arroyo suave, llovizna lejana, pájaros tropicales, ranitas y algún mono a lo lejos.
+    bed('bandpass', 900, 0.6, 0.12, [0.15, 0.05]); bed('lowpass', 500, 0.5, 0.1);
+    every(2200, () => { const f = 2200 + Math.random() * 1600; range(2 + Math.floor(Math.random() * 3), (i) => tone({ type: 'sine', at: i * 0.13, dur: 0.1, f: [[0, f], [1, f * 1.25]], gain: 0.035, attack: 0.01, release: 0.05, out })); });
+    every(5200, () => { const f = 900 + Math.random() * 300; tone({ type: 'sine', dur: 0.7, f: [[0, f], [0.5, f * 1.5], [1, f * 1.1]], gain: 0.04, attack: 0.1, release: 0.3, vib: [6, 25], out }); });
+    every(3000, () => range(2, (i) => tone({ type: 'square', at: i * 0.35, dur: 0.18, f: [[0, 300], [1, 240]], gain: 0.012, attack: 0.01, release: 0.05, am: [30, 0.9], filter: ['lowpass', 900, 3], out })));
+    every(16000, () => range(4, (i) => tone({ type: 'triangle', at: i * 0.22, dur: 0.18, f: [[0, 500 + i * 80], [1, 800 + i * 90]], gain: 0.02, attack: 0.03, release: 0.08, filter: ['lowpass', 1500], out })));
   }
   amb = { out, nodes, timers };
 }

@@ -42,7 +42,7 @@ for (const t of targets) {
   await tap('.card[data-animal="vaca"]'); await shot('4-vaca'); await noHScroll('ficha');
   await tap('.fav-btn'); check(await page.locator('.fav-btn.on').count() === 1, 'favorito marcado');
   await tap('.nav-arrow.right'); await sleep(300); check(page.url().includes('/animal/perro'), 'flecha pasa al siguiente animal');
-  await page.goto(BASE + '#/animal/foca'); await shot('5-bloqueado'); check(await page.isVisible('.portrait-lock'), 'candado en animal de pago');
+  await page.goto(BASE + '#/animal/loro'); await shot('5-bloqueado'); check(await page.isVisible('.portrait-lock'), 'candado en animal de pago');
   await page.goto(BASE + '#/favoritos'); check((await page.locator('.card').count()) === 1, 'favorito guardado');
   await page.goto(BASE + '#/juego'); await shot('6-elegir-juego');
   await page.goto(BASE + '#/juego/granja'); await sleep(400);

@@ -59,28 +59,28 @@ export const ANIMALS: Animal[] = [
   // Océano
   A('ballena', '🐋', 'oceano', false, 'whale', 'Ballena', 'Whale', 'Las ballenas cantan canciones que se oyen a kilómetros.', 'Whales sing songs that can be heard miles away.'),
   A('delfin', '🐬', 'oceano', false, 'dolphin', 'Delfín', 'Dolphin', 'Cada delfín tiene un silbido propio, como un nombre.', 'Every dolphin has its own whistle, like a name.'),
-  A('foca', '🦭', 'oceano', true, 'seal', 'Foca', 'Seal', 'Las focas pueden aguantar la respiración casi una hora.', 'Seals can hold their breath for almost an hour.'),
+  A('foca', '🦭', 'oceano', false, 'seal', 'Foca', 'Seal', 'Las focas pueden aguantar la respiración casi una hora.', 'Seals can hold their breath for almost an hour.'),
   // África
   A('leon', '🦁', 'africa', false, 'roar', 'León', 'Lion', 'El rugido del león se oye a 8 kilómetros.', "A lion's roar can be heard 8 kilometres away."),
   A('elefante', '🐘', 'africa', false, 'trumpet', 'Elefante', 'Elephant', 'Los elefantes usan la trompa como nariz, mano y ducha.', 'Elephants use their trunk as a nose, a hand and a shower.'),
-  A('mono', '🐒', 'africa', true, 'monkey', 'Chimpancé', 'Chimpanzee', 'Los chimpancés usan palitos como herramientas.', 'Chimpanzees use sticks as tools.'),
-  A('hipopotamo', '🦛', 'africa', true, 'hippo', 'Hipopótamo', 'Hippo', 'Los hipopótamos pasan el día en el agua para no quemarse.', 'Hippos spend the day in water to avoid sunburn.'),
+  A('mono', '🐒', 'africa', false, 'monkey', 'Chimpancé', 'Chimpanzee', 'Los chimpancés usan palitos como herramientas.', 'Chimpanzees use sticks as tools.'),
+  A('hipopotamo', '🦛', 'africa', false, 'hippo', 'Hipopótamo', 'Hippo', 'Los hipopótamos pasan el día en el agua para no quemarse.', 'Hippos spend the day in water to avoid sunburn.'),
   // América
   A('lobo', '🐺', 'america', false, 'howl', 'Lobo', 'Wolf', 'Los lobos aúllan para encontrar a su manada.', 'Wolves howl to find their pack.'),
-  A('oso', '🐻', 'america', true, 'growl', 'Oso', 'Bear', 'Los osos duermen casi todo el invierno.', 'Bears sleep through most of the winter.'),
+  A('oso', '🐻', 'america', false, 'growl', 'Oso', 'Bear', 'Los osos duermen casi todo el invierno.', 'Bears sleep through most of the winter.'),
   A('loro', '🦜', 'america', true, 'parrot', 'Loro', 'Parrot', 'Algunos loros pueden imitar palabras.', 'Some parrots can copy words.'),
-  A('aguila', '🦅', 'america', true, 'eagle', 'Águila', 'Eagle', 'El águila ve un conejo desde muy, muy alto.', 'An eagle can spot a rabbit from very high up.'),
+  A('aguila', '🦅', 'america', false, 'eagle', 'Águila', 'Eagle', 'El águila ve un conejo desde muy, muy alto.', 'An eagle can spot a rabbit from very high up.'),
   // Asia
   A('tigre', '🐅', 'asia', false, 'tiger', 'Tigre', 'Tiger', 'No hay dos tigres con las mismas rayas.', 'No two tigers have the same stripes.'),
-  A('panda', '🐼', 'asia', true, 'panda', 'Panda', 'Panda', 'Los pandas comen bambú casi todo el día.', 'Pandas eat bamboo almost all day long.'),
+  A('panda', '🐼', 'asia', false, 'panda', 'Panda', 'Panda', 'Los pandas comen bambú casi todo el día.', 'Pandas eat bamboo almost all day long.'),
   A('pavo-real', '🦚', 'asia', true, 'peacock', 'Pavo real', 'Peacock', 'El pavo real abre su cola como un abanico gigante.', 'The peacock opens its tail like a giant fan.'),
   // Europa
   A('buho', '🦉', 'europa', false, 'owl', 'Búho', 'Owl', 'Los búhos giran la cabeza casi del todo.', 'Owls can turn their heads almost all the way round.'),
   A('rana', '🐸', 'europa', false, 'frog', 'Rana', 'Frog', 'Las ranas beben agua a través de la piel.', 'Frogs drink water through their skin.'),
-  A('cuco', '🐦', 'europa', true, 'cuckoo', 'Cuco', 'Cuckoo', 'El cuco se llama así por su canto: «cu-cú».', 'The cuckoo is named after its song: "cuck-oo".'),
+  A('cuco', '🐦', 'europa', false, 'cuckoo', 'Cuco', 'Cuckoo', 'El cuco se llama así por su canto: «cu-cú».', 'The cuckoo is named after its song: "cuck-oo".'),
   // Oceanía
   A('canguro', '🦘', 'oceania', false, 'kangaroo', 'Canguro', 'Kangaroo', 'Las crías de canguro viven en la bolsa de su mamá.', 'Baby kangaroos live in their mum’s pouch.'),
-  A('koala', '🐨', 'oceania', true, 'koala', 'Koala', 'Koala', 'Los koalas duermen hasta 20 horas al día.', 'Koalas sleep up to 20 hours a day.'),
+  A('koala', '🐨', 'oceania', false, 'koala', 'Koala', 'Koala', 'Los koalas duermen hasta 20 horas al día.', 'Koalas sleep up to 20 hours a day.'),
   A('kookaburra', '🪶', 'oceania', true, 'kookaburra', 'Cucaburra', 'Kookaburra', 'Su canto parece una carcajada.', 'Its call sounds like laughter.'),
   // Polos
   A('pinguino', '🐧', 'polos', false, 'penguin', 'Pingüino', 'Penguin', 'Los pingüinos no vuelan, pero nadan rapidísimo.', "Penguins can't fly, but they swim super fast."),
