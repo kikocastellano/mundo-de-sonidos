@@ -2,3 +2,8 @@ node_modules
 dist
 tests/screenshots
 sounds-raw
+
+# Claves de firma de Android: NUNCA se suben al repositorio
+*.jks
+*.keystore
+keystore.properties

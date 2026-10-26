@@ -1,0 +1,51 @@
+name: Android
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      # El SDK de Android ya viene instalado en las máquinas de GitHub (ANDROID_HOME).
+      - run: echo "SDK en $ANDROID_HOME" && ls "$ANDROID_HOME/platforms"
+      - run: npm ci
+      - run: npm run build
+      - run: npx cap sync android
+      - name: APK de prueba (para instalar en el móvil)
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mundo-de-sonidos-prueba-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+      # Paquete firmado para Google Play: solo si se han configurado los secretos de firma.
+      - name: Paquete para Google Play (.aab firmado)
+        if: ${{ env.KEYSTORE_B64 != '' }}
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          VERSION_CODE: ${{ github.run_number }}
+        working-directory: android
+        run: |
+          echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          ANDROID_KEYSTORE_PATH="$RUNNER_TEMP/upload.jks" ./gradlew bundleRelease --no-daemon
+      - uses: actions/upload-artifact@v4
+        if: ${{ hashFiles('android/app/build/outputs/bundle/release/*.aab') != '' }}
+        with:
+          name: mundo-de-sonidos-google-play-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
