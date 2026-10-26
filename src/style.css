@@ -407,9 +407,9 @@ svg { display: block; }
 .up-x { position: absolute; top: 6px; right: 10px; font-size: 18px; color: var(--ink-soft); min-width: 30px; min-height: 30px; }
 
 /* ---------- Pantalla de compra ---------- */
-.paywall { padding-top: 14px; overflow: hidden; }
+.paywall { padding-top: 14px; overflow-x: clip; }
 .marquee { margin: 34px -22px 8px; display: grid; gap: 4px; }
-.mq { overflow: hidden; } .mq div { display: flex; gap: 10px; width: max-content; font-family: var(--emoji); font-size: 38px; animation: mq 40s linear infinite; }
+.mq { overflow: hidden; contain: content; } .mq div { display: flex; gap: 10px; width: max-content; font-family: var(--emoji); font-size: 38px; animation: mq 40s linear infinite; will-change: transform; }
 .mq.r div { animation-direction: reverse; animation-duration: 46s; }
 @keyframes mq { to { transform: translateX(-50%); } }
 .perks { list-style: none; padding: 0; margin: 10px 0; display: grid; gap: 8px; text-align: left; }

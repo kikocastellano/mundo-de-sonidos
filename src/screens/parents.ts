@@ -98,7 +98,8 @@ function paywallPanel(next: string | null) {
         const lockedList = ANIMALS.filter((a) => a.premium);
         const got = Object.keys(store.seen).length;
         const row = (list: typeof ANIMALS, dir: string) => `<div class="mq ${dir}"><div>${[...list, ...list].map((a) => `<span>${a.emoji}</span>`).join('')}</div></div>`;
-        const half = Math.ceil(lockedList.length / 2);
+        const few = lockedList.filter((_, i) => i % 3 === 0).slice(0, 36);
+        const half = Math.ceil(few.length / 2);
         const perks: [string, string][] = es ? [
           ['🦁', `<b>+${premiumCount} animales</b> de todo el mundo con su sonido real`],
           ['📒', `Completar el <b>álbum de ${ANIMALS.length} pegatinas</b> (ahora tiene ${got})`],
@@ -118,7 +119,7 @@ function paywallPanel(next: string | null) {
       <div class="panel premium owned-panel"><div class="premium-emojis">🎉🦁🐘🐨🦜🐧</div><h3>${t('owned')}</h3><p class="muted small">${t('family')}</p></div>` : `
       <div class="panel premium paywall ${next === 'premium' ? 'highlight' : ''}">
         <button class="btn-round close" data-go="/" aria-label="${t('close')}">${icon.close}</button>
-        <div class="marquee">${row(lockedList.slice(0, half), 'l')}${row(lockedList.slice(half), 'r')}</div>
+        <div class="marquee">${row(few.slice(0, half), 'l')}${row(few.slice(half), 'r')}</div>
         <h3>${t('premiumTitle')}</h3>
         <ul class="perks">${perks.map(([e, txt], k) => `<li style="--i:${k}"><span>${e}</span><p>${txt}</p></li>`).join('')}</ul>
         <div class="price-box"><b>${price()}</b><span>${es ? 'pago único · para siempre' : 'one-time · forever'}</span><small>${es ? 'Menos que un café ☕ y sin suscripciones' : 'Less than a coffee ☕ and no subscriptions'}</small></div>
@@ -131,11 +132,20 @@ function paywallPanel(next: string | null) {
 }
 
 function bindPaywall(root: HTMLElement, rerender: () => void) {
-  root.querySelector('.buy-btn:not(.rate-btn)')?.addEventListener('click', () => void buy().then((ok) => { if (!ok) rerender(); }));
+  root.querySelector('.buy-btn:not(.rate-btn)')?.addEventListener('click', (e) => { const b = e.currentTarget as HTMLButtonElement; b.disabled = true; void buy().finally(() => { b.disabled = !canBuy(); }); });
   root.querySelector('.restore')?.addEventListener('click', () => void restore());
   root.querySelector('.premium-test')?.addEventListener('click', () => { store.premium = !store.premium; save(); rerender(); });
   offBilling?.();
-  offBilling = onBillingChange(() => { offBilling?.(); offBilling = null; if (document.body.contains(root)) rerender(); });
+  const wasPremium = store.premium;
+  // Solo se redibuja entera si cambia el estado de compra; si no, se actualizan los textos en su sitio
+  // (así no salta el scroll ni se reinician las animaciones cada vez que Google Play responde).
+  offBilling = onBillingChange(() => {
+    if (!document.body.contains(root)) { offBilling?.(); offBilling = null; return; }
+    if (store.premium !== wasPremium) { offBilling?.(); offBilling = null; rerender(); return; }
+    const st = root.querySelector('.billing-status'); if (st) st.textContent = `Google Play: ${billingStatus}`;
+    root.querySelectorAll('.price-box b, .buy-btn:not(.rate-btn) b').forEach((b) => { b.textContent = price(); });
+    const btn = root.querySelector<HTMLButtonElement>('.buy-btn:not(.rate-btn)'); if (btn) btn.disabled = !canBuy();
+  });
 }
 
 /** Pantalla de compra directa: sin puerta (Google Play ya pide la contraseña o huella del adulto al pagar). */
