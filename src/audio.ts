@@ -1,5 +1,7 @@
 // Audio instantáneo: sintetizador de sonidos de prueba, grabaciones reales (cuando existan),
 // voz que dice el nombre del animal y efectos de interfaz.
+import { Capacitor } from '@capacitor/core';
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
 import type { Animal, Lang } from './data';
 import { store } from './store';
 
@@ -30,7 +32,8 @@ export function unlockAudio() {
 export function stopAll() {
   for (const s of live) { try { s.stop(); } catch { /* ya parado */ } }
   live = [];
-  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  if (native) void TextToSpeech.stop().catch(() => {});
+  else if ('speechSynthesis' in window) speechSynthesis.cancel();
 }
 
 interface ToneOpts {
@@ -192,19 +195,36 @@ export function playAnimal(a: Animal): number {
 const FEMALE = /(female|mujer|woman|m[oó]nica|paulina|helena|elvira|laura|lucia|luc[ií]a|elena|marisol|sabina|dalia|paloma|ximena|camila|ines|in[eé]s|isabela|salome|google espa|samantha|serena|karen|moira|tessa|fiona|victoria|susan|hazel|zira|aria|jenny|libby|sonia|emma|ava|allison|martha|kate)/i;
 const MALE = /(male|hombre|jorge|diego|juan|pablo|carlos|enrique|alvaro|raul|daniel|alex|fred|tom|david|mark|george|james|guy|ryan|thomas|oliver|arthur|rishi)/i;
 
-function langVoices(lang: Lang) {
-  if (!('speechSynthesis' in window)) return [];
-  return speechSynthesis.getVoices().filter((v) => v.lang.toLowerCase().replace('_', '-').startsWith(lang));
+// Voces de Google TTS en Android: el nombre no dice si es de mujer, pero estos códigos lo son
+const GOOGLE_FEMALE = /-x-(eea|eec|esc|gba|gbc|gbg|sfg|tpc|iob|tpf)-/i;
+const GOOGLE_MALE = /-x-(eed|eef|esd|gbb|gbd|tpd|iom|iol)-/i;
+
+interface Voice { name: string; lang: string; localService: boolean; index: number }
+
+/** En la app de Android/iOS la voz del navegador no existe: se usa el motor de voz del sistema (plugin). */
+const native = Capacitor.isNativePlatform();
+let nativeVoices: Voice[] = [];
+if (native) {
+  TextToSpeech.getSupportedVoices()
+    .then(({ voices }) => { nativeVoices = voices.map((v, index) => ({ name: v.name, lang: v.lang, localService: v.localService, index })); })
+    .catch(() => {});
+}
+
+function langVoices(lang: Lang): Voice[] {
+  const all: Voice[] = native ? nativeVoices
+    : 'speechSynthesis' in window ? speechSynthesis.getVoices().map((v, index) => ({ name: v.name, lang: v.lang, localService: v.localService, index })) : [];
+  return all.filter((v) => v.lang.toLowerCase().replace('_', '-').startsWith(lang));
 }
 
 /** Puntúa una voz: natural/neuronal y de mujer primero; español de España e inglés británico como acento por defecto. */
-function voiceScore(v: SpeechSynthesisVoice, lang: Lang) {
+function voiceScore(v: Voice, lang: Lang) {
   let s = 0;
   if (/natural|neural|online|enhanced|premium|siri/i.test(v.name)) s += 40;
   if (FEMALE.test(v.name) && !/\bmale\b/i.test(v.name.replace(/female/i, ''))) s += 30;
-  if (MALE.test(v.name.replace(/female/i, ''))) s -= 30;
+  if (GOOGLE_FEMALE.test(v.name)) s += 30;
+  if (MALE.test(v.name.replace(/female/i, '')) || GOOGLE_MALE.test(v.name)) s -= 30;
   if (/google/i.test(v.name)) s += 10;
-  if (!v.localService) s += 5;
+  if (/-local$/i.test(v.name)) s += 6; // funciona sin internet
   const tag = v.lang.toLowerCase().replace('_', '-');
   if (tag === (lang === 'es' ? 'es-es' : 'en-gb')) s += 8;
   if (/espeak|compact|eloquence/i.test(v.name)) s -= 50;
@@ -220,19 +240,29 @@ function pickVoice(lang: Lang) {
   return list.find((v) => v.name === store.voice[lang]) ?? list[0];
 }
 
-if ('speechSynthesis' in window) {
+if (!native && 'speechSynthesis' in window) {
   speechSynthesis.getVoices();
   speechSynthesis.addEventListener?.('voiceschanged', () => speechSynthesis.getVoices());
 }
 
 /** Lee un texto con una voz natural (de mujer si hay) y a ritmo tranquilo para niños. */
 export function sayName(text: string, lang: Lang = store.lang) {
-  if (store.muted || !('speechSynthesis' in window)) return;
+  if (store.muted) return;
+  const v = pickVoice(lang);
+  const tag = v?.lang ?? (lang === 'es' ? 'es-ES' : 'en-GB');
+  if (native) {
+    void TextToSpeech.stop().catch(() => {}).finally(() =>
+      TextToSpeech.speak({ text, lang: tag, rate: 0.92, pitch: 1, volume: 1, voice: v?.index, category: 'playback' }).catch(() =>
+        // si la voz elegida falla, se intenta con la del sistema para ese idioma
+        TextToSpeech.speak({ text, lang: lang === 'es' ? 'es-ES' : 'en-GB', rate: 0.92 }).catch(() => {})));
+    return;
+  }
+  if (!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = lang === 'es' ? 'es-ES' : 'en-GB';
-  const v = pickVoice(lang);
-  if (v) { u.voice = v; u.lang = v.lang; }
+  u.lang = tag;
+  const sv = v ? speechSynthesis.getVoices()[v.index] : undefined;
+  if (sv) u.voice = sv;
   u.rate = 0.92; u.pitch = 1;
   speechSynthesis.speak(u);
 }

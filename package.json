@@ -27,6 +27,7 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
+    "@capacitor-community/text-to-speech": "^8.0.2",
     "@capacitor/core": "^8.5.3",
     "cordova-plugin-purchase": "^13.19.1"
   }

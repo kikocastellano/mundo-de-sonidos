@@ -111,7 +111,6 @@ onSticker((id) => {
   el.className = 'sticker-toast';
   el.innerHTML = `<span class="st-emoji">${a.emoji}</span><b>${t('newSticker')}</b><small>${Object.keys(store.seen).length}</small>`;
   document.body.appendChild(el);
-  setTimeout(() => sfx('star'), 150);
   setTimeout(() => el.remove(), 2600);
   // Pedir valoración en momentos felices (15, 40 y 80 pegatinas), como mucho 3 veces y siempre a través de un adulto
   const n = Object.keys(store.seen).length;
