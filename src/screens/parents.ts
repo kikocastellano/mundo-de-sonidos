@@ -1,6 +1,6 @@
 // Puerta para padres (mantener pulsado el número dicho en palabras) y zona de padres.
 import { availableVoices, sayName, sfx } from '../audio';
-import { buy, canBuy, isNativeApp, onBillingChange, price, restore, testUnlockAllowed } from '../billing';
+import { billingStatus, buy, canBuy, isNativeApp, onBillingChange, price, restore, testUnlockAllowed } from '../billing';
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
 import { save, store, weekSummary } from '../store';
@@ -126,11 +126,12 @@ function paywallPanel(next: string | null) {
         <p class="one-time">${t('oneTime')}</p>
         ${canBuy() ? `<button class="link-btn restore">${t('restore')}</button>` : `<p class="muted">${isNativeApp() ? t('storeDown') : t('webOnly')}</p>`}
         <p class="muted small">${t('family')}</p>
+        ${isNativeApp() ? `<p class="billing-status">Google Play: ${esc(billingStatus)}</p>` : ''}
       </div>`;
 }
 
 function bindPaywall(root: HTMLElement, rerender: () => void) {
-  root.querySelector('.buy-btn:not(.rate-btn)')?.addEventListener('click', () => void buy());
+  root.querySelector('.buy-btn:not(.rate-btn)')?.addEventListener('click', () => void buy().then((ok) => { if (!ok) rerender(); }));
   root.querySelector('.restore')?.addEventListener('click', () => void restore());
   root.querySelector('.premium-test')?.addEventListener('click', () => { store.premium = !store.premium; save(); rerender(); });
   offBilling?.();

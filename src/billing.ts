@@ -13,11 +13,15 @@ interface CdvStore {
   initialize(platforms: string[]): Promise<unknown>;
   get(id: string): CdvProduct | undefined;
   restorePurchases(): Promise<unknown>;
+  error(cb: (e: { code?: number; message?: string }) => void): void;
+  update?(): Promise<unknown>;
 }
 interface CdvPurchase { store: CdvStore; ProductType: { NON_CONSUMABLE: string }; Platform: { GOOGLE_PLAY: string } }
 
 const cdv = () => (window as unknown as { CdvPurchase?: CdvPurchase }).CdvPurchase;
 let ready = false;
+/** Estado de la conexión con Google Play, visible en la pantalla de compra para diagnosticar. */
+export let billingStatus = 'esperando';
 const listeners = new Set<() => void>();
 export const onBillingChange = (fn: () => void) => { listeners.add(fn); return () => listeners.delete(fn); };
 const emit = () => listeners.forEach((f) => f());
@@ -44,19 +48,32 @@ export async function initBilling() {
   const C = cdv();
   if (!C || ready) return;
   ready = true;
+  billingStatus = 'conectando'; emit();
+  C.store.error((e) => { billingStatus = `error ${e.code ?? ''}: ${e.message ?? ''}`; emit(); });
   C.store.register([{ id: PRODUCT_ID, type: C.ProductType.NON_CONSUMABLE, platform: C.Platform.GOOGLE_PLAY }]);
   C.store.when().approved((t) => t.verify()).verified((r) => { r.finish(); sync(); });
   C.store.when().productUpdated(sync);
-  await C.store.initialize([C.Platform.GOOGLE_PLAY]).catch(() => {});
+  await C.store.initialize([C.Platform.GOOGLE_PLAY]).catch((e: { message?: string }) => { billingStatus = `error al iniciar: ${e?.message ?? e}`; });
+  const p = C.store.get(PRODUCT_ID);
+  if (!billingStatus.startsWith('error')) billingStatus = p ? (p.getOffer() ? 'listo' : 'producto sin oferta') : 'producto no encontrado';
   sync();
+  // Si Google aún no había enviado el producto, se vuelve a intentar al rato
+  if (!p?.getOffer()) setTimeout(() => void C.store.update?.().then(() => { if (C.store.get(PRODUCT_ID)?.getOffer()) { billingStatus = 'listo'; sync(); } }), 15000);
 }
+
+// El plugin de compras puede estar listo antes o después de nuestro código: se comprueba un rato
+let tries = 0;
+const poll = window.setInterval(() => { if (cdv()) { clearInterval(poll); void initBilling(); } else if (++tries > 40) { clearInterval(poll); if (isNativeApp()) { billingStatus = 'sin plugin de compras'; emit(); } } }, 500);
 
 export const price = () => cdv()?.store.get(PRODUCT_ID)?.pricing?.price ?? FALLBACK_PRICE;
 
 export async function buy(): Promise<boolean> {
-  const offer = cdv()?.store.get(PRODUCT_ID)?.getOffer();
-  if (!offer) return false;
-  await offer.order().catch(() => {});
+  const C = cdv();
+  if (C && !C.store.get(PRODUCT_ID)?.getOffer()) await C.store.update?.().catch(() => {});
+  const offer = C?.store.get(PRODUCT_ID)?.getOffer();
+  if (!offer) { billingStatus = billingStatus === 'listo' ? 'producto no encontrado' : billingStatus; emit(); return false; }
+  const err = await offer.order().catch((e: unknown) => e) as { message?: string } | undefined;
+  if (err && err.message) { billingStatus = `error al comprar: ${err.message}`; emit(); }
   return true;
 }
 
