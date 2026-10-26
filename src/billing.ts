@@ -88,3 +88,13 @@ export async function restore() {
   } catch (e) { billingStatus = `error al restaurar: ${errMsg(e)}`; }
   emit();
 }
+
+// Código de acceso para los revisores de Google Play (no pueden pagar). Solo se guarda su huella SHA-256.
+const REVIEW_HASH = '168f28c280d074d9a173f77edf938c61b2aa9ca6d0e15e01dd74f59c08474442';
+export async function redeemCode(code: string) {
+  const data = new TextEncoder().encode(code.trim().toUpperCase());
+  const hex = [...new Uint8Array(await crypto.subtle.digest('SHA-256', data))].map((b) => b.toString(16).padStart(2, '0')).join('');
+  if (hex !== REVIEW_HASH) return false;
+  store.premium = true; store.purchased = true; save(); emit();
+  return true;
+}

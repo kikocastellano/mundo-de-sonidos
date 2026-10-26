@@ -1,6 +1,6 @@
 // Puerta para padres (mantener pulsado el número dicho en palabras) y zona de padres.
 import { availableVoices, sayName, sfx } from '../audio';
-import { billingStatus, buy, canBuy, isNativeApp, onBillingChange, price, restore, testUnlockAllowed } from '../billing';
+import { billingStatus, buy, redeemCode, canBuy, isNativeApp, onBillingChange, price, restore, testUnlockAllowed } from '../billing';
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
 import { save, store, weekSummary } from '../store';
@@ -42,6 +42,7 @@ function parentArea(root: HTMLElement, next: string | null) {
         <div class="row"><span>${t('language')}</span>
           <div class="seg">${(['es', 'en'] as const).map((l) => `<button data-lang="${l}" class="${store.lang === l ? 'on' : ''}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div></div>
         <div class="row"><span>${t('kidName')}</span><input class="kid-name" maxlength="20" value="${esc(store.kid)}" autocomplete="off" /></div>
+        ${store.premium ? '' : `<div class="row"><span>${store.lang === 'es' ? 'Código de acceso' : 'Access code'}</span><span class="code-row"><input class="code-input" maxlength="20" autocomplete="off" autocapitalize="characters" /><button class="pill code-btn">OK</button></span></div>`}
         <div class="row"><span>${t('voice')}</span>
           <select class="voice-select" aria-label="${t('voice')}">${availableVoices().map((v, i) => `<option value="${v.name}" ${(store.voice[store.lang] ? store.voice[store.lang] === v.name : i === 0) ? 'selected' : ''}>${v.name.replace(/^(Microsoft|Google|Apple)\s*/i, '').replace(/\s*-\s*.*$/, '')} (${v.lang})</option>`).join('') || '<option>—</option>'}</select></div>
         <div class="row"><span>${t('sound')}</span>
@@ -56,6 +57,10 @@ function parentArea(root: HTMLElement, next: string | null) {
     store.lang = b.dataset.lang as 'es' | 'en'; save(); document.documentElement.lang = store.lang; parentArea(root, next);
   }));
   bindPaywall(root, () => parentArea(root, next));
+  root.querySelector('.code-btn')?.addEventListener('click', async () => {
+    const inp = root.querySelector<HTMLInputElement>('.code-input')!;
+    if (await redeemCode(inp.value)) { sfx('win'); parentArea(root, next); } else { sfx('oops'); inp.value = ''; inp.placeholder = '✕'; }
+  });
   root.querySelector<HTMLInputElement>('.kid-name')?.addEventListener('change', (e) => { store.kid = (e.target as HTMLInputElement).value.trim(); save(); parentArea(root, next); });
   root.querySelector('.rate-btn')?.addEventListener('click', () => { store.rated = Date.now(); save(); window.open('https://play.google.com/store/apps/details?id=com.kikocastellano.mundodesonidos', '_blank'); });
   root.querySelector<HTMLSelectElement>('.voice-select')?.addEventListener('change', (e) => {
