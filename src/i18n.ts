@@ -75,6 +75,7 @@ const T = {
   english: { es: 'Inglés', en: 'Spanish' },
   inOther: { es: 'En inglés', en: 'In Spanish' },
   listenOther: { es: 'Escucha en inglés…', en: 'Listen in Spanish…' },
+  storeDown: { es: 'No se ha podido conectar con Google Play. Comprueba la conexión e inténtalo más tarde.', en: 'Could not connect to Google Play. Check your connection and try again later.' },
   calm: { es: 'Modo calma', en: 'Calm mode' },
   locked: { es: 'Contenido premium', en: 'Premium content' },
 } satisfies Record<string, Record<Lang, string>>;

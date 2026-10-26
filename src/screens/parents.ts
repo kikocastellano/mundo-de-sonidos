@@ -1,6 +1,6 @@
 // Puerta para padres (mantener pulsado el número dicho en palabras) y zona de padres.
 import { availableVoices, sayName, sfx } from '../audio';
-import { buy, canBuy, onBillingChange, price, restore } from '../billing';
+import { buy, canBuy, isNativeApp, onBillingChange, price, restore, testUnlockAllowed } from '../billing';
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
 import { save, store, weekSummary } from '../store';
@@ -82,7 +82,7 @@ function parentArea(root: HTMLElement, next: string | null) {
         <div class="price-box"><b>${price()}</b><span>${es ? 'pago único · para siempre' : 'one-time · forever'}</span><small>${es ? 'Menos que un café ☕ y sin suscripciones' : 'Less than a coffee ☕ and no subscriptions'}</small></div>
         <button class="buy-btn" ${canBuy() ? '' : 'disabled'}>${t('buy')} <b>${price()}</b></button>
         <p class="one-time">${t('oneTime')}</p>
-        ${canBuy() ? `<button class="link-btn restore">${t('restore')}</button>` : `<p class="muted">${t('webOnly')}</p>`}
+        ${canBuy() ? `<button class="link-btn restore">${t('restore')}</button>` : `<p class="muted">${isNativeApp() ? t('storeDown') : t('webOnly')}</p>`}
         <p class="muted small">${t('family')}</p>
       </div>`;
       })()}
@@ -97,7 +97,7 @@ function parentArea(root: HTMLElement, next: string | null) {
       </div>
       <div class="panel credits"><h3>${t('credits')}</h3><p>${t('creditsBody')}</p><p class="muted">${t('privacy')}</p>
         <div class="link-row"><button class="pill" data-go="/creditos">${t('credits')}</button><a class="pill" href="./privacidad.html" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center">${store.lang === 'es' ? 'Privacidad' : 'Privacy'}</a></div></div>
-      ${canBuy() ? '' : `<div class="panel settings"><div class="row"><span>${store.lang === 'es' ? 'Probar premium (solo pruebas, sin pago)' : 'Try premium (testing only, no payment)'}</span>
+      ${!testUnlockAllowed() ? '' : `<div class="panel settings"><div class="row"><span>${store.lang === 'es' ? 'Probar premium (solo pruebas, sin pago)' : 'Try premium (testing only, no payment)'}</span>
         <button class="toggle premium-test ${store.premium ? 'on' : ''}" aria-pressed="${store.premium}">${icon.star}</button></div></div>`}
     </section>`;
   root.querySelectorAll<HTMLElement>('[data-lang]').forEach((b) => b.addEventListener('click', () => {

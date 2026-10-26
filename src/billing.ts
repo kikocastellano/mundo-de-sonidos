@@ -1,5 +1,6 @@
 // Pago único «desbloquear todo» con Google Play Billing (cordova-plugin-purchase en la app nativa).
 // En la web no hay compra: se muestra un aviso y, para pruebas, el interruptor de la zona de padres.
+import { Capacitor } from '@capacitor/core';
 import { save, store } from './store';
 
 export const PRODUCT_ID = 'desbloquear_todo';
@@ -24,11 +25,20 @@ const emit = () => listeners.forEach((f) => f());
 /** ¿Hay tienda real disponible (app nativa)? */
 export const canBuy = () => !!cdv();
 
+/** ¿Es la app instalada desde la tienda (Android/iOS)? Ahí nunca existe el desbloqueo de pruebas. */
+export const isNativeApp = () => Capacitor.isNativePlatform();
+
+/** El interruptor «Probar premium» solo existe en la versión web, nunca en la app de la tienda. */
+export const testUnlockAllowed = () => !isNativeApp();
+
 function sync() {
   const p = cdv()?.store.get(PRODUCT_ID);
-  if (p?.owned && !store.premium) { store.premium = true; save(); }
+  if (p?.owned && !store.premium) { store.premium = true; store.purchased = true; save(); }
   emit();
 }
+
+// En la app de la tienda el premium solo puede venir de una compra verificada por Google Play
+if (Capacitor.isNativePlatform() && store.premium && !store.purchased) { store.premium = false; save(); }
 
 export async function initBilling() {
   const C = cdv();
