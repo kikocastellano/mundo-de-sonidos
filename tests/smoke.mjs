@@ -43,6 +43,7 @@ for (const t of targets) {
   await page.locator('.zone[data-go="/region/granja"]').click(); await shot('3-granja'); await noHScroll('región');
   check((await page.locator('.card').count()) >= 20, 'granja con todos sus animales');
   await tap('.card[data-animal="vaca"]'); await shot('4-vaca'); await noHScroll('ficha');
+  check(await page.isVisible('.action.other-lang'), 'botón con el nombre en inglés');
   await tap('.more-btn'); await shot('4b-saber-mas'); check((await page.locator('.sheet .tile').count()) === 6, 'panel «Saber más» con 6 tarjetas');
   await page.locator('.sheet .close').click(); await sleep(400);
   await tap('.fav-btn'); check(await page.locator('.fav-btn.on').count() === 1, 'favorito marcado');
@@ -54,6 +55,8 @@ for (const t of targets) {
   await page.goto(BASE + '#/album'); await sleep(400); await shot('5c-album');
   check((await page.locator('.sticker.got').count()) >= 1, 'álbum con pegatinas descubiertas');
   await page.goto(BASE + '#/favoritos'); check((await page.locator('.card').count()) === 1, 'favorito guardado');
+  await page.goto(BASE + '#/ingles'); await sleep(500); await shot('6b-ingles');
+  check((await page.locator('.choice').count()) === 3, 'juego de inglés con 3 opciones');
   await page.goto(BASE + '#/juego'); await shot('6-elegir-juego');
   await page.goto(BASE + '#/juego/granja'); await sleep(400);
   check((await page.locator('.choice').count()) === 3, 'juego con 3 opciones');

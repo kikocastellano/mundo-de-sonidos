@@ -11,6 +11,7 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
   if (!a) return go('/mundo');
   const r = regionById(a.region)!;
   const L = store.lang;
+  const O = L === 'es' ? 'en' : 'es'; // el otro idioma, para aprender el nombre
   const list = fromFav ? store.favs.map(animalById).filter((x) => !!x) as typeof ANIMALS : animalsIn(a.region);
   const idx = Math.max(0, list.findIndex((x) => x.id === id));
   const locked = isLocked(a);
@@ -39,6 +40,7 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
       <div class="actions">
         <button class="action sound" aria-label="${t('hearSound')}">${icon.speaker}</button>
         <button class="action name" aria-label="${t('hearName')}">${icon.mouth}<span>${esc(a.name[L])}</span></button>
+        <button class="action other-lang" aria-label="${t('inOther')}: ${esc(a.name[O])}"><span class="lang-badge">${O.toUpperCase()}</span><span>${esc(a.name[O])}</span></button>
       </div>
       ${locked
         ? `<div class="fact locked-note">${icon.lock}<p>${t('locked')}</p><button class="pill ask-adult">${t('askAdult')}</button></div>`
@@ -57,6 +59,7 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
   portrait.addEventListener('click', play);
   $('.action.sound', root).addEventListener('click', play);
   $('.action.name', root).addEventListener('click', () => { sayName(a.name[L]); soundRings(portrait, 1); });
+  $('.action.other-lang', root).addEventListener('click', () => { if (locked) return lockedModal(a.emoji); sayName(a.name[O], O); soundRings(portrait, 1); });
   $('.nav-arrow.left', root).addEventListener('click', () => goTo(-1));
   $('.nav-arrow.right', root).addEventListener('click', () => goTo(1));
   const fav = $('.fav-btn', root);

@@ -42,6 +42,7 @@ function route() {
     case 'region': region(view, parts[1] as RegionId); scene = regionById(parts[1])?.id ?? null; break;
     case 'animal': cleanup = animal(view, parts[1], params.get('from') === 'fav'); scene = animalById(parts[1])?.region ?? null; break;
     case 'juego': if (parts[1]) { game(view, parts[1] as RegionId | 'todo'); scene = regionById(parts[1])?.id ?? 'asia'; } else { gamePicker(view); scene = 'asia'; } break;
+    case 'ingles': game(view, 'todo', true); scene = 'europa'; break;
     case 'album': album(view); scene = 'granja'; break;
     case 'favoritos': favorites(view); scene = 'europa'; break;
     case 'calma': cleanup = calm(view); scene = 'noche'; break;

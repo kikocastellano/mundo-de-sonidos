@@ -72,6 +72,9 @@ const T = {
   rateTitle: { es: '¿Os gusta Mundo de Sonidos?', en: 'Enjoying World of Sounds?' },
   rateBody: { es: 'Una valoración en Google Play nos ayuda muchísimo a seguir añadiendo animales. ¡Gracias!', en: 'A Google Play review helps us keep adding animals. Thank you!' },
   rateBtn: { es: 'Valorar en Google Play', en: 'Rate on Google Play' },
+  english: { es: 'Inglés', en: 'Spanish' },
+  inOther: { es: 'En inglés', en: 'In Spanish' },
+  listenOther: { es: 'Escucha en inglés…', en: 'Listen in Spanish…' },
   calm: { es: 'Modo calma', en: 'Calm mode' },
   locked: { es: 'Contenido premium', en: 'Premium content' },
 } satisfies Record<string, Record<Lang, string>>;

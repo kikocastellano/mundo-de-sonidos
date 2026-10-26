@@ -441,3 +441,12 @@ svg { display: block; }
 .week-bars i { width: 70%; min-height: 4px; border-radius: 8px 8px 3px 3px; background: linear-gradient(#7cc4ff, #3a95f0); }
 .week-bars small { font-weight: 800; color: var(--ink-soft); font-size: 12px; }
 .kid-name { max-width: 50%; min-height: 44px; border-radius: 14px; border: 2px solid #dfe7f5; background: #eef3ff; font: inherit; font-weight: 700; padding: 0 12px; color: var(--ink); }
+
+/* ---------- Aprender inglés ---------- */
+.lang-badge { display: inline-grid; place-items: center; min-width: 34px; height: 26px; padding: 0 6px; border-radius: 8px; background: linear-gradient(#ff5d6c, #d62839); color: #fff; font-weight: 800; font-size: 15px; letter-spacing: .5px; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .15); vertical-align: middle; }
+.lang-badge.big { font-size: 20px; height: 32px; min-width: 44px; }
+.action.other-lang { background: linear-gradient(#ffffff, #f1f4ff); color: var(--ink); }
+.big-btn.english-btn { background: linear-gradient(#ff9aa6, #ef5466); color: #fff; }
+.home-menu .game, .home-menu .english-btn { flex: 1 1 140px; font-size: clamp(20px, 4.6vmin, 32px); }
+.listen-btn.words { background: linear-gradient(#ff9aa6, #ef5466); }
+.listen-btn .lang-badge { position: absolute; bottom: -6px; right: -6px; }

@@ -14,14 +14,16 @@ export function gamePicker(root: HTMLElement) {
       <header class="topbar">${backBtn('/')}<h2><span class="title-emoji">👂</span>${t('game')}</h2><span class="spacer"></span></header>
       <p class="subtitle">${t('chooseRegion')}</p>
       <div class="grid picker">
+        <button class="card" data-go="/ingles" style="--i:0"><span class="card-emoji">🗣️</span><span class="card-name"><span class="lang-badge">${L === 'es' ? 'EN' : 'ES'}</span> ${t('english')}</span></button>
         <button class="card" data-go="/juego/todo" style="--i:0"><span class="card-emoji">🌍</span><span class="card-name">${t('allRegions')}</span></button>
         ${REGIONS.map((r, i) => `<button class="card" data-go="/juego/${r.id}" style="--i:${i + 1}"><span class="card-emoji">${r.emoji}</span><span class="card-name">${esc(r.name[L])}</span>${store.stars[r.id] ? `<span class="stars-badge">★ ${store.stars[r.id]}</span>` : ''}</button>`).join('')}
       </div>
     </section>`;
 }
 
-export function game(root: HTMLElement, where: RegionId | 'todo') {
+export function game(root: HTMLElement, where: RegionId | 'todo', words = false) {
   const L = store.lang;
+  const O = L === 'es' ? 'en' : 'es';
   const free = ANIMALS.filter((a) => !isLocked(a));
   let pool = where === 'todo' ? free : free.filter((a) => a.region === where);
   // Si una región tiene pocos animales gratis, se completa con otros para tener opciones.
@@ -33,16 +35,16 @@ export function game(root: HTMLElement, where: RegionId | 'todo') {
   preload(pool);
   root.innerHTML = `
     <section class="screen game" style="--accent:#7b5cff">
-      <header class="topbar">${backBtn('/juego')}<h2>${t('game')}</h2><div class="star-count">${icon.star}<b class="sc">${store.stars[where] || 0}</b></div></header>
+      <header class="topbar">${backBtn(words ? '/' : '/juego')}<h2>${words ? `<span class="lang-badge big">${O.toUpperCase()}</span> ${t('english')}` : t('game')}</h2><div class="star-count">${icon.star}<b class="sc">${store.stars[where] || 0}</b></div></header>
       <div class="question">
-        <button class="listen-btn" aria-label="${t('hearSound')}"><span class="ear">👂</span><span class="listen-wave"></span></button>
-        <p class="prompt">${t('listen')}</p>
+        <button class="listen-btn ${words ? 'words' : ''}" aria-label="${t('hearSound')}"><span class="ear">${words ? '🗣️' : '👂'}</span>${words ? `<span class="lang-badge">${O.toUpperCase()}</span>` : ''}<span class="listen-wave"></span></button>
+        <p class="prompt">${words ? t('listenOther') : t('listen')}</p>
       </div>
       <div class="choices"></div>
     </section>`;
   const choices = $('.choices', root), prompt = $('.prompt', root), listenBtn = $('.listen-btn', root);
 
-  const play = () => soundRings(listenBtn, playAnimal(target));
+  const play = () => { if (words) { sayName(target.name[O], O); soundRings(listenBtn, 1.2); } else soundRings(listenBtn, playAnimal(target)); };
   listenBtn.addEventListener('click', play);
 
   function next() {
@@ -52,9 +54,9 @@ export function game(root: HTMLElement, where: RegionId | 'todo') {
     target = cands[Math.floor(Math.random() * cands.length)] ?? pool[0];
     last = target.id;
     const others: Animal[] = [];
-    for (const a of shuffle(distractors)) if (others.length < n - 1 && a.emoji !== target.emoji && a.sound !== target.sound && !others.some((o) => o.emoji === a.emoji || o.sound === a.sound)) others.push(a);
+    for (const a of shuffle(distractors)) if (others.length < n - 1 && a.emoji !== target.emoji && (words || a.sound !== target.sound) && !others.some((o) => o.emoji === a.emoji || (!words && o.sound === a.sound))) others.push(a);
     const opts = shuffle([target, ...others]);
-    prompt.textContent = t('listen');
+    prompt.textContent = words ? t('listenOther') : t('listen');
     choices.className = `choices n${opts.length}`;
     choices.innerHTML = opts.map((a, i) => `<button class="choice" data-id="${a.id}" style="--i:${i}" aria-label="${esc(a.name[L])}"><span>${a.emoji}</span></button>`).join('');
     choices.querySelectorAll<HTMLElement>('.choice').forEach((b) => b.addEventListener('click', () => pick(b)));
@@ -67,9 +69,9 @@ export function game(root: HTMLElement, where: RegionId | 'todo') {
       busy = true;
       b.classList.add('right');
       choices.querySelectorAll('.choice:not(.right)').forEach((o) => o.classList.add('fade'));
-      prompt.innerHTML = `${t('great')} <b>${esc(target.name[L])}</b>`;
+      prompt.innerHTML = words ? `${t('great')} <b>${esc(target.name[O])}</b> = ${esc(target.name[L])}` : `${t('great')} <b>${esc(target.name[L])}</b>`;
       sfx('win'); confetti();
-      setTimeout(() => sayName(target.name[L]), 500);
+      setTimeout(() => (words ? sayName(target.name[O], O) : sayName(target.name[L])), 500);
       if (mistakes === 0) streak++;
       addStar(where); logAct('right', target.id); setTimeout(() => discover(target.id), 1200);
       store.rounds = (store.rounds || 0) + 1; save();

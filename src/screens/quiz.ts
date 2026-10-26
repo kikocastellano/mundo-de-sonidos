@@ -7,7 +7,7 @@ import { discover, isLocked, logAct, store } from '../store';
 import { $, backBtn, confetti, esc, icon } from '../ui';
 import { premiumWall } from './premium';
 
-interface Q { animal: Animal; text: string; options: { label: string; emoji: string }[]; answer: number }
+interface Q { animal: Animal; text: string; options: { label: string; emoji: string }[]; answer: number; say?: Lang }
 
 const CLASES: Record<Clase, { emoji: string; es: string; en: string }> = {
   mamifero: { emoji: '🐾', es: 'Mamífero', en: 'Mammal' },
@@ -43,8 +43,14 @@ function makeQuestion(pool: Animal[], L: Lang, last: string): Q | null {
   if (!a) return null;
   const info = INFO[a.id]; const x = info[L];
   const who = el(a, L);
-  const kinds = ['clase', 'dieta', 'region', 'comida', 'cria', 'casa'];
+  const kinds = ['clase', 'dieta', 'region', 'comida', 'cria', 'casa', 'idioma', 'idioma'];
   for (const k of shuffle(kinds)) {
+    if (k === 'idioma') {
+      const O: Lang = L === 'es' ? 'en' : 'es';
+      const others = shuffle(ANIMALS.filter((b) => b.id !== a.id && b.name[O] !== a.name[O] && b.emoji !== a.emoji)).slice(0, 2);
+      const o = shuffle([a, ...others]);
+      return { animal: a, text: L === 'es' ? `¿Cómo se dice ${a.name.es.toLowerCase()} en inglés?` : `How do you say ${a.name.en.toLowerCase()} in Spanish?`, options: o.map((b) => ({ label: b.name[O], emoji: O === 'en' ? '🇬🇧' : '🇪🇸' })), answer: o.indexOf(a), say: O } as Q;
+    }
     if (k === 'clase' && CLASE[a.id]) {
       const right = CLASE[a.id];
       const opts = [right, ...shuffle((Object.keys(CLASES) as Clase[]).filter((c) => c !== right)).slice(0, 2)];
@@ -121,7 +127,8 @@ export function quiz(root: HTMLElement, src: string | null) {
       $('.qs', root).textContent = String(score);
       opts.querySelectorAll('.q-opt:not(.right)').forEach((o) => o.classList.add('fade'));
       fb.textContent = L === 'es' ? '¡Correcto! 🎉' : 'Correct! 🎉';
-      sfx('win'); confetti(40); sayName(`${L === 'es' ? '¡Correcto!' : 'Correct!'} ${q.options[i].label}`);
+      sfx('win'); confetti(40);
+      if (q.say) sayName(q.options[i].label, q.say); else sayName(`${L === 'es' ? '¡Correcto!' : 'Correct!'} ${q.options[i].label}`);
       tm = window.setTimeout(next, 2600);
     } else {
       tries++; sfx('oops');
