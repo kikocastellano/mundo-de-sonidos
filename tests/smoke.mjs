@@ -38,7 +38,7 @@ for (const t of targets) {
 
   await page.goto(BASE); await shot('1-inicio'); await noHScroll('inicio');
   check(await page.isVisible('text=Explorar'), 'botón Explorar visible');
-  await tap('.big-btn.primary'); await shot('2-mapa'); await noHScroll('mapa');
+  await tap('.t-explore'); await shot('2-mapa'); await noHScroll('mapa');
   check((await page.locator('.zone').count()) === 8, '8 zonas en el mapa');
   await page.locator('.zone[data-go="/region/granja"]').click(); await shot('3-granja'); await noHScroll('región');
   check((await page.locator('.card').count()) >= 20, 'granja con todos sus animales');

@@ -12,7 +12,7 @@ import { favorites } from './screens/favorites';
 import { game, gamePicker } from './screens/game';
 import { home } from './screens/home';
 import { map } from './screens/map';
-import { parents } from './screens/parents';
+import { parents, premiumScreen } from './screens/parents';
 import { region } from './screens/region';
 import { initBilling } from './billing';
 import { store } from './store';
@@ -54,6 +54,7 @@ function route() {
       scene = regionById(src ?? '')?.id ?? 'europa'; break;
     }
     case 'creditos': credits(view); scene = 'polos'; break;
+    case 'premium': premiumScreen(view); scene = 'polos'; break;
     case 'padres': parents(view, params.get('next')); scene = 'polos'; break;
     default: home(view);
   }

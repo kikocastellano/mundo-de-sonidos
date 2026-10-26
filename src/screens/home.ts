@@ -1,3 +1,4 @@
+// Pantalla principal: todo a la vista sin bajar, en una cuadrícula de tarjetas que se adapta a la pantalla.
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
 import { isLocked, store } from '../store';
@@ -11,31 +12,37 @@ export function animalOfDay() {
 }
 
 export function home(root: HTMLElement) {
-  const parade = ['🐄', '🦁', '🐘', '🐧', '🐸', '🦒', '🦉', '🐬'];
+  const es = store.lang === 'es';
   const total = Object.values(store.stars).reduce((a, b) => a + b, 0);
   const day = animalOfDay();
+  const got = Object.keys(store.seen).length;
+  const lockIcon = store.premium ? '' : `<span class="tile-lock">${icon.lock}</span>`;
+  const tile = (cls: string, go: string, emoji: string, label: string, sub = '', extra = '') =>
+    `<button class="tile-h ${cls}" data-go="${go}"><span class="th-emoji">${emoji}</span><span class="th-text"><b>${label}</b>${sub ? `<small>${sub}</small>` : ''}</span>${extra}</button>`;
   root.innerHTML = `
-    <section class="screen home">
-      <header class="topbar">
+    <section class="screen home2">
+      <header class="home-top">
         <button class="btn-round ghost" data-go="/padres" aria-label="${t('parents')}">${icon.gear}</button>
-        <div class="star-count" aria-label="${total} ${t('stars')}">${icon.star}<b>${total}</b></div>
+        <h1 class="home-logo"><span>${es ? 'Mundo de' : 'World of'}</span>${es ? 'Sonidos' : 'Sounds'}</h1>
+        <div class="home-right">
+          <div class="star-count" aria-label="${total} ${t('stars')}">${icon.star}<b>${total}</b></div>
+          ${store.premium ? '' : `<button class="premium-pill" data-go="/premium">⭐ Premium</button>`}
+        </div>
       </header>
-      <div class="logo">
-        <h1><span>${store.lang === 'es' ? 'Mundo de' : 'World of'}</span>${store.lang === 'es' ? 'Sonidos' : 'Sounds'}</h1>
-        <div class="parade">${parade.map((e, i) => `<span style="--i:${i}">${e}</span>`).join('')}</div>
+      <div class="home-grid">
+        <button class="tile-h aotd2" data-go="/animal/${day.id}">
+          <span class="th-emoji">${day.emoji}</span>
+          <span class="th-text"><small>🌟 ${t('today')}</small><b>${esc(day.name[store.lang])}</b></span>
+          <span class="aotd-play">${icon.play}</span>
+        </button>
+        ${tile('t-explore', '/mundo', '🌍', t('play'), es ? `${ANIMALS.length} animales` : `${ANIMALS.length} animals`)}
+        ${tile('t-game', '/juego', '👂', t('game'))}
+        ${tile('t-english', '/ingles', '🗣️', t('english'), '', `<span class="lang-badge">${es ? 'EN' : 'ES'}</span>`)}
+        ${tile('t-album', '/album', '📒', t('album'), `${got}/${ANIMALS.length}`)}
+        ${tile('t-fav', '/favoritos', '💖', t('favorites'))}
+        ${tile('t-calm', '/calma', '🌙', t('calm'), '', lockIcon)}
+        ${tile('t-teach', '/profe', '🧑‍🏫', es ? 'Modo profe' : 'Teacher mode', '', lockIcon)}
       </div>
-      <button class="aotd" data-go="/animal/${day.id}"><span class="aotd-emoji">${day.emoji}</span><span><small>🌟 ${t('today')}</small><b>${esc(day.name[store.lang])}</b></span><span class="aotd-play">${icon.play}</span></button>
-      <nav class="home-menu">
-        <button class="big-btn primary" data-go="/mundo"><span class="big-emoji">🌍</span><span>${t('play')}</span></button>
-        <button class="big-btn game" data-go="/juego"><span class="big-emoji">👂</span><span>${t('game')}</span></button>
-        <button class="big-btn english-btn" data-go="/ingles"><span class="big-emoji">🗣️</span><span><span class="lang-badge">${store.lang === 'es' ? 'EN' : 'ES'}</span> ${t('english')}</span></button>
-        <button class="big-btn album-btn" data-go="/album"><span class="big-emoji">📒</span><span>${t('album')} <small class="hb-count">${Object.keys(store.seen).length}/${ANIMALS.length}</small></span></button>
-        <button class="big-btn fav" data-go="/favoritos"><span class="big-emoji">💖</span><span>${t('favorites')}</span></button>
-      </nav>
-      <nav class="home-menu extra">
-        <button class="big-btn calm-btn" data-go="/calma"><span class="big-emoji">🌙</span><span>${t('calm')}</span></button>
-        <button class="big-btn teach-btn" data-go="/profe"><span class="big-emoji">🧑‍🏫</span><span>${store.lang === 'es' ? 'Modo profe' : 'Teacher mode'}</span></button>
-      </nav>
-      <p class="tagline">${ANIMALS.length} ${store.lang === 'es' ? 'animales' : 'animals'} · ${t('privacy')}</p>
+      <p class="tagline">${t('privacy')}</p>
     </section>`;
 }

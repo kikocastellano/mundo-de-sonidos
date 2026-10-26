@@ -93,14 +93,14 @@ export function lockedModal(emoji = '🔒') {
   m.innerHTML = `<div class="sheet locked-modal" role="dialog" aria-modal="true">
     <div class="lm-emoji">${emoji}<span class="lm-lock">${icon.lock}</span></div>
     <h3>${t('lockedTitle')}</h3><p>${t('lockedBody')}</p>
-    <button class="buy-btn" data-act="adult">👨‍👩‍👧 ${t('askAdult')}</button>
+    <button class="buy-btn" data-act="adult">⭐ ${t('unlockAll')}</button>
     <button class="link-btn" data-act="close">${t('later')}</button></div>`;
   document.body.appendChild(m);
   const close = () => { m.classList.add('out'); setTimeout(() => m.remove(), 250); };
   m.addEventListener('click', (e) => {
     const act = (e.target as HTMLElement).closest<HTMLElement>('[data-act]')?.dataset.act;
     if (e.target === m || act === 'close') close();
-    if (act === 'adult') { close(); go('/padres?next=premium'); }
+    if (act === 'adult') { close(); go('/premium'); }
   });
 }
 

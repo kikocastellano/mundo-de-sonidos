@@ -96,7 +96,7 @@ function upsell(root: HTMLElement) {
   const n = ANIMALS.filter((a) => isLocked(a)).length;
   const el = document.createElement('div');
   el.className = 'upsell';
-  el.innerHTML = `<span>🦁🐼🦒</span><p><b>+${n}</b> ${t('moreWaiting')}</p><button class="pill" data-go="/padres?next=premium">${t('askAdult')}</button><button class="up-x" aria-label="${t('close')}">✕</button>`;
+  el.innerHTML = `<span>🦁🐼🦒</span><p><b>+${n}</b> ${t('moreWaiting')}</p><button class="pill" data-go="/premium">⭐ ${t('unlockAll')}</button><button class="up-x" aria-label="${t('close')}">✕</button>`;
   root.querySelector('.screen')?.appendChild(el);
   el.querySelector('.up-x')!.addEventListener('click', () => el.remove());
   setTimeout(() => el.remove(), 9000);

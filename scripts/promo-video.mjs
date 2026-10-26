@@ -17,7 +17,7 @@ const p = await ctx.newPage();
 const w = (ms) => p.waitForTimeout(ms);
 const mark = (text) => marks.push([(Date.now() - t0) / 1000, text]);
 await p.goto(B); await w(600); mark('134 animales con sonido real'); await w(2200);
-mark('Viaja por todo el mundo'); await p.tap('.big-btn.primary'); await w(2200);
+mark('Viaja por todo el mundo'); await p.tap('.t-explore'); await w(2200);
 await p.locator('.zone[data-go="/region/africa"]').click({ force: true }); await w(1800);
 mark('Toca y escucha'); await p.tap('.card[data-animal="leon"]'); await w(2500);
 await p.tap('.nav-arrow.right'); await w(2200);

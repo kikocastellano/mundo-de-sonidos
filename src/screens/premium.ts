@@ -9,7 +9,7 @@ export function premiumWall(root: HTMLElement, title: string, back = '/') {
     <section class="screen">
       <header class="topbar">${backBtn(back)}<h2>${title}</h2><span class="spacer"></span></header>
       <div class="panel premium-lock"><div class="gate-lock">${icon.lock}</div><h3>${t('locked')}</h3>
-        <p>${t('premiumBody')}</p><button class="pill" data-go="/padres?next=premium">${t('parents')}</button></div>
+        <p>${t('premiumBody')}</p><button class="pill" data-go="/premium">${t('parents')}</button></div>
     </section>`;
   return true;
 }

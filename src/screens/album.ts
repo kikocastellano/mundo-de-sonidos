@@ -16,7 +16,7 @@ export function album(root: HTMLElement) {
         <div class="ap-bar"><i style="width:${(got / ANIMALS.length) * 100}%"></i></div>
         <b>${got} / ${ANIMALS.length}</b> ${t('stickers')}
       </div>
-      ${locked ? `<button class="album-unlock" data-go="/padres?next=premium">🔒 <b>+${locked}</b> ${t('moreWaiting')} <span>›</span></button>` : ''}
+      ${locked ? `<button class="album-unlock" data-go="/premium">🔒 <b>+${locked}</b> ${t('moreWaiting')} <span>›</span></button>` : ''}
       ${REGIONS.map((r) => {
         const list = animalsIn(r.id);
         const n = list.filter((a) => store.seen[a.id]).length;
