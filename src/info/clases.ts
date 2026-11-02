@@ -10,5 +10,5 @@ const G: Record<Clase, string> = {
 };
 
 export const CLASE: Record<string, Clase> = Object.fromEntries(
- (Object.entries(G) as [Clase, string][]).flatMap(([c, ids]) => ids.split('').map((id) => [id, c])),
+  (Object.entries(G) as [Clase, string][]).flatMap(([c, ids]) => ids.split(/\s+/).filter(Boolean).map((id) => [id, c])),
 );

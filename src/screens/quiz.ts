@@ -71,6 +71,7 @@ function makeQuestion(pool: Animal[], L: Lang, last: string): Q | null {
       const others = shuffle(ANIMALS.filter((b) => INFO[b.id] && CLASE[b.id] !== CLASE[a.id] && !/^cr[ií]a|^es la cr/i.test(INFO[b.id].es.baby) && !overlaps(INFO[b.id][L].baby, x.baby)));
       const seen = new Set([x.baby.toLowerCase()]); const d: string[] = [];
       for (const b of others) { const v = INFO[b.id][L].baby; if (!seen.has(v.toLowerCase()) && d.length < 2) { seen.add(v.toLowerCase()); d.push(v); } }
+      if (d.length < 2) continue; // nunca una pregunta con menos de 3 respuestas
       const o = shuffle([x.baby, ...d]);
       return { animal: a, text: L === 'es' ? `¿Cómo se llama la cría ${de(who)}?` : `What is ${who}’s baby called?`, options: o.map((v) => ({ label: v, emoji: '👶' })), answer: o.indexOf(x.baby) };
     }
