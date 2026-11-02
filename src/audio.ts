@@ -191,9 +191,9 @@ export function playAnimal(a: Animal): number {
 }
 
 // ---------- Voz ----------
-// Se usa la voz del sistema más natural disponible, de mujer si existe. Los padres pueden cambiarla.
+// Se usa la voz del sistema más natural disponible, de chico si existe. Los padres pueden cambiarla.
 const FEMALE = /(female|mujer|woman|m[oó]nica|paulina|helena|elvira|laura|lucia|luc[ií]a|elena|marisol|sabina|dalia|paloma|ximena|camila|ines|in[eé]s|isabela|salome|google espa|samantha|serena|karen|moira|tessa|fiona|victoria|susan|hazel|zira|aria|jenny|libby|sonia|emma|ava|allison|martha|kate)/i;
-const MALE = /(male|hombre|jorge|diego|juan|pablo|carlos|enrique|alvaro|raul|daniel|alex|fred|tom|david|mark|george|james|guy|ryan|thomas|oliver|arthur|rishi)/i;
+const MALE = /(\bmale|hombre|jorge|diego|juan|pablo|[aá]lvaro|carlos|enrique|raul|ra[uú]l|dario|dar[ií]o|daniel|alex|fred|tom|david|mark|george|james|guy|ryan|thomas|oliver|arthur|rishi)/i;
 
 // Voces de Google TTS en Android: el nombre no dice si es de mujer, pero estos códigos lo son
 const GOOGLE_FEMALE = /-x-(eea|eec|esc|gba|gbc|gbg|sfg|tpc|iob|tpf)-/i;
@@ -220,9 +220,9 @@ function langVoices(lang: Lang): Voice[] {
 function voiceScore(v: Voice, lang: Lang) {
   let s = 0;
   if (/natural|neural|online|enhanced|premium|siri/i.test(v.name)) s += 40;
-  if (FEMALE.test(v.name) && !/\bmale\b/i.test(v.name.replace(/female/i, ''))) s += 30;
-  if (GOOGLE_FEMALE.test(v.name)) s += 30;
-  if (MALE.test(v.name.replace(/female/i, '')) || GOOGLE_MALE.test(v.name)) s -= 30;
+  // Voz de chico en todos los dispositivos (como la de Microsoft «Pablo» del PC)
+  if (MALE.test(v.name.replace(/female/i, '')) || GOOGLE_MALE.test(v.name)) s += 30;
+  if (FEMALE.test(v.name) || GOOGLE_FEMALE.test(v.name)) s -= 30;
   if (/google/i.test(v.name)) s += 10;
   if (/-local$/i.test(v.name)) s += 6; // funciona sin internet
   const tag = v.lang.toLowerCase().replace('_', '-');
