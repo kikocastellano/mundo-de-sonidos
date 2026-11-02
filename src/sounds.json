@@ -23,23 +23,11 @@
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/228107348"
   },
-  "ardilla": {
-    "file": "ardilla.mp3",
-    "author": "Slaven Kljucanin",
-    "license": "CC BY",
-    "source": "https://www.inaturalist.org/observations/334825241"
-  },
   "ardilla-gigante": {
     "file": "ardilla-gigante.mp3",
     "author": "Seema Merchant",
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/134283371"
-  },
-  "ardilla-gris": {
-    "file": "ardilla-gris.mp3",
-    "author": "iNaturalist",
-    "license": "CC0",
-    "source": "https://www.inaturalist.org/observations/172949895"
   },
   "arrendajo-azul": {
     "file": "arrendajo-azul.mp3",
@@ -94,12 +82,6 @@
     "author": "Josey Tummer",
     "license": "CC BY-SA",
     "source": "https://www.inaturalist.org/observations/3018846"
-  },
-  "buho-cornudo": {
-    "file": "buho-cornudo.mp3",
-    "author": "Michael Warner",
-    "license": "CC BY",
-    "source": "https://www.inaturalist.org/observations/143775944"
   },
   "buho-nival": {
     "file": "buho-nival.mp3",
@@ -160,12 +142,6 @@
     "author": "iNaturalist",
     "license": "CC0",
     "source": "https://www.inaturalist.org/observations/144102737"
-  },
-  "carbonero": {
-    "file": "carbonero.mp3",
-    "author": "Richard Littauer",
-    "license": "CC BY",
-    "source": "https://www.inaturalist.org/observations/396022292"
   },
   "cardenal": {
     "file": "cardenal.mp3",
@@ -395,12 +371,6 @@
     "license": "CC BY",
     "source": "https://freesound.org/people/InspectorJ/sounds/439472/"
   },
-  "gallo-praderas": {
-    "file": "gallo-praderas.mp3",
-    "author": "Liren Varghese",
-    "license": "CC BY",
-    "source": "https://www.inaturalist.org/observations/33099358"
-  },
   "ganso": {
     "file": "ganso.mp3",
     "author": "Susan Marley",
@@ -473,12 +443,6 @@
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/338709062"
   },
-  "havelda": {
-    "file": "havelda.mp3",
-    "author": "Donald Hampton",
-    "license": "CC BY-SA",
-    "source": "https://www.inaturalist.org/observations/170385156"
-  },
   "hipopotamo": {
     "file": "hipopotamo.mp3",
     "author": "toadie",
@@ -497,12 +461,6 @@
     "license": "CC BY",
     "source": "https://freesound.org/people/TheVeoMammoth11/sounds/492654/"
   },
-  "jilguero": {
-    "file": "jilguero.mp3",
-    "author": "Fionn",
-    "license": "CC BY",
-    "source": "https://www.inaturalist.org/observations/387273198"
-  },
   "jirafa": {
     "file": "jirafa.mp3",
     "author": "thecityrings",
@@ -520,12 +478,6 @@
     "author": "Tony Wills",
     "license": "CC BY-SA",
     "source": "https://www.inaturalist.org/observations/560897"
-  },
-  "koala": {
-    "file": "koala.mp3",
-    "author": "Ben Fisher",
-    "license": "CC BY",
-    "source": "https://www.inaturalist.org/observations/254893210"
   },
   "koel": {
     "file": "koel.mp3",
@@ -610,12 +562,6 @@
     "author": "Guy Babineau",
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/157856006"
-  },
-  "mina": {
-    "file": "mina.mp3",
-    "author": "iNaturalist",
-    "license": "CC0",
-    "source": "https://www.inaturalist.org/observations/320985404"
   },
   "mirlo": {
     "file": "mirlo.mp3",
@@ -785,12 +731,6 @@
     "license": "CC0",
     "source": "https://www.inaturalist.org/observations/54316151"
   },
-  "rana-leopardo": {
-    "file": "rana-leopardo.mp3",
-    "author": "iNaturalist",
-    "license": "CC0",
-    "source": "https://www.inaturalist.org/observations/83166479"
-  },
   "rana-toro": {
     "file": "rana-toro.mp3",
     "author": "familiarjumpingspider",
@@ -875,12 +815,6 @@
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/270977496"
   },
-  "tejedor": {
-    "file": "tejedor.mp3",
-    "author": "Wilhelm van Zyl",
-    "license": "CC BY-SA",
-    "source": "https://www.inaturalist.org/observations/275936739"
-  },
   "tigre": {
     "file": "tigre.mp3",
     "author": "videog",
@@ -946,12 +880,6 @@
     "author": "felix.blume",
     "license": "CC0",
     "source": "https://freesound.org/people/felix.blume/sounds/163727/"
-  },
-  "verdugo": {
-    "file": "verdugo.mp3",
-    "author": "iNaturalist",
-    "license": "CC0",
-    "source": "https://www.inaturalist.org/observations/272869281"
   },
   "yak": {
     "file": "yak.mp3",
