@@ -9,11 +9,11 @@ export function teacher(root: HTMLElement, src: string | null) {
   const title = store.lang === 'es' ? 'Modo profe' : 'Teacher mode';
   if (premiumWall(root, title)) return;
   const favs = store.favs.map(animalById).filter((a): a is Animal => !!a);
-  const list = (src && regionById(src) ? animalsIn(src as RegionId) : favs.length ? favs : ANIMALS).filter((a) => !isLocked(a));
+  const list = (src && regionById(src) ? animalsIn(src as RegionId) : src === 'fav' && favs.length ? favs : ANIMALS).filter((a) => !isLocked(a));
   let i = 0, paused = false, tm = 0;
   root.innerHTML = `
     <section class="screen teacher">
-      <header class="topbar">${backBtn(src && regionById(src) ? `/profe?src=${src}` : '/profe')}<span class="spacer" style="flex:1"></span>
+      <header class="topbar">${backBtn(src === 'fav' ? '/favoritos' : src ? `/profe?src=${src}` : '/profe')}<span class="spacer" style="flex:1"></span>
         <button class="btn-round fs" aria-label="fullscreen"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></header>
       <button class="portrait"><span class="halo"></span><span class="portrait-emoji"></span></button>
       <h1 class="teacher-name"></h1>

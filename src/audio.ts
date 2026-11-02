@@ -267,6 +267,30 @@ export function sayName(text: string, lang: Lang = store.lang) {
   speechSynthesis.speak(u);
 }
 
+/** Lee varias frases seguidas, cada una en su idioma (para la pregunta y sus respuestas). */
+export function sayAll(parts: { text: string; lang?: Lang }[]) {
+  if (store.muted || !parts.length) return;
+  if (native) {
+    void TextToSpeech.stop().catch(() => {}).finally(async () => {
+      for (const p of parts) {
+        const lang = p.lang ?? store.lang; const v = pickVoice(lang);
+        try { await TextToSpeech.speak({ text: p.text, lang: v?.lang ?? (lang === 'es' ? 'es-ES' : 'en-GB'), rate: 0.92, voice: v?.index, category: 'playback' }); }
+        catch { return; } // si se interrumpe (otra lectura o cambio de pantalla), se para
+      }
+    });
+    return;
+  }
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  for (const p of parts) {
+    const lang = p.lang ?? store.lang; const v = pickVoice(lang);
+    const u = new SpeechSynthesisUtterance(p.text);
+    u.lang = v?.lang ?? (lang === 'es' ? 'es-ES' : 'en-GB');
+    const sv = v ? speechSynthesis.getVoices()[v.index] : undefined; if (sv) u.voice = sv;
+    u.rate = 0.92; speechSynthesis.speak(u);
+  }
+}
+
 /** Efectos de interfaz: toque suave, acierto y fallo amable. */
 export function sfx(kind: 'tap' | 'win' | 'oops' | 'star') {
   unlockAudio();

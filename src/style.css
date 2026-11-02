@@ -500,3 +500,35 @@ svg { display: block; }
 .tile-h:has(.tile-lock) .th-text { padding-right: 26px; } .tile-h .th-text b { overflow-wrap: anywhere; }
 .billing-status { font-size: 12px; color: var(--ink-soft); margin-top: 8px; opacity: .8; }
 .code-row { display: flex; gap: 6px; max-width: 60%; } .code-input { width: 140px; min-height: 44px; border-radius: 14px; border: 2px solid #dfe7f5; background: #eef3ff; font: inherit; font-weight: 700; padding: 0 10px; text-transform: uppercase; }
+
+/* ---------- Preguntas: respuestas numeradas que se pueden escuchar ---------- */
+.q-row { display: flex; gap: 8px; align-items: stretch; animation: popIn .4s backwards cubic-bezier(.2, 1.5, .4, 1); animation-delay: calc(var(--i) * 80ms); }
+.q-row .q-opt { flex: 1; animation: none; }
+.q-num { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; font-size: 20px; }
+.q-hear { flex: none; width: 60px; border-radius: 20px; background: #fff; font-family: var(--emoji); font-size: 26px; box-shadow: var(--shadow); }
+.q-hear:active { transform: scale(.9); }
+.teach-chips { display: flex !important; margin-top: 4px; }
+.chip.on { outline: 3px solid var(--c); background: #fffdf4; }
+
+/* ---------- Letras más grandes para que los peques lean mejor ---------- */
+.card-name { font-size: clamp(18px, 4.6vmin, 28px); }
+.topbar h2 { font-size: clamp(27px, 7vmin, 44px); }
+.fact p { font-size: clamp(19px, 4.2vmin, 24px); }
+.th-text b { font-size: clamp(19px, min(5.2vw, 3.6vh), 34px); }
+.th-text small { font-size: clamp(14px, 2vh, 18px); }
+.tile b { font-size: 19px; } .tile small { font-size: 13px; }
+.fact-card { font-size: 19px; }
+.q-text { font-size: clamp(25px, 5.8vmin, 44px); }
+.q-opt { font-size: clamp(20px, 4.8vmin, 30px); }
+.prompt { font-size: clamp(25px, 5.6vmin, 36px); }
+.chip { font-size: 19px; }
+.sticker small { font-size: 13px; }
+.action { font-size: clamp(24px, 5.4vmin, 32px); }
+.panel { font-size: 19px; } .muted { font-size: 17px; }
+.calm-opt { font-size: 22px; }
+.teacher-name { font-size: clamp(46px, 11vmin, 104px); }
+.perks li p { font-size: 17px; }
+.zone-label { font-size: 28px; }
+.tile-h .th-text b { overflow-wrap: normal; word-break: keep-all; hyphens: none; }
+@media (max-aspect-ratio: 1/1) { .th-text b { font-size: clamp(16px, min(4.5vw, 3.4vh), 34px); } .home-grid .th-emoji { font-size: clamp(28px, min(8.5vw, 6vh), 64px); } }
+.q-options, .q-options { grid-template-columns: 1fr !important; max-width: 760px; }

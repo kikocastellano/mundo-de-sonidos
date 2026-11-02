@@ -1,5 +1,5 @@
 // Modo profe · Preguntas: preguntas de opción múltiple sobre las fichas de los animales, para jugar en clase.
-import { sayName, sfx } from '../audio';
+import { sayAll, sayName, sfx } from '../audio';
 import { ANIMALS, REGIONS, animalsIn, regionById, type Animal, type Lang, type RegionId } from '../data';
 import { INFO } from '../info';
 import { CLASE, type Clase } from '../info/clases';
@@ -90,7 +90,8 @@ function makeQuestion(pool: Animal[], L: Lang, last: string): Q | null {
 export function quiz(root: HTMLElement, src: string | null) {
   const L = store.lang;
   if (premiumWall(root, L === 'es' ? 'Preguntas' : 'Quiz', '/profe')) return;
-  const pool = (src && regionById(src) ? animalsIn(src as RegionId) : ANIMALS).filter((a) => !isLocked(a));
+  const favs = store.favs.map((id) => ANIMALS.find((a) => a.id === id)).filter((a): a is Animal => !!a);
+  const pool = (src && regionById(src) ? animalsIn(src as RegionId) : src === 'fav' && favs.length ? favs : ANIMALS).filter((a) => !isLocked(a));
   let score = 0, total = 0, last = '', q: Q | null = null, tries = 0, tm = 0;
   root.innerHTML = `
     <section class="screen quiz" style="--accent:#ff7d4a">
@@ -103,7 +104,9 @@ export function quiz(root: HTMLElement, src: string | null) {
       <p class="q-feedback"></p>
     </section>`;
   const qEmoji = $('.q-emoji', root), qText = $('.q-text', root), opts = $('.q-options', root), fb = $('.q-feedback', root);
-  const read = () => q && sayName(q.text);
+  const NUM = { es: ['Uno', 'Dos', 'Tres', 'Cuatro'], en: ['One', 'Two', 'Three', 'Four'] };
+  /** Lee la pregunta y después cada respuesta con su número, para niños que aún no leen. */
+  const read = () => q && sayAll([{ text: q.text }, ...q.options.flatMap((o, i) => [{ text: `${NUM[L][i]}:` }, { text: o.label, lang: q!.say ?? L }])]);
   qText.addEventListener('click', read);
 
   function next() {
@@ -114,9 +117,11 @@ export function quiz(root: HTMLElement, src: string | null) {
     root.style.setProperty('--accent', regionById(q.animal.region)!.accent);
     qEmoji.textContent = q.animal.emoji; qEmoji.classList.remove('pop'); void qEmoji.offsetWidth; qEmoji.classList.add('pop');
     qText.innerHTML = `${esc(q.text)} <span class="q-speak">🔊</span>`;
-    opts.innerHTML = q.options.map((o, i) => `<button class="q-opt" data-i="${i}" style="--i:${i}"><span>${o.emoji}</span>${esc(o.label)}</button>`).join('');
+    opts.innerHTML = q.options.map((o, i) => `<div class="q-row" style="--i:${i}"><button class="q-opt" data-i="${i}"><b class="q-num">${i + 1}</b><span>${o.emoji}</span>${esc(o.label)}</button><button class="q-hear" data-i="${i}" aria-label="🔊">🔊</button></div>`).join('');
     opts.querySelectorAll<HTMLElement>('.q-opt').forEach((b) => b.addEventListener('click', () => answer(b)));
-    setTimeout(read, 350);
+    // El altavoz de cada respuesta solo la lee en voz alta (no responde)
+    opts.querySelectorAll<HTMLElement>('.q-hear').forEach((b) => b.addEventListener('click', () => { const o = q!.options[Number(b.dataset.i)]; sayName(o.label, q!.say ?? L); }));
+    setTimeout(read, 450);
   }
 
   function answer(b: HTMLElement) {
@@ -152,6 +157,12 @@ export function teacherMenu(root: HTMLElement, src: string | null) {
         <button class="big-btn teach-btn" data-go="/profe/ver${q}"><span class="big-emoji">▶️</span><span>${L === 'es' ? 'Presentar animales' : 'Show animals'}</span></button>
         <button class="big-btn game" data-go="/profe/preguntas${q}"><span class="big-emoji">❓</span><span>${L === 'es' ? 'Preguntas' : 'Quiz'}</span></button>
       </nav>
+      <p class="subtitle">${L === 'es' ? '¿Qué animales?' : 'Which animals?'}</p>
+      <div class="region-chips teach-chips">
+        <button class="chip ${!src ? 'on' : ''}" data-go="/profe" style="--c:#ff7d4a"><span>🌍</span>${L === 'es' ? 'Todos' : 'All'}<small>${ANIMALS.length}</small></button>
+        ${REGIONS.map((r) => `<button class="chip ${src === r.id ? 'on' : ''}" data-go="/profe?src=${r.id}" style="--c:${r.accent}"><span>${r.emoji}</span>${esc(r.name[L])}<small>${animalsIn(r.id).length}</small></button>`).join('')}
+        ${store.favs.length ? `<button class="chip ${src === 'fav' ? 'on' : ''}" data-go="/profe?src=fav" style="--c:#e2457a"><span>💖</span>${L === 'es' ? 'Favoritos' : 'Favourites'}<small>${store.favs.length}</small></button>` : ''}
+      </div>
       <p class="tagline">${L === 'es' ? 'Ideal para proyectar en clase' : 'Great for the classroom projector'}</p>
     </section>`;
 }
