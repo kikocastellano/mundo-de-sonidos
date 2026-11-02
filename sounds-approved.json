@@ -28,8 +28,8 @@
   "duration": 4
  },
  "ballena": {
-  "file": "05-freesound.mp3",
-  "duration": 5
+  "file": "01-inat.m4a",
+  "clean": true
  },
  "delfin": {
   "file": "01-freesound.mp3",
@@ -88,8 +88,8 @@
   "duration": 4
  },
  "koala": {
-  "file": "01-freesound.mp3",
-  "duration": 4
+  "file": "04-inat.mp3",
+  "clean": true
  },
  "kookaburra": {
   "file": "01-freesound.mp3",
@@ -124,8 +124,8 @@
   "duration": 4
  },
  "ganso": {
-  "file": "03-freesound.mp3",
-  "duration": 4
+  "file": "03-inat.wav",
+  "clean": true
  },
  "conejo": {
   "file": "01-freesound.mp3",
@@ -184,8 +184,8 @@
   "duration": 4
  },
  "ardilla": {
-  "file": "02-freesound.mp3",
-  "duration": 4
+  "file": "04-inat.m4a",
+  "clean": true
  },
  "abeja": {
   "file": "01-freesound.mp3",
@@ -472,7 +472,7 @@
   "clean": true
  },
  "golondrina": {
-  "file": "02-inat.m4a",
+  "file": "04-inat.m4a",
   "clean": true
  },
  "mochuelo": {
@@ -533,6 +533,126 @@
  },
  "barnacla": {
   "file": "01-inat.wav",
+  "clean": true
+ },
+ "ardilla-gigante": {
+  "file": "04-inat.m4a",
+  "clean": true
+ },
+ "ardilla-gris": {
+  "file": "05-inat.mp3",
+  "clean": true
+ },
+ "buho-cornudo": {
+  "file": "06-inat.m4a",
+  "clean": true
+ },
+ "bulbul": {
+  "file": "03-inat.wav",
+  "clean": true
+ },
+ "carbonero": {
+  "file": "05-inat.mp3",
+  "clean": true
+ },
+ "chochin": {
+  "file": "05-inat.m4a",
+  "clean": true
+ },
+ "chotacabras": {
+  "file": "01-inat.wav",
+  "clean": true
+ },
+ "ciervo-cola-blanca": {
+  "file": "03-inat.wav",
+  "clean": true
+ },
+ "daman": {
+  "file": "03-inat.wav",
+  "clean": true
+ },
+ "escribano-nival": {
+  "file": "06-inat.mp3",
+  "clean": true
+ },
+ "francolin": {
+  "file": "06-inat.wav",
+  "clean": true
+ },
+ "galah": {
+  "file": "01-inat.m4a",
+  "clean": true
+ },
+ "gallo-praderas": {
+  "file": "06-inat.mp3",
+  "clean": true
+ },
+ "havelda": {
+  "file": "01-inat.mp3",
+  "clean": true
+ },
+ "jilguero": {
+  "file": "05-inat.m4a",
+  "clean": true
+ },
+ "koel": {
+  "file": "01-inat.wav",
+  "clean": true
+ },
+ "lobo-marino": {
+  "file": "01-inat.mp3",
+  "clean": true
+ },
+ "lori-arcoiris": {
+  "file": "02-inat.wav",
+  "clean": true
+ },
+ "mina": {
+  "file": "04-inat.mp3",
+  "clean": true
+ },
+ "mono-arana": {
+  "file": "01-inat.mp3",
+  "clean": true
+ },
+ "muntiaco": {
+  "file": "01-inat.wav",
+  "clean": true
+ },
+ "oropendola": {
+  "file": "04-inat.wav",
+  "clean": true
+ },
+ "rana-leopardo": {
+  "file": "01-inat.m4a",
+  "clean": true
+ },
+ "rana-verde-australiana": {
+  "file": "04-inat.m4a",
+  "clean": true
+ },
+ "ranita-san-antonio": {
+  "file": "01-inat.mp3",
+  "clean": true
+ },
+ "sapo-partero": {
+  "file": "04-inat.m4a",
+  "clean": false
+ },
+ "tejedor": {
+  "file": "03-inat.m4a",
+  "clean": true
+ },
+ "titi": {
+  "file": "05-inat.wav",
+  "clean": true
+ },
+ "verdugo": {
+  "file": "03-inat.m4a",
+  "clean": false
+ },
+ "zorro-gris": {
+  "file": "02-inat.m4a",
   "clean": true
  }
 }

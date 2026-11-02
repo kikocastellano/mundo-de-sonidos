@@ -25,9 +25,21 @@
   },
   "ardilla": {
     "file": "ardilla.mp3",
-    "author": "Mastersoundboy2005",
+    "author": "Slaven Kljucanin",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/334825241"
+  },
+  "ardilla-gigante": {
+    "file": "ardilla-gigante.mp3",
+    "author": "Seema Merchant",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/134283371"
+  },
+  "ardilla-gris": {
+    "file": "ardilla-gris.mp3",
+    "author": "iNaturalist",
     "license": "CC0",
-    "source": "https://freesound.org/people/Mastersoundboy2005/sounds/763377/"
+    "source": "https://www.inaturalist.org/observations/172949895"
   },
   "arrendajo-azul": {
     "file": "arrendajo-azul.mp3",
@@ -49,9 +61,9 @@
   },
   "ballena": {
     "file": "ballena.mp3",
-    "author": "be-steele",
+    "author": "Dan Schofield",
     "license": "CC BY",
-    "source": "https://freesound.org/people/be-steele/sounds/713099/"
+    "source": "https://www.inaturalist.org/observations/108757163"
   },
   "barnacla": {
     "file": "barnacla.mp3",
@@ -83,11 +95,23 @@
     "license": "CC BY-SA",
     "source": "https://www.inaturalist.org/observations/3018846"
   },
+  "buho-cornudo": {
+    "file": "buho-cornudo.mp3",
+    "author": "Michael Warner",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/143775944"
+  },
   "buho-nival": {
     "file": "buho-nival.mp3",
     "author": "Linzy L.",
     "license": "CC BY-SA",
     "source": "https://www.inaturalist.org/observations/64379739"
+  },
+  "bulbul": {
+    "file": "bulbul.mp3",
+    "author": "Sam Hambly",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/256479669"
   },
   "burro": {
     "file": "burro.mp3",
@@ -137,6 +161,12 @@
     "license": "CC0",
     "source": "https://www.inaturalist.org/observations/144102737"
   },
+  "carbonero": {
+    "file": "carbonero.mp3",
+    "author": "Richard Littauer",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/396022292"
+  },
   "cardenal": {
     "file": "cardenal.mp3",
     "author": "iNaturalist",
@@ -167,11 +197,29 @@
     "license": "CC0",
     "source": "https://www.inaturalist.org/observations/231149062"
   },
+  "chochin": {
+    "file": "chochin.mp3",
+    "author": "Carrie Seltzer",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/212207697"
+  },
+  "chotacabras": {
+    "file": "chotacabras.mp3",
+    "author": "Jake McCumber",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/382544291"
+  },
   "ciervo": {
     "file": "ciervo.mp3",
     "author": "jorickhoofd",
     "license": "CC BY",
     "source": "https://freesound.org/people/jorickhoofd/sounds/169540/"
+  },
+  "ciervo-cola-blanca": {
+    "file": "ciervo-cola-blanca.mp3",
+    "author": "Thomas Koffel",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/27847640"
   },
   "cigarra": {
     "file": "cigarra.mp3",
@@ -257,6 +305,12 @@
     "license": "CC0",
     "source": "https://freesound.org/people/nigelcoop/sounds/75162/"
   },
+  "daman": {
+    "file": "daman.mp3",
+    "author": "Jono",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/392835150"
+  },
   "delfin": {
     "file": "delfin.mp3",
     "author": "jfournier18",
@@ -280,6 +334,12 @@
     "author": "soundmary",
     "license": "CC BY",
     "source": "https://freesound.org/people/soundmary/sounds/194938/"
+  },
+  "escribano-nival": {
+    "file": "escribano-nival.mp3",
+    "author": "Tero Linjama",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/304671938"
   },
   "faisan": {
     "file": "faisan.mp3",
@@ -305,6 +365,18 @@
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/130967382"
   },
+  "francolin": {
+    "file": "francolin.mp3",
+    "author": "Ramnarayan K",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/112996789"
+  },
+  "galah": {
+    "file": "galah.mp3",
+    "author": "iNaturalist",
+    "license": "CC0",
+    "source": "https://www.inaturalist.org/observations/311556118"
+  },
   "gallina": {
     "file": "gallina.mp3",
     "author": "Rudmer_Rotteveel",
@@ -323,11 +395,17 @@
     "license": "CC BY",
     "source": "https://freesound.org/people/InspectorJ/sounds/439472/"
   },
+  "gallo-praderas": {
+    "file": "gallo-praderas.mp3",
+    "author": "Liren Varghese",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/33099358"
+  },
   "ganso": {
     "file": "ganso.mp3",
-    "author": "FiveBrosStopMosYT",
+    "author": "Susan Marley",
     "license": "CC BY",
-    "source": "https://freesound.org/people/FiveBrosStopMosYT/sounds/533356/"
+    "source": "https://www.inaturalist.org/observations/317099649"
   },
   "gatito": {
     "file": "gatito.mp3",
@@ -361,9 +439,9 @@
   },
   "golondrina": {
     "file": "golondrina.mp3",
-    "author": "Дмитрий",
-    "license": "CC BY",
-    "source": "https://www.inaturalist.org/observations/124883829"
+    "author": "iNaturalist",
+    "license": "CC0",
+    "source": "https://www.inaturalist.org/observations/161406508"
   },
   "gorila": {
     "file": "gorila.mp3",
@@ -395,6 +473,12 @@
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/338709062"
   },
+  "havelda": {
+    "file": "havelda.mp3",
+    "author": "Donald Hampton",
+    "license": "CC BY-SA",
+    "source": "https://www.inaturalist.org/observations/170385156"
+  },
   "hipopotamo": {
     "file": "hipopotamo.mp3",
     "author": "toadie",
@@ -412,6 +496,12 @@
     "author": "TheVeoMammoth11",
     "license": "CC BY",
     "source": "https://freesound.org/people/TheVeoMammoth11/sounds/492654/"
+  },
+  "jilguero": {
+    "file": "jilguero.mp3",
+    "author": "Fionn",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/387273198"
   },
   "jirafa": {
     "file": "jirafa.mp3",
@@ -433,9 +523,15 @@
   },
   "koala": {
     "file": "koala.mp3",
-    "author": "hello_flowers",
+    "author": "Ben Fisher",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/254893210"
+  },
+  "koel": {
+    "file": "koel.mp3",
+    "author": "iNaturalist",
     "license": "CC0",
-    "source": "https://freesound.org/people/hello_flowers/sounds/39587/"
+    "source": "https://www.inaturalist.org/observations/343458880"
   },
   "kookaburra": {
     "file": "kookaburra.mp3",
@@ -473,6 +569,18 @@
     "license": "CC BY",
     "source": "https://freesound.org/people/michael_kur95/sounds/332996/"
   },
+  "lobo-marino": {
+    "file": "lobo-marino.mp3",
+    "author": "Charla",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/145868221"
+  },
+  "lori-arcoiris": {
+    "file": "lori-arcoiris.mp3",
+    "author": "MickWH",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/336552795"
+  },
   "loro": {
     "file": "loro.mp3",
     "author": "Breviceps",
@@ -503,6 +611,12 @@
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/157856006"
   },
+  "mina": {
+    "file": "mina.mp3",
+    "author": "iNaturalist",
+    "license": "CC0",
+    "source": "https://www.inaturalist.org/observations/320985404"
+  },
   "mirlo": {
     "file": "mirlo.mp3",
     "author": "iNaturalist",
@@ -521,6 +635,12 @@
     "license": "CC0",
     "source": "https://freesound.org/people/Radio_fragola_gorizia/sounds/400086/"
   },
+  "mono-arana": {
+    "file": "mono-arana.mp3",
+    "author": "Thiago Bicudo",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/143643907"
+  },
   "mono-aullador": {
     "file": "mono-aullador.mp3",
     "author": "iNaturalist",
@@ -532,6 +652,12 @@
     "author": "Nicole",
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/242209328"
+  },
+  "muntiaco": {
+    "file": "muntiaco.mp3",
+    "author": "Lin Scott",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/35722994"
   },
   "murcielago": {
     "file": "murcielago.mp3",
@@ -556,6 +682,12 @@
     "author": "iNaturalist",
     "license": "CC0",
     "source": "https://www.inaturalist.org/observations/163442616"
+  },
+  "oropendola": {
+    "file": "oropendola.mp3",
+    "author": "iNaturalist",
+    "license": "CC0",
+    "source": "https://www.inaturalist.org/observations/257769505"
   },
   "oveja": {
     "file": "oveja.mp3",
@@ -653,11 +785,29 @@
     "license": "CC0",
     "source": "https://www.inaturalist.org/observations/54316151"
   },
+  "rana-leopardo": {
+    "file": "rana-leopardo.mp3",
+    "author": "iNaturalist",
+    "license": "CC0",
+    "source": "https://www.inaturalist.org/observations/83166479"
+  },
   "rana-toro": {
     "file": "rana-toro.mp3",
     "author": "familiarjumpingspider",
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/349128529"
+  },
+  "rana-verde-australiana": {
+    "file": "rana-verde-australiana.mp3",
+    "author": "iNaturalist",
+    "license": "CC0",
+    "source": "https://www.inaturalist.org/observations/195455032"
+  },
+  "ranita-san-antonio": {
+    "file": "ranita-san-antonio.mp3",
+    "author": "Igor Balashov",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/168146835"
   },
   "raton": {
     "file": "raton.mp3",
@@ -701,6 +851,12 @@
     "license": "CC0",
     "source": "https://www.inaturalist.org/observations/227130340"
   },
+  "sapo-partero": {
+    "file": "sapo-partero.mp3",
+    "author": "Javier Sánchez Álvarez",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/293320736"
+  },
   "serpiente": {
     "file": "serpiente.mp3",
     "author": "iut_Paris8",
@@ -719,11 +875,23 @@
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/270977496"
   },
+  "tejedor": {
+    "file": "tejedor.mp3",
+    "author": "Wilhelm van Zyl",
+    "license": "CC BY-SA",
+    "source": "https://www.inaturalist.org/observations/275936739"
+  },
   "tigre": {
     "file": "tigre.mp3",
     "author": "videog",
     "license": "CC BY",
     "source": "https://freesound.org/people/videog/sounds/149190/"
+  },
+  "titi": {
+    "file": "titi.mp3",
+    "author": "Celso Henrique Varela Rios",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/249747356"
   },
   "toro": {
     "file": "toro.mp3",
@@ -779,6 +947,12 @@
     "license": "CC0",
     "source": "https://freesound.org/people/felix.blume/sounds/163727/"
   },
+  "verdugo": {
+    "file": "verdugo.mp3",
+    "author": "iNaturalist",
+    "license": "CC0",
+    "source": "https://www.inaturalist.org/observations/272869281"
+  },
   "yak": {
     "file": "yak.mp3",
     "author": "Cody Stricker",
@@ -796,6 +970,12 @@
     "author": "Ghostomelon",
     "license": "CC BY",
     "source": "https://www.inaturalist.org/observations/263952120"
+  },
+  "zorro-gris": {
+    "file": "zorro-gris.mp3",
+    "author": "Cricket Raspet",
+    "license": "CC BY",
+    "source": "https://www.inaturalist.org/observations/124693190"
   },
   "zorro-volador": {
     "file": "zorro-volador.mp3",
