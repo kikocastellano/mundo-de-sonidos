@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <radialGradient id="kb" cx="0.4" cy="0.35" r="0.75"><stop offset="0" stop-color="#c79a6a"/><stop offset="0.55" stop-color="#8f6338"/><stop offset="1" stop-color="#5e3d1f"/></radialGradient>
+    <radialGradient id="kh" cx="0.4" cy="0.35" r="0.7"><stop offset="0" stop-color="#b8895a"/><stop offset="1" stop-color="#6e4826"/></radialGradient>
+    <linearGradient id="kbk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3d9a8"/><stop offset="1" stop-color="#c9a26a"/></linearGradient>
+  </defs>
+  <!-- patas -->
+  <path d="M14.2 23.5 L13.4 28.6 M13.4 28.6 L11.6 29.4 M13.4 28.6 L14.9 29.6 M19.6 23.6 L20.2 28.6 M20.2 28.6 L18.6 29.6 M20.2 28.6 L22 29.3" stroke="#d9a35b" stroke-width="1.1" stroke-linecap="round" fill="none"/>
+  <!-- cuerpo -->
+  <ellipse cx="18" cy="17.5" rx="10.5" ry="8" fill="url(#kb)"/>
+  <!-- plumas (textura) -->
+  <path d="M12 14.5 q1.5 1 3 0 M16 12.2 q1.5 1 3 0 M20.5 13 q1.5 1 3 0 M13.5 19 q1.5 1 3 0 M18 17 q1.5 1 3 0 M22.5 18.5 q1.5 1 3 0 M17 21.5 q1.5 1 3 0" stroke="#5a3a1c" stroke-width=".55" stroke-linecap="round" fill="none" opacity=".55"/>
+  <ellipse cx="15.5" cy="13" rx="5" ry="2.2" fill="#fff" opacity=".18"/>
+  <!-- cabeza -->
+  <circle cx="9" cy="12.2" r="4.3" fill="url(#kh)"/>
+  <circle cx="7.8" cy="11" r="1.6" fill="#fff" opacity=".18"/>
+  <!-- pico largo -->
+  <path d="M5.3 13.2 C3.5 15.5 2.6 18.8 2.2 22.2 C2.1 22.8 2.8 23 3 22.4 C3.7 19.4 4.9 16.5 6.6 14.4 Z" fill="url(#kbk)"/>
+  <!-- ojo -->
+  <circle cx="8" cy="11.4" r="0.95" fill="#1b1209"/>
+  <circle cx="8.3" cy="11.1" r="0.3" fill="#fff"/>
+</svg>

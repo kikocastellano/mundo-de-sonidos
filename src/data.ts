@@ -194,7 +194,6 @@ export const ANIMALS: Animal[] = [
   A("urraca", "🐦", "europa", true, "caw", "Urraca", "Magpie", "Las urracas se reconocen en un espejo.", "Magpies can recognise themselves in a mirror."),
   A("abubilla", "🐦", "europa", true, "coo", "Abubilla", "Hoopoe", "Su canto dice «up-up-up».", "Its call goes \"oop-oop-oop\"."),
   A("golondrina", "🐦", "europa", true, "peep", "Golondrina", "Swallow", "Viajan miles de kilómetros cada año.", "They travel thousands of kilometres every year."),
-  A("mochuelo", "🦉", "europa", true, "owl", "Mochuelo", "Little owl", "Es un búho pequeñito que sale de día.", "It’s a tiny owl that comes out during the day."),
   A("corzo", "🦌", "europa", true, "bugle", "Corzo", "Roe deer", "El corzo ladra cuando se asusta.", "Roe deer bark when they get scared."),
   A("marmota", "🐿️", "europa", true, "peep", "Marmota", "Marmot", "Silba para avisar de peligro y duerme todo el invierno.", "It whistles to warn of danger and sleeps all winter."),
   A("liron", "🐭", "europa", true, "squeak", "Lirón", "Dormouse", "Los lirones duermen ¡hasta 7 meses!", "Dormice sleep for up to 7 months!"),

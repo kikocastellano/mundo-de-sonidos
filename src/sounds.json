@@ -379,9 +379,9 @@
   },
   "gatito": {
     "file": "gatito.mp3",
-    "author": "iNaturalist",
+    "author": "skymary",
     "license": "CC0",
-    "source": "https://www.inaturalist.org/observations/342887103"
+    "source": "https://freesound.org/people/skymary/sounds/412017/"
   },
   "gato": {
     "file": "gato.mp3",
@@ -541,9 +541,9 @@
   },
   "macaco": {
     "file": "macaco.mp3",
-    "author": "Jono",
+    "author": "Karthik Thrikkadeeri",
     "license": "CC BY",
-    "source": "https://www.inaturalist.org/observations/233660832"
+    "source": "https://www.inaturalist.org/observations/146264128"
   },
   "mapache": {
     "file": "mapache.mp3",
@@ -568,12 +568,6 @@
     "author": "iNaturalist",
     "license": "CC0",
     "source": "https://www.inaturalist.org/observations/55192031"
-  },
-  "mochuelo": {
-    "file": "mochuelo.mp3",
-    "author": "Matteo Negro, alcuni diritti riservati (CC BY-SA)",
-    "license": "CC BY-SA",
-    "source": "https://www.inaturalist.org/observations/277266636"
   },
   "mono": {
     "file": "mono.mp3",

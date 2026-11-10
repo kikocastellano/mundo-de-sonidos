@@ -314,8 +314,8 @@
   "clean": true
  },
  "gatito": {
-  "file": "01-inat.mp3",
-  "clean": true
+  "file": "04-freesound.mp3",
+  "duration": 3
  },
  "raton": {
   "file": "02-inat.wav",
@@ -430,7 +430,7 @@
   "clean": true
  },
  "macaco": {
-  "file": "02-inat.wav",
+  "file": "04-inat.wav",
   "clean": true
  },
  "siamang": {
@@ -467,10 +467,6 @@
  },
  "golondrina": {
   "file": "04-inat.m4a",
-  "clean": true
- },
- "mochuelo": {
-  "file": "03-inat.m4a",
   "clean": true
  },
  "corzo": {
