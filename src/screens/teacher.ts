@@ -2,7 +2,7 @@
 import { playAnimal, sayName, stopAll } from '../audio';
 import { ANIMALS, animalById, animalsIn, regionById, type Animal, type RegionId } from '../data';
 import { isLocked, store } from '../store';
-import { $, backBtn, icon, soundRings } from '../ui';
+import { art, $, backBtn, icon, soundRings } from '../ui';
 import { premiumWall } from './premium';
 
 export function teacher(root: HTMLElement, src: string | null) {
@@ -28,7 +28,7 @@ export function teacher(root: HTMLElement, src: string | null) {
     clearTimeout(tm);
     const a = list[i];
     root.style.setProperty('--accent', regionById(a.region)!.accent);
-    $('.portrait-emoji', root).textContent = a.emoji;
+    $('.portrait-emoji', root).innerHTML = art(a);
     name.textContent = a.name[store.lang];
     portrait.classList.remove('shake'); void portrait.offsetWidth;
     const d = playAnimal(a); soundRings(portrait, d);

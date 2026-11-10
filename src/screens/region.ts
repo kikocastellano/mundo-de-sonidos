@@ -16,5 +16,5 @@ export function region(root: HTMLElement, id: RegionId) {
     </section>`;
   preload(list);
   root.querySelectorAll<HTMLElement>('[data-animal]').forEach((b) =>
-    b.addEventListener('click', () => (b.classList.contains('locked') ? lockedModal(b.querySelector('.card-emoji')!.textContent!) : go(`/animal/${b.dataset.animal}`))));
+    b.addEventListener('click', () => (b.classList.contains('locked') ? lockedModal(b.querySelector('.card-emoji')!.innerHTML) : go(`/animal/${b.dataset.animal}`))));
 }

@@ -32,11 +32,14 @@ export const icon = {
 
 export const backBtn = (to: string) => `<button class="btn-round back" data-go="${to}" aria-label="${t('back')}">${icon.back}</button>`;
 
+/** Dibujo del animal (igual en todos los móviles); si falta, su emoji. */
+export const art = (a: Animal, cls = '') => a.art ? `<img class="art ${cls}" src="./art/${a.art}" alt="" draggable="false">` : a.emoji;
+
 /** Tarjeta de animal reutilizable (región, favoritos). */
 export function card(a: Animal, i: number, lang: 'es' | 'en') {
   const locked = isLocked(a);
   return `<button class="card ${locked ? 'locked' : ''}" data-animal="${a.id}" style="--i:${i}" aria-label="${esc(a.name[lang])}${locked ? ' – ' + t('locked') : ''}">
-    <span class="card-emoji">${a.emoji}</span>
+    <span class="card-emoji">${art(a)}</span>
     <span class="card-name">${esc(a.name[lang])}</span>
     ${locked ? `<span class="lock-badge">${icon.lock}</span>` : ''}
   </button>`;
@@ -111,14 +114,14 @@ onSticker((id) => {
   const a = animalById(id); if (!a) return;
   const el = document.createElement('div');
   el.className = 'sticker-toast';
-  el.innerHTML = `<span class="st-emoji">${a.emoji}</span><b>${t('newSticker')}</b><small>${Object.keys(store.seen).length}</small>`;
+  el.innerHTML = `<span class="st-emoji">${art(a)}</span><b>${t('newSticker')}</b><small>${Object.keys(store.seen).length}</small>`;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 2600);
   // Pedir valoración en momentos felices (15, 40 y 80 pegatinas), como mucho 3 veces y siempre a través de un adulto
   const n = Object.keys(store.seen).length;
   if (!store.rated && store.asked < 3 && [15, 40, 80].includes(n)) {
     store.asked++; save();
-    setTimeout(() => askRating(a.emoji), 2800);
+    setTimeout(() => askRating(art(a)), 2800);
   }
 });
 

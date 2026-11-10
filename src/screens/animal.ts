@@ -4,7 +4,7 @@ import { ANIMALS, animalById, animalsIn, regionById } from '../data';
 import { INFO } from '../info';
 import { t } from '../i18n';
 import { discover, isLocked, logAct, store, toggleFav } from '../store';
-import { $, backBtn, esc, go, icon, lockedModal, soundRings } from '../ui';
+import { art, $, backBtn, esc, go, icon, lockedModal, soundRings } from '../ui';
 
 export function animal(root: HTMLElement, id: string, fromFav: boolean) {
   const a = animalById(id);
@@ -31,7 +31,7 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
         <button class="nav-arrow left" aria-label="prev">${icon.chevL}</button>
         <button class="portrait" aria-label="${t('hearSound')}">
           <span class="halo"></span>
-          <span class="portrait-emoji">${a.emoji}</span>
+          <span class="portrait-emoji">${art(a)}</span>
           ${locked ? `<span class="portrait-lock">${icon.lock}</span>` : ''}
         </button>
         <button class="nav-arrow right" aria-label="next">${icon.chevR}</button>
@@ -52,14 +52,14 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
   preload(list);
   const portrait = $('.portrait', root);
   const play = () => {
-    if (locked) { portrait.classList.remove('shake'); void portrait.offsetWidth; portrait.classList.add('shake'); lockedModal(a.emoji); return; }
+    if (locked) { portrait.classList.remove('shake'); void portrait.offsetWidth; portrait.classList.add('shake'); lockedModal(art(a)); return; }
     soundRings(portrait, playAnimal(a)); logAct('listen', a.id);
     setTimeout(() => discover(a.id), 900);
   };
   portrait.addEventListener('click', play);
   $('.action.sound', root).addEventListener('click', play);
   $('.action.name', root).addEventListener('click', () => { sayName(a.name[L]); soundRings(portrait, 1); });
-  $('.action.other-lang', root).addEventListener('click', () => { if (locked) return lockedModal(a.emoji); sayName(a.name[O], O); soundRings(portrait, 1); });
+  $('.action.other-lang', root).addEventListener('click', () => { if (locked) return lockedModal(art(a)); sayName(a.name[O], O); soundRings(portrait, 1); });
   $('.nav-arrow.left', root).addEventListener('click', () => goTo(-1));
   $('.nav-arrow.right', root).addEventListener('click', () => goTo(1));
   const fav = $('.fav-btn', root);
@@ -70,7 +70,7 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
     if (on) { fav.classList.remove('pop'); void fav.offsetWidth; fav.classList.add('pop'); }
   });
 
-  root.querySelector('.ask-adult')?.addEventListener('click', () => lockedModal(a.emoji));
+  root.querySelector('.ask-adult')?.addEventListener('click', () => lockedModal(art(a)));
   root.querySelector('.more-btn')?.addEventListener('click', () => { sfx('tap'); openInfo(a, r.accent); });
 
   // Deslizar para cambiar de animal
@@ -112,7 +112,7 @@ function openInfo(a: (typeof ANIMALS)[number], accent: string) {
   sheet.className = 'sheet-wrap';
   sheet.innerHTML = `
     <div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(a.name[L])}" style="--accent:${accent}">
-      <div class="sheet-head"><span class="sheet-emoji">${a.emoji}</span><h3>${esc(a.name[L])}</h3>
+      <div class="sheet-head"><span class="sheet-emoji">${art(a)}</span><h3>${esc(a.name[L])}</h3>
         <button class="btn-round close" aria-label="${t('close')}">${icon.close}</button></div>
       <button class="diet say" data-say="${esc(t(dKey))}"><span>${dEmoji}</span>${esc(t(dKey))}</button>
       <p class="hint-tap">🔊 ${t('tapToHear')}</p>

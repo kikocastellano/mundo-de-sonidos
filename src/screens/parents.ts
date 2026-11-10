@@ -4,7 +4,7 @@ import { billingStatus, buy, redeemCode, canBuy, isNativeApp, onBillingChange, p
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
 import { save, startTrial, store, trialActive, trialAvailable, weekSummary } from '../store';
-import { $, backBtn, esc, go, icon } from '../ui';
+import { $, art, backBtn, esc, go, icon } from '../ui';
 
 let unlockedUntil = 0;
 let offBilling: (() => void) | null = null;
@@ -87,7 +87,7 @@ function weekPanel() {
       <div><b>${total}</b><small>${es ? 'pegatinas en total' : 'stickers in total'}</small></div>
     </div>
     <div class="week-bars">${w.perDay.map((v, i) => `<div><i style="height:${Math.round((v / max) * 100)}%"></i><small>${label(i)}</small></div>`).join('')}</div>
-    ${fav ? `<p class="muted">${es ? 'Su animal favorito esta semana' : 'Favourite animal this week'}: <b>${fav.emoji} ${esc(fav.name[store.lang])}</b></p>` : ''}
+    ${fav ? `<p class="muted">${es ? 'Su animal favorito esta semana' : 'Favourite animal this week'}: <b>${art(fav, 'inline')} ${esc(fav.name[store.lang])}</b></p>` : ''}
     <p class="muted small">${es ? 'Estos datos solo se guardan en este dispositivo.' : 'This data stays on this device only.'}</p>
   </div>`;
 }
@@ -102,7 +102,7 @@ function paywallPanel(next: string | null) {
         const es = store.lang === 'es';
         const lockedList = ANIMALS.filter((a) => a.premium);
         const got = Object.keys(store.seen).length;
-        const row = (list: typeof ANIMALS, dir: string) => `<div class="mq ${dir}"><div>${[...list, ...list].map((a) => `<span>${a.emoji}</span>`).join('')}</div></div>`;
+        const row = (list: typeof ANIMALS, dir: string) => `<div class="mq ${dir}"><div>${[...list, ...list].map((a) => `<span>${art(a)}</span>`).join('')}</div></div>`;
         const few = lockedList.filter((_, i) => i % 3 === 0).slice(0, 36);
         const half = Math.ceil(few.length / 2);
         const perks: [string, string][] = es ? [

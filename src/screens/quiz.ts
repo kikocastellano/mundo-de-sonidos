@@ -4,7 +4,7 @@ import { ANIMALS, REGIONS, animalsIn, regionById, type Animal, type Lang, type R
 import { INFO } from '../info';
 import { CLASE, type Clase } from '../info/clases';
 import { discover, isLocked, logAct, store } from '../store';
-import { $, backBtn, confetti, esc, icon } from '../ui';
+import { art, $, backBtn, confetti, esc, icon } from '../ui';
 import { premiumWall } from './premium';
 
 interface Q { animal: Animal; text: string; options: { label: string; emoji: string }[]; answer: number; say?: Lang }
@@ -116,7 +116,7 @@ export function quiz(root: HTMLElement, src: string | null) {
     if (!q) { qText.textContent = '—'; return; }
     last = q.animal.id; tries = 0; fb.textContent = '';
     root.style.setProperty('--accent', regionById(q.animal.region)!.accent);
-    qEmoji.textContent = q.animal.emoji; qEmoji.classList.remove('pop'); void qEmoji.offsetWidth; qEmoji.classList.add('pop');
+    qEmoji.innerHTML = art(q.animal); qEmoji.classList.remove('pop'); void qEmoji.offsetWidth; qEmoji.classList.add('pop');
     qText.innerHTML = `${esc(q.text)} <span class="q-speak">🔊</span>`;
     opts.innerHTML = q.options.map((o, i) => `<div class="q-row" style="--i:${i}"><button class="q-opt" data-i="${i}"><b class="q-num">${i + 1}</b><span>${o.emoji}</span>${esc(o.label)}</button><button class="q-hear" data-i="${i}" aria-label="🔊">🔊</button></div>`).join('');
     opts.querySelectorAll<HTMLElement>('.q-opt').forEach((b) => b.addEventListener('click', () => answer(b)));

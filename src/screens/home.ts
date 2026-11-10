@@ -2,7 +2,7 @@
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
 import { hasPremium, isLocked, store, trialActive } from '../store';
-import { esc, icon } from '../ui';
+import { art, esc, icon } from '../ui';
 
 /** Mismo animal para todo el día; si no hay compra, uno de los gratuitos. */
 export function animalOfDay() {
@@ -31,7 +31,7 @@ export function home(root: HTMLElement) {
       </header>
       <div class="home-grid">
         <button class="tile-h aotd2" data-go="/animal/${day.id}">
-          <span class="th-emoji">${day.emoji}</span>
+          <span class="th-emoji">${art(day)}</span>
           <span class="th-text"><small>🌟 ${t('today')}</small><b>${esc(day.name[store.lang])}</b></span>
           <span class="aotd-play">${icon.play}</span>
         </button>

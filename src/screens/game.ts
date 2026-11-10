@@ -3,7 +3,7 @@ import { playAnimal, preload, sayName, sfx } from '../audio';
 import { ANIMALS, REGIONS, type Animal, type RegionId } from '../data';
 import { t } from '../i18n';
 import { addStar, discover, hasPremium, isLocked, logAct, save, store } from '../store';
-import { $, backBtn, confetti, esc, icon, soundRings } from '../ui';
+import { art, $, backBtn, confetti, esc, icon, soundRings } from '../ui';
 
 const shuffle = <T,>(arr: T[]) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 
@@ -58,7 +58,7 @@ export function game(root: HTMLElement, where: RegionId | 'todo', words = false)
     const opts = shuffle([target, ...others]);
     prompt.textContent = words ? t('listenOther') : t('listen');
     choices.className = `choices n${opts.length}`;
-    choices.innerHTML = opts.map((a, i) => `<button class="choice" data-id="${a.id}" style="--i:${i}" aria-label="${esc(a.name[L])}"><span>${a.emoji}</span></button>`).join('');
+    choices.innerHTML = opts.map((a, i) => `<button class="choice" data-id="${a.id}" style="--i:${i}" aria-label="${esc(a.name[L])}"><span>${art(a)}</span></button>`).join('');
     choices.querySelectorAll<HTMLElement>('.choice').forEach((b) => b.addEventListener('click', () => pick(b)));
     setTimeout(play, round === 1 ? 500 : 350);
   }

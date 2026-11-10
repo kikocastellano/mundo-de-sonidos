@@ -3,7 +3,7 @@ import { sfx } from '../audio';
 import { ANIMALS, REGIONS, animalsIn } from '../data';
 import { t } from '../i18n';
 import { isLocked, store } from '../store';
-import { backBtn, esc, go, icon, lockedModal } from '../ui';
+import { art, backBtn, esc, go, icon, lockedModal } from '../ui';
 
 export function album(root: HTMLElement) {
   const L = store.lang;
@@ -26,13 +26,13 @@ export function album(root: HTMLElement) {
           <div class="stickers">${list.map((a, i) => {
             const has = !!store.seen[a.id], lock = isLocked(a);
             return `<button class="sticker ${has ? 'got' : 'empty'} ${lock ? 'locked' : ''}" data-id="${a.id}" style="--i:${i};--r:${((i * 37) % 11) - 5}deg" aria-label="${has ? esc(a.name[L]) : '?'}">
-              <span class="s-emoji">${a.emoji}</span>${has ? `<small>${esc(a.name[L])}</small>` : lock ? `<span class="s-lock">${icon.lock}</span>` : '<small>?</small>'}</button>`;
+              <span class="s-emoji">${art(a)}</span>${has ? `<small>${esc(a.name[L])}</small>` : lock ? `<span class="s-lock">${icon.lock}</span>` : '<small>?</small>'}</button>`;
           }).join('')}</div></div>`;
       }).join('')}
     </section>`;
   root.querySelectorAll<HTMLElement>('.sticker').forEach((b) => b.addEventListener('click', () => {
     const a = ANIMALS.find((x) => x.id === b.dataset.id)!;
-    if (isLocked(a)) return lockedModal(a.emoji);
+    if (isLocked(a)) return lockedModal(art(a));
     sfx('tap'); go(`/animal/${a.id}`);
   }));
 }

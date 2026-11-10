@@ -1,4 +1,5 @@
 // Ficha de datos de animales y regiones.
+import ART from './art.json';
 import SOUNDS from './sounds.json';
 
 // Fase 4 sustituirá `sound` (sonido sintetizado de prueba) por `audio` (grabación real con licencia).
@@ -28,6 +29,8 @@ export interface Animal {
   /** Ruta a una grabación real; si existe, tiene prioridad sobre `sound`. */
   audio?: string;
   credit?: { author: string; license: string; source: string };
+  /** Dibujo del animal (Fluent Emoji, MIT) en public/art. */
+  art?: string;
 }
 
 export const REGIONS: Region[] = [
@@ -232,6 +235,7 @@ export const ANIMALS: Animal[] = [
 // Grabaciones reales aprobadas (las genera scripts/process-sounds.mjs).
 const REAL = SOUNDS as Record<string, { file: string; author: string; license: string; source: string }>;
 for (const a of ANIMALS) {
+  a.art = (ART as Record<string, string>)[a.id];
   const r = REAL[a.id];
   if (r) { a.audio = `./sounds/${r.file}`; a.credit = { author: r.author, license: r.license, source: r.source }; }
 }
