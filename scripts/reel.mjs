@@ -8,15 +8,39 @@ const OUT = 'docs/tienda/.reel'; rmSync(OUT, { recursive: true, force: true }); 
 const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', 'preview', '--port', '4185', '--strictPort']);
 await new Promise((r) => setTimeout(r, 2500));
 const B = 'http://localhost:4185/';
-const seen = Object.fromEntries(['vaca', 'perro', 'gato', 'oveja', 'cerdo', 'caballo', 'pato', 'gallo', 'leon', 'elefante', 'jirafa', 'pinguino', 'tigre', 'ballena', 'delfin', 'cabra', 'burro', 'gallina', 'pollito', 'conejo'].map((id, i) => [id, i + 1]));
-// [escena, ruta, frase principal, frase pequeña, color de fondo, sonido]
-const SCENES = [
-  ['1', '', '¡Descubre 152 animales!', 'de todo el mundo', ['#7cc8ff', '#2f8fd8'], 'vaca'],
-  ['2', '#/mundo', 'Viaja por el mundo', 'granja, selva, océano…', ['#5ab4f0', '#1f78b4'], 'ballena'],
-  ['3', '#/animal/leon', 'Sonidos reales', 'grabados en la naturaleza', ['#ffb36b', '#d9822b'], 'leon'],
-  ['4', '#/juego/granja', '¿Quién suena?', 'aprende jugando', ['#b8a4ff', '#7b5cff'], 'elefante'],
-  ['5', '#/album', 'Colecciona pegatinas', 'y aprende inglés', ['#7fe0b0', '#2bb06a'], 'pollito'],
-];
+const seen = Object.fromEntries(['vaca', 'perro', 'gato', 'oveja', 'cerdo', 'caballo', 'pato', 'gallo', 'leon', 'elefante', 'jirafa', 'pinguino', 'tigre', 'ballena', 'delfin', 'cabra', 'burro', 'gallina', 'pollito', 'conejo', 'buho', 'elefante', 'leon'].map((id, i) => [id, i + 1]));
+// Variantes:  node scripts/reel.mjs [animales|juegos|calma]
+const VARIANT = process.argv[2] || 'animales';
+// [escena, ruta, frase principal, frase pequeña, color de fondo]
+const VARIANTS = {
+  animales: [
+    ['1', '', '¡Descubre 152 animales!', 'de todo el mundo', ['#7cc8ff', '#2f8fd8']],
+    ['2', '#/mundo', 'Viaja por el mundo', 'granja, selva, océano…', ['#5ab4f0', '#1f78b4']],
+    ['3', '#/animal/leon', 'Sonidos reales', 'grabados en la naturaleza', ['#ffb36b', '#d9822b']],
+    ['4', '#/juego/granja', '¿Quién suena?', 'aprende jugando', ['#b8a4ff', '#7b5cff']],
+    ['5', '#/album', 'Colecciona pegatinas', 'y aprende inglés', ['#7fe0b0', '#2bb06a']],
+  ],
+  juegos: [
+    ['1', '#/juego/granja', '¿Quién suena?', 'escucha y adivina', ['#b8a4ff', '#7b5cff']],
+    ['2', '#/ingles', 'Aprende inglés', 'Cow, Lion, Frog…', ['#ff9aa6', '#ef5466']],
+    ['3', '#/profe/preguntas', 'Preguntas en voz alta', 'para los que aún no leen', ['#ffb48a', '#ff7d4a']],
+    ['4', '#/animal/elefante', '¿Sabías que…?', 'curiosidades de cada animal', ['#9bd67a', '#3c9445']],
+    ['5', '#/album', 'Gana pegatinas', '¡completa tu álbum!', ['#7fe0b0', '#2bb06a']],
+  ],
+  calma: [
+    ['1', '#/calma', 'Hora de dormir', 'nana, lluvia, olas…', ['#3a3f8f', '#0b1440']],
+    ['2', '#/region/europa', 'Animales de la noche', 'búhos, grillos, ranitas', ['#5d63c9', '#2f3486']],
+    ['3', '#/animal/buho', 'Sonidos tranquilos', 'grabados en la naturaleza', ['#6f76d9', '#2f3486']],
+    ['4', '#/region/polos', 'Paisajes que relajan', 'para los más peques', ['#9fd8ff', '#3a8fc8']],
+    ['5', '#/calma', 'Con temporizador', 'se apaga solito', ['#3a3f8f', '#0b1440']],
+  ],
+};
+const SOUNDS = {
+  animales: [['vaca', 0.3], ['ballena', 2.3], ['leon', 4.3], ['elefante', 6.3], ['pollito', 8.3], ['kookaburra', 10.2]],
+  juegos: [['gallo', 0.3], ['pato', 2.3], ['perro', 4.3], ['elefante', 6.3], ['pollito', 8.3], ['kookaburra', 10.2]],
+  calma: [['buho', 0.4], ['grillo', 2.3], ['buho', 4.3], ['pinguino', 6.3], ['rana', 8.3], ['ruisenor', 10.2]],
+};
+const SCENES = VARIANTS[VARIANT];
 const b = await chromium.launch();
 const ctx = await b.newContext({ viewport: { width: 360, height: 720 }, deviceScaleFactor: 2.5, isMobile: true, hasTouch: true, locale: 'es-ES' });
 await ctx.addInitScript((s) => localStorage.setItem('mundo-sonidos-v1', JSON.stringify({ lang: 'es', premium: true, seen: s, stars: { granja: 12 } })), seen);
@@ -25,6 +49,8 @@ const frame = await b.newPage({ viewport: { width: 1080, height: 1920 } });
 const font = `<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&display=swap" rel="stylesheet">`;
 for (const [id, hash, t1, t2, bg] of SCENES) {
   await p.goto(B + hash); await p.waitForTimeout(1700);
+  if (hash === '#/calma' && id === '5') { await p.tap('.calm-play'); await p.evaluate(() => document.querySelector('.view').scrollTo(0, 0)); await p.waitForTimeout(900); }
+  if (hash === '#/animal/elefante') { await p.tap('.more-btn'); await p.waitForTimeout(900); }
   const img = (await p.screenshot()).toString('base64');
   await frame.setContent(`<html><head>${font}</head><body style="margin:0;width:1080px;height:1920px;overflow:hidden;background:linear-gradient(160deg,${bg[0]},${bg[1]});font-family:'Baloo 2',sans-serif;display:flex;flex-direction:column;align-items:center">
     <div style="margin-top:120px;text-align:center;color:#fff;line-height:1;text-shadow:0 6px 0 rgba(0,0,0,.15),0 10px 30px rgba(0,0,0,.25)">
@@ -50,10 +76,10 @@ let f = [1, 2, 3, 4, 5, 6].map((i, k) => `[${k}:v]scale=1188:2112,zoompan=z='min
 let last = 'v0', off = D - X;
 for (let k = 1; k < 6; k++) { f += `;[${last}][v${k}]xfade=transition=${k === 5 ? 'fade' : 'slideleft'}:duration=${X}:offset=${off.toFixed(2)}[x${k}]`; last = `x${k}`; off += D - X; }
 // Sonidos de animales colocados en cada escena
-const SND = [['vaca', 0.3], ['ballena', 2.3], ['leon', 4.3], ['elefante', 6.3], ['pollito', 8.3], ['kookaburra', 10.2]];
+const SND = SOUNDS[VARIANT];
 const aIn = SND.flatMap(([s]) => ['-i', `public/sounds/${s}.mp3`]);
 const a = SND.map(([, t], k) => `[${6 + k}:a]atrim=0:1.9,afade=t=out:st=1.5:d=0.4,adelay=${Math.round(t * 1000)}|${Math.round(t * 1000)},volume=0.9[a${k}]`).join(';');
 f += `;${a};${SND.map((_, k) => `[a${k}]`).join('')}amix=inputs=${SND.length}:normalize=0,atrim=0:12,afade=t=out:st=11.3:d=0.7[aout]`;
-execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...inputs, ...aIn, '-filter_complex', f, '-map', `[${last}]`, '-map', '[aout]', '-t', '12', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', 'docs/tienda/reel-12s.mp4']);
+execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...inputs, ...aIn, '-filter_complex', f, '-map', `[${last}]`, '-map', '[aout]', '-t', '12', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', VARIANT === 'animales' ? 'docs/tienda/reel-12s.mp4' : `docs/tienda/short-${VARIANT}.mp4`]);
 rmSync(OUT, { recursive: true, force: true });
-console.log('reel listo: docs/tienda/reel-12s.mp4');
+console.log('listo:', VARIANT);
