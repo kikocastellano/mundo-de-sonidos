@@ -13,7 +13,11 @@ const scene = (w, h, extra) => `<!doctype html><html><body style="margin:0">
   <path d="M0 ${h * 0.82} C${w * 0.35} ${h * 0.74} ${w * 0.65} ${h * 0.84} ${w} ${h * 0.76} V${h} H0Z" fill="#5fb648"/>
 </svg>${extra}</div></body></html>`;
 
-const emoji = (e, size, x, y) => `<div style="position:absolute;left:${x}px;top:${y}px;font-size:${size}px;line-height:1;font-family:'Noto Color Emoji';filter:drop-shadow(0 ${size * 0.05}px ${size * 0.04}px rgba(0,0,0,.25))">${e}</div>`;
+import { readFileSync as rf } from 'node:fs';
+const ART = { '🦁': 'lion', '🐄': 'cow', '🐘': 'elephant', '🐧': 'penguin', '🐸': 'frog', '🦒': 'giraffe', '🦉': 'owl', '🐬': 'dolphin' };
+const emoji = (e, size, x, y) => ART[e] ? `<img src="data:image/svg+xml;base64,${rf(`public/art/${ART[e]}.svg`).toString('base64')}" style="position:absolute;left:${x}px;top:${y + size * 0.1}px;width:${size}px;height:${size}px;filter:drop-shadow(0 ${size * 0.05}px ${size * 0.04}px rgba(0,0,0,.25))">` : 
+  emojiFont(e, size, x, y);
+const emojiFont = (e, size, x, y) => `<div style="position:absolute;left:${x}px;top:${y}px;font-size:${size}px;line-height:1;font-family:'Noto Color Emoji';filter:drop-shadow(0 ${size * 0.05}px ${size * 0.04}px rgba(0,0,0,.25))">${e}</div>`;
 
 const b = await chromium.launch();
 const shot = async (html, w, h, path) => { const p = await b.newPage({ viewport: { width: w, height: h } }); await p.setContent(html); await p.waitForTimeout(400); await p.screenshot({ path }); await p.close(); };
@@ -27,6 +31,6 @@ const fg = `<!doctype html><html><body style="margin:0;background:transparent">$
 await shot(scene(2732, 2732, emoji('🦁', 700, 1016, 900) + `<div style="position:absolute;left:0;right:0;top:1680px;text-align:center;font-size:200px;font-weight:800;color:#fff;text-shadow:0 10px 0 #e2457a">Mundo de Sonidos</div>`), 2732, 2732, 'assets/splash.png');
 // Imagen destacada de Google Play (1024x500)
 const parade = ['🐄', '🦁', '🐘', '🐧', '🐸', '🦒', '🦉', '🐬'].map((e, i) => emoji(e, 92, 70 + i * 112, 330)).join('');
-await shot(scene(1024, 500, `<div style="position:absolute;left:0;right:0;top:70px;text-align:center;color:#fff;font-weight:800;font-size:92px;line-height:.95;text-shadow:0 7px 0 #e2457a,0 12px 24px rgba(0,0,0,.2)"><div style="font-size:44px;color:#fff7c2;text-shadow:0 4px 0 #f08a24">Mundo de</div>Sonidos</div><div style="position:absolute;left:0;right:0;top:240px;text-align:center;font-size:30px;font-weight:800;color:#23324a">Sonidos reales · Sin anuncios · Pago único</div>${parade}`), 1024, 500, 'docs/tienda/destacada.png');
+await shot(scene(1024, 500, `<div style="position:absolute;left:0;right:0;top:70px;text-align:center;color:#fff;font-weight:800;font-size:92px;line-height:.95;text-shadow:0 7px 0 #e2457a,0 12px 24px rgba(0,0,0,.2)"><div style="font-size:44px;color:#fff7c2;text-shadow:0 4px 0 #f08a24">Mundo de</div>Sonidos</div><div style="position:absolute;left:0;right:0;top:240px;text-align:center;font-size:30px;font-weight:800;color:#23324a">152 animales · Sonidos reales · Sin anuncios</div>${parade}`), 1024, 500, 'docs/tienda/destacada.png');
 await b.close();
 console.log('assets listos');

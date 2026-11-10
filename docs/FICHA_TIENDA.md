@@ -11,7 +11,7 @@
 - 💖 Favoritos, 🌙 modo calma para dormir y 🧑‍🏫 modo profe para clase.
 - 🚫 **Sin anuncios.** Sin cuentas, sin rastreo, **funciona sin conexión**.
 - 🔒 Pagos y ajustes detrás de una puerta para padres.
-Gratis con más de 50 animales. Con un **pago único** (sin suscripción) desbloqueas todos los animales, los que vayan llegando, el modo calma y el modo profe. Se puede compartir con la familia de Google Play.
+Gratis con decenas de animales y 24 horas de prueba gratis de todo. Con un **pago único** (sin suscripción) desbloqueas todos los animales, los que vayan llegando, el modo calma y el modo profe. Se puede compartir con la familia de Google Play.
 
 ## English
 **Title:** World of Sounds: Animals

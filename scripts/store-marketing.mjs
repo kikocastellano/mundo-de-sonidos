@@ -9,14 +9,14 @@ await new Promise((r) => setTimeout(r, 2500));
 const B = 'http://localhost:4181/';
 const seen = Object.fromEntries(['vaca', 'perro', 'gato', 'oveja', 'cerdo', 'caballo', 'pato', 'gallo', 'leon', 'elefante', 'jirafa', 'koala', 'pinguino', 'tigre', 'ballena', 'delfin', 'cabra', 'burro'].map((id, i) => [id, i + 1]));
 const SHOTS = [
-  { id: '1', hash: '', bg: ['#7cc8ff', '#2f8fd8'], es: ['134 animales', 'con su sonido real'], en: ['152 animals', 'with real sounds'] },
+  { id: '1', hash: '', bg: ['#7cc8ff', '#2f8fd8'], es: ['152 animales', 'con su sonido real'], en: ['152 animals', 'with real sounds'] },
   { id: '2', hash: '#/mundo', bg: ['#5ab4f0', '#1f78b4'], es: ['Viaja por', 'todo el mundo'], en: ['Travel around', 'the world'] },
   { id: '3', hash: '#/animal/leon', bg: ['#ffb36b', '#d9822b'], es: ['Toca y escucha', 'al instante'], en: ['Tap and listen', 'instantly'] },
   { id: '4', hash: '#/animal/elefante', more: true, bg: ['#9bd67a', '#3c9445'], es: ['Aprende curiosidades', 'que se leen en voz alta'], en: ['Fun facts', 'read out loud'] },
   { id: '5', hash: '#/juego/granja', bg: ['#b8a4ff', '#7b5cff'], es: ['¿Quién suena?', 'Aprende jugando'], en: ['Who’s that sound?', 'Learn by playing'] },
   { id: '6', hash: '#/album', bg: ['#ffd75e', '#f08a24'], es: ['Completa tu álbum', 'de pegatinas'], en: ['Fill your', 'sticker album'] },
   { id: '7', hash: '#/calma', calm: true, bg: ['#3a3f8f', '#0b1440'], es: ['Modo calma', 'para dormir'], en: ['Calm mode', 'for bedtime'] },
-  { id: '8', hash: '#/profe/preguntas', bg: ['#ffb48a', '#ff7d4a'], es: ['Sin anuncios · Sin internet', 'Pago único'], en: ['No ads · Works offline', 'One-time purchase'] },
+  { id: '8', hash: '#/profe/preguntas', bg: ['#ffb48a', '#ff7d4a'], es: ['Modo profe', 'preguntas para clase'], en: ['Teacher mode', 'quizzes for class'] },
 ];
 const b = await chromium.launch();
 for (const lang of ['es', 'en']) {
