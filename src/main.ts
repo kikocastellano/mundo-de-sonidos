@@ -16,7 +16,7 @@ import { parents, premiumScreen } from './screens/parents';
 import { region } from './screens/region';
 import { initBilling } from './billing';
 import { store } from './store';
-import { installGlobalHandlers } from './ui';
+import { checkTrialEnd, installGlobalHandlers } from './ui';
 
 const app = document.getElementById('app')!;
 mountScene(document.body);
@@ -66,6 +66,7 @@ function route() {
 
 void initBilling();
 window.addEventListener('hashchange', route);
+setTimeout(checkTrialEnd, 1500);
 route();
 
 if ('serviceWorker' in navigator && location.protocol === 'https:') {

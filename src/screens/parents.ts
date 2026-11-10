@@ -3,7 +3,7 @@ import { availableVoices, sayName, sfx } from '../audio';
 import { billingStatus, buy, redeemCode, canBuy, isNativeApp, onBillingChange, price, restore, testUnlockAllowed } from '../billing';
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
-import { save, store, weekSummary } from '../store';
+import { save, startTrial, store, trialActive, trialAvailable, weekSummary } from '../store';
 import { $, backBtn, esc, go, icon } from '../ui';
 
 let unlockedUntil = 0;
@@ -128,7 +128,9 @@ function paywallPanel(next: string | null) {
         <h3>${t('premiumTitle')}</h3>
         <ul class="perks">${perks.map(([e, txt], k) => `<li style="--i:${k}"><span>${e}</span><p>${txt}</p></li>`).join('')}</ul>
         <div class="price-box"><b>${price()}</b><span>${es ? 'pago único · para siempre' : 'one-time · forever'}</span><small>${es ? 'Menos que un café ☕ y sin suscripciones' : 'Less than a coffee ☕ and no subscriptions'}</small></div>
+        ${trialActive() ? `<p class="trial-on">🎁 ${t('trialOn')} <b>${Math.max(1, Math.ceil((store.trialUntil - Date.now()) / 3600000))}</b> ${t('trialHours')}</p>` : ''}
         <button class="buy-btn" ${canBuy() ? '' : 'disabled'}>${t('buy')} <b>${price()}</b></button>
+        ${trialAvailable() ? `<button class="trial-btn">🎁 ${t('trialBtn')}</button><p class="muted small">${t('trialNote')}</p>` : ''}
         <p class="one-time">${t('oneTime')}</p>
         ${canBuy() ? `<button class="link-btn restore">${t('restore')}</button>` : `<p class="muted">${isNativeApp() ? t('storeDown') : t('webOnly')}</p>`}
         <p class="muted small">${t('family')}</p>
@@ -139,6 +141,7 @@ function paywallPanel(next: string | null) {
 function bindPaywall(root: HTMLElement, rerender: () => void) {
   root.querySelector('.buy-btn:not(.rate-btn)')?.addEventListener('click', (e) => { const b = e.currentTarget as HTMLButtonElement; b.disabled = true; void buy().finally(() => { b.disabled = !canBuy(); }); });
   root.querySelector('.restore')?.addEventListener('click', () => void restore());
+  root.querySelector('.trial-btn')?.addEventListener('click', () => { if (startTrial()) { sfx('win'); go('/'); } });
   root.querySelector('.premium-test')?.addEventListener('click', () => { store.premium = !store.premium; save(); rerender(); });
   offBilling?.();
   const wasPremium = store.premium;

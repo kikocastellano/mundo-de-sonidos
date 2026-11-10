@@ -77,6 +77,12 @@ const T = {
   listenOther: { es: 'Escucha en inglés…', en: 'Listen in Spanish…' },
   storeDown: { es: 'No se ha podido conectar con Google Play. Comprueba la conexión e inténtalo más tarde.', en: 'Could not connect to Google Play. Check your connection and try again later.' },
   unlockAll: { es: 'Desbloquear todo', en: 'Unlock everything' },
+  trialBtn: { es: 'Probar gratis 24 horas', en: 'Try free for 24 hours' },
+  trialNote: { es: 'Sin pagar nada y sin datos de tarjeta. Una sola vez.', en: 'No payment and no card details. One time only.' },
+  trialOn: { es: 'Prueba gratis activa: quedan', en: 'Free trial active:' },
+  trialHours: { es: 'horas', en: 'hours left' },
+  trialEndTitle: { es: '¡Se acabó la prueba gratis!', en: 'Your free trial has ended!' },
+  trialEndBody: { es: 'Esperamos que os hayan gustado los animales, el modo calma y el modo profe. Podéis tenerlo todo para siempre con un pago único.', en: 'We hope you enjoyed the animals, calm mode and teacher mode. You can keep everything forever with a one-time payment.' },
   calm: { es: 'Modo calma', en: 'Calm mode' },
   locked: { es: 'Contenido premium', en: 'Premium content' },
 } satisfies Record<string, Record<Lang, string>>;

@@ -3,12 +3,12 @@ import type { Lang } from './data';
 
 export type Act = 'seen' | 'right' | 'listen';
 
-interface State { lang: Lang; muted: boolean; favs: string[]; stars: Record<string, number>; premium: boolean; voice: Record<Lang, string>; seen: Record<string, number>; rounds: number; log: [number, Act, string][]; kid: string; rated: number; asked: number; purchased: boolean }
+interface State { lang: Lang; muted: boolean; favs: string[]; stars: Record<string, number>; premium: boolean; voice: Record<Lang, string>; seen: Record<string, number>; rounds: number; log: [number, Act, string][]; kid: string; rated: number; asked: number; purchased: boolean; trialUntil: number; trialEndSeen: boolean }
 
 const KEY = 'mundo-sonidos-v1';
 const defaults = (): State => ({
   lang: (navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en',
-  muted: false, favs: [], stars: {}, premium: false, voice: { es: '', en: '' }, seen: {}, rounds: 0, log: [], kid: '', rated: 0, asked: 0, purchased: false,
+  muted: false, favs: [], stars: {}, premium: false, voice: { es: '', en: '' }, seen: {}, rounds: 0, log: [], kid: '', rated: 0, asked: 0, purchased: false, trialUntil: 0, trialEndSeen: false,
 });
 
 function load(): State {
@@ -37,7 +37,14 @@ export function addStar(region: string) {
   save();
 }
 
-export const isLocked = (a: { premium: boolean }) => a.premium && !store.premium;
+/** Prueba gratis de Premium: 24 horas, una sola vez por instalación. */
+export const TRIAL_MS = 24 * 60 * 60 * 1000;
+export const trialActive = () => store.trialUntil > Date.now();
+export const trialAvailable = () => !store.premium && store.trialUntil === 0;
+export const hasPremium = () => store.premium || trialActive();
+export function startTrial() { if (!trialAvailable()) return false; store.trialUntil = Date.now() + TRIAL_MS; save(); return true; }
+
+export const isLocked = (a: { premium: boolean }) => a.premium && !hasPremium();
 
 const stickerListeners = new Set<(id: string) => void>();
 export const onSticker = (fn: (id: string) => void) => stickerListeners.add(fn);

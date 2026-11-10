@@ -1,10 +1,10 @@
 // Contenido premium: si no se ha hecho el pago único, muestra un aviso que lleva a la zona de padres (nunca vende al niño).
 import { t } from '../i18n';
-import { store } from '../store';
+import { hasPremium } from '../store';
 import { backBtn, icon } from '../ui';
 
 export function premiumWall(root: HTMLElement, title: string, back = '/') {
-  if (store.premium) return false;
+  if (hasPremium()) return false;
   root.innerHTML = `
     <section class="screen">
       <header class="topbar">${backBtn(back)}<h2>${title}</h2><span class="spacer"></span></header>

@@ -1,7 +1,7 @@
 // Pantalla principal: todo a la vista sin bajar, en una cuadrícula de tarjetas que se adapta a la pantalla.
 import { ANIMALS } from '../data';
 import { t } from '../i18n';
-import { isLocked, store } from '../store';
+import { hasPremium, isLocked, store, trialActive } from '../store';
 import { esc, icon } from '../ui';
 
 /** Mismo animal para todo el día; si no hay compra, uno de los gratuitos. */
@@ -16,7 +16,7 @@ export function home(root: HTMLElement) {
   const total = Object.values(store.stars).reduce((a, b) => a + b, 0);
   const day = animalOfDay();
   const got = Object.keys(store.seen).length;
-  const lockIcon = store.premium ? '' : `<span class="tile-lock">${icon.lock}</span>`;
+  const lockIcon = hasPremium() ? '' : `<span class="tile-lock">${icon.lock}</span>`;
   const tile = (cls: string, go: string, emoji: string, label: string, sub = '', extra = '') =>
     `<button class="tile-h ${cls}" data-go="${go}"><span class="th-emoji">${emoji}</span><span class="th-text"><b>${label}</b>${sub ? `<small>${sub}</small>` : ''}</span>${extra}</button>`;
   root.innerHTML = `
@@ -26,7 +26,7 @@ export function home(root: HTMLElement) {
         <h1 class="home-logo"><span>${es ? 'Mundo de' : 'World of'}</span>${es ? 'Sonidos' : 'Sounds'}</h1>
         <div class="home-right">
           <div class="star-count" aria-label="${total} ${t('stars')}">${icon.star}<b>${total}</b></div>
-          ${store.premium ? '' : `<button class="premium-pill" data-go="/premium">⭐ Premium</button>`}
+          ${store.premium ? '' : trialActive() ? `<button class="premium-pill trial" data-go="/premium">🎁 ${Math.max(1, Math.ceil((store.trialUntil - Date.now()) / 3600000))} h</button>` : `<button class="premium-pill" data-go="/premium">⭐ Premium</button>`}
         </div>
       </header>
       <div class="home-grid">

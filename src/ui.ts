@@ -3,7 +3,7 @@ import { sfx, stopAll, unlockAudio } from './audio';
 import type { Animal } from './data';
 import { t } from './i18n';
 import { animalById } from './data';
-import { isLocked, onSticker, save, store } from './store';
+import { isLocked, onSticker, save, startTrial, store, trialAvailable } from './store';
 
 export const $ = <T extends HTMLElement = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel)!;
 
@@ -93,13 +93,15 @@ export function lockedModal(emoji = '🔒') {
   m.innerHTML = `<div class="sheet locked-modal" role="dialog" aria-modal="true">
     <div class="lm-emoji">${emoji}<span class="lm-lock">${icon.lock}</span></div>
     <h3>${t('lockedTitle')}</h3><p>${t('lockedBody')}</p>
-    <button class="buy-btn" data-act="adult">⭐ ${t('unlockAll')}</button>
+    ${trialAvailable() ? `<button class="buy-btn trial" data-act="trial">🎁 ${t('trialBtn')}</button>` : ''}
+    <button class="${trialAvailable() ? 'pill' : 'buy-btn'}" data-act="adult">⭐ ${t('unlockAll')}</button>
     <button class="link-btn" data-act="close">${t('later')}</button></div>`;
   document.body.appendChild(m);
   const close = () => { m.classList.add('out'); setTimeout(() => m.remove(), 250); };
   m.addEventListener('click', (e) => {
     const act = (e.target as HTMLElement).closest<HTMLElement>('[data-act]')?.dataset.act;
     if (e.target === m || act === 'close') close();
+    if (act === 'trial' && startTrial()) { close(); sfx('win'); const h = location.hash; location.hash = '#/'; setTimeout(() => { location.hash = h; }, 30); }
     if (act === 'adult') { close(); go('/premium'); }
   });
 }
@@ -134,5 +136,22 @@ function askRating(emoji: string) {
     const act = (e.target as HTMLElement).closest<HTMLElement>('[data-act]')?.dataset.act;
     if (e.target === m || act === 'close') close();
     if (act === 'adult') { close(); go('/padres?next=valorar'); }
+  });
+}
+
+/** Cuando se acaba la prueba gratis, se avisa una sola vez con un enlace a la compra. */
+export function checkTrialEnd() {
+  if (store.premium || !store.trialUntil || store.trialUntil > Date.now() || store.trialEndSeen) return;
+  store.trialEndSeen = true; save();
+  const m = document.createElement('div');
+  m.className = 'sheet-wrap';
+  m.innerHTML = `<div class="sheet locked-modal" role="dialog" aria-modal="true">
+    <div class="premium-emojis">🦁🐘🐧🦜🐼</div><h3>${t('trialEndTitle')}</h3><p>${t('trialEndBody')}</p>
+    <button class="buy-btn" data-act="buy">⭐ ${t('unlockAll')}</button>
+    <button class="link-btn" data-act="close">${t('later')}</button></div>`;
+  document.body.appendChild(m);
+  m.addEventListener('click', (e) => {
+    const act = (e.target as HTMLElement).closest<HTMLElement>('[data-act]')?.dataset.act;
+    if (e.target === m || act) { m.remove(); if (act === 'buy') go('/premium'); }
   });
 }
