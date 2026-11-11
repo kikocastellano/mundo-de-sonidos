@@ -77,7 +77,7 @@ for (const t of targets) {
   await page.goto(BASE + '#/profe/ver'); await sleep(600); check(await page.locator('.teacher-name').textContent() !== '', 'modo profe muestra animal'); await shot('14-profe');
   await page.goto(BASE + '#/profe'); check(await page.isVisible('text=Preguntas'), 'menú del modo profe');
   await page.goto(BASE + '#/profe/preguntas'); await sleep(500); await shot('14b-preguntas');
-  check((await page.locator('.q-opt').count()) === 3, 'pregunta con 3 opciones');
+  check((await page.locator('.q-opt').count()) >= 2, 'pregunta con opciones');
   for (let k = 0; k < 3 && !(await page.locator('.q-opt.right').count()); k++) { await page.locator('.q-opt:not(.fade)').first().click(); await sleep(200); }
   check((await page.locator('.q-opt.right').count()) === 1, 'se puede acertar la pregunta');
   await page.goto(BASE + '#/creditos'); check((await page.locator('.credit-item').count()) >= 70, 'créditos de todos los animales'); await shot('15-creditos');

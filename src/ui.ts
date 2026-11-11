@@ -41,7 +41,7 @@ export function card(a: Animal, i: number, lang: 'es' | 'en') {
   return `<button class="card ${locked ? 'locked' : ''}" data-animal="${a.id}" style="--i:${i}" aria-label="${esc(a.name[lang])}${locked ? ' – ' + t('locked') : ''}">
     <span class="card-emoji">${art(a)}</span>
     <span class="card-name">${esc(a.name[lang])}</span>
-    ${locked ? `<span class="lock-badge">${icon.lock}</span>` : ''}
+    ${locked ? `<span class="lock-badge">${icon.lock}</span>` : a.silent ? '<span class="silent-badge" title="Silencioso">🤫</span>' : ''}
   </button>`;
 }
 

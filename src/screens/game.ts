@@ -24,7 +24,7 @@ export function gamePicker(root: HTMLElement) {
 export function game(root: HTMLElement, where: RegionId | 'todo', words = false) {
   const L = store.lang;
   const O = L === 'es' ? 'en' : 'es';
-  const free = ANIMALS.filter((a) => !isLocked(a));
+  const free = ANIMALS.filter((a) => !isLocked(a) && (words || !a.silent));
   let pool = where === 'todo' ? free : free.filter((a) => a.region === where);
   // Si una región tiene pocos animales gratis, se completa con otros para tener opciones.
   const distractors = free;

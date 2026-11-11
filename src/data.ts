@@ -31,6 +31,8 @@ export interface Animal {
   credit?: { author: string; license: string; source: string };
   /** Dibujo del animal (Fluent Emoji, MIT) en public/art. */
   art?: string;
+  /** Casi no hace ruido: en lugar de sonido, el locutor cuenta una curiosidad. */
+  silent?: boolean;
 }
 
 export const REGIONS: Region[] = [
@@ -222,6 +224,40 @@ export const ANIMALS: Animal[] = [
   A("galah", "🦜", "oceania", true, "parrot", "Cacatúa galah", "Galah", "Es rosa y gris y le encanta colgarse boca abajo.", "It’s pink and grey and loves hanging upside down."),
   A("lori-arcoiris", "🦜", "oceania", false, "parrot", "Lori arcoíris", "Rainbow lorikeet", "Tiene plumas de todos los colores del arcoíris.", "It has feathers of every colour of the rainbow."),
   A("escribano-nival", "🐦", "polos", true, "peep", "Escribano nival", "Snow bunting", "Es uno de los pájaros que vive más al norte del mundo.", "It’s one of the birds that lives furthest north."),
+  // ---- Silenciosos (casi no hacen ruido: el locutor cuenta una curiosidad) ----
+  A('jirafa', '🦒', 'africa', false, 'silent', 'Jirafa', 'Giraffe', 'Las jirafas casi no hacen ruido, pero de noche zumban muy bajito.', 'Giraffes are almost silent, but at night they hum very softly.'),
+  A('pulpo', '🐙', 'oceano', false, 'silent', 'Pulpo', 'Octopus', 'El pulpo tiene tres corazones y la sangre azul.', 'An octopus has three hearts and blue blood.'),
+  A('tiburon', '🦈', 'oceano', false, 'silent', 'Tiburón', 'Shark', 'Al tiburón le salen dientes nuevos toda la vida.', 'Sharks grow new teeth all their lives.'),
+  A('mariposa', '🦋', 'europa', false, 'silent', 'Mariposa', 'Butterfly', 'Las mariposas prueban la comida con los pies.', 'Butterflies taste food with their feet.'),
+  A('tortuga', '🐢', 'oceano', true, 'silent', 'Tortuga marina', 'Sea turtle', 'Las tortugas vuelven a la playa donde nacieron.', 'Sea turtles return to the beach where they hatched.'),
+  A('medusa', '🪼', 'oceano', true, 'silent', 'Medusa', 'Jellyfish', 'Las medusas no tienen cerebro ni corazón.', 'Jellyfish have no brain and no heart.'),
+  A('caballito-mar', '🐠', 'oceano', true, 'silent', 'Caballito de mar', 'Seahorse', '¡En los caballitos de mar, el papá lleva a los bebés!', 'In seahorses, the dad carries the babies!'),
+  A('estrella-mar', '⭐', 'oceano', true, 'silent', 'Estrella de mar', 'Starfish', 'Si una estrella de mar pierde un brazo, le crece otro.', 'If a starfish loses an arm, it grows a new one.'),
+  A('pez-payaso', '🐠', 'oceano', true, 'silent', 'Pez payaso', 'Clownfish', 'El pez payaso vive dentro de una anémona que pica.', 'Clownfish live inside stinging anemones.'),
+  A('pez-globo', '🐡', 'oceano', true, 'silent', 'Pez globo', 'Pufferfish', 'El pez globo se hincha como una pelota si se asusta.', 'A pufferfish puffs up like a ball when it is scared.'),
+  A('cangrejo', '🦀', 'oceano', true, 'silent', 'Cangrejo', 'Crab', 'Los cangrejos caminan de lado.', 'Crabs walk sideways.'),
+  A('calamar', '🦑', 'oceano', true, 'silent', 'Calamar', 'Squid', 'El calamar suelta tinta para escapar.', 'Squids squirt ink to escape.'),
+  A('langosta', '🦞', 'oceano', true, 'silent', 'Langosta', 'Lobster', 'La langosta prueba la comida con las patas.', 'Lobsters taste food with their legs.'),
+  A('langostino', '🦐', 'oceano', true, 'silent', 'Gamba', 'Shrimp', 'Las gambas nadan hacia atrás para escapar.', 'Shrimp swim backwards to escape.'),
+  A('manta-raya', '🐟', 'oceano', true, 'silent', 'Manta raya', 'Manta ray', 'La manta raya parece volar bajo el agua.', 'Manta rays seem to fly under water.'),
+  A('raton', '🐁', 'granja', true, 'silent', 'Ratón', 'Mouse', 'Los ratones cantan canciones que nosotros no podemos oír.', 'Mice sing songs that we cannot hear.'),
+  A('caracol', '🐌', 'granja', true, 'silent', 'Caracol', 'Snail', 'El caracol lleva su casa a cuestas.', 'A snail carries its house on its back.'),
+  A('mariquita', '🐞', 'europa', true, 'silent', 'Mariquita', 'Ladybird', 'Las mariquitas ayudan a cuidar las plantas.', 'Ladybirds help look after plants.'),
+  A('hormiga', '🐜', 'granja', true, 'silent', 'Hormiga', 'Ant', 'Una hormiga puede levantar 50 veces su peso.', 'An ant can lift 50 times its own weight.'),
+  A('arana', '🕷️', 'granja', true, 'silent', 'Araña', 'Spider', 'La araña teje su tela con hilo de su cuerpo.', 'Spiders spin webs with silk from their bodies.'),
+  A('lombriz', '🪱', 'granja', true, 'silent', 'Lombriz', 'Earthworm', 'Las lombrices hacen que la tierra sea buena para las plantas.', 'Earthworms make soil good for plants.'),
+  A('camaleon', '🦎', 'africa', true, 'silent', 'Camaleón', 'Chameleon', 'El camaleón mueve cada ojo por separado.', 'A chameleon moves each eye on its own.'),
+  A('escorpion', '🦂', 'africa', true, 'silent', 'Escorpión', 'Scorpion', 'Los escorpiones brillan con luz ultravioleta.', 'Scorpions glow under ultraviolet light.'),
+  A('dodo', '🦤', 'africa', true, 'silent', 'Dodo', 'Dodo', 'El dodo no sabía volar y desapareció hace mucho.', 'The dodo could not fly and vanished long ago.'),
+  A('perezoso', '🦥', 'america', true, 'silent', 'Perezoso', 'Sloth', 'Al perezoso le crecen plantitas en el pelo.', 'Tiny plants grow in a sloth’s fur.'),
+  A('armadillo', '🦔', 'america', true, 'silent', 'Armadillo', 'Armadillo', 'El armadillo lleva una armadura en la espalda.', 'An armadillo wears armour on its back.'),
+  A('oso-hormiguero', '🐜', 'america', true, 'silent', 'Oso hormiguero', 'Anteater', 'El oso hormiguero come 30 000 hormigas al día.', 'An anteater eats 30,000 ants a day.'),
+  A('diplodoco', '🦕', 'america', true, 'silent', 'Diplodoco', 'Diplodocus', 'El diplodoco era más largo que tres autobuses.', 'Diplodocus was longer than three buses.'),
+  A('t-rex', '🦖', 'america', true, 'silent', 'Tiranosaurio', 'T. rex', 'El tiranosaurio tenía los brazos muy cortitos.', 'T. rex had very short arms.'),
+  A('canguro', '🦘', 'oceania', true, 'silent', 'Canguro', 'Kangaroo', 'El canguro lleva a su bebé en una bolsa.', 'Kangaroos carry their babies in a pouch.'),
+  A('oso-polar', '🐻‍❄️', 'polos', true, 'silent', 'Oso polar', 'Polar bear', 'La piel del oso polar es negra.', 'A polar bear’s skin is black.'),
+  A('narval', '🐋', 'polos', true, 'silent', 'Narval', 'Narwhal', 'El cuerno del narval es un diente muy largo.', 'A narwhal’s horn is a very long tooth.'),
+  A('mamut', '🐘', 'polos', true, 'silent', 'Mamut', 'Mammoth', 'El mamut vivió en la Edad de Hielo.', 'Mammoths lived in the Ice Age.'),
 ];
 
 // Grabaciones reales aprobadas (las genera scripts/process-sounds.mjs).
@@ -229,6 +265,7 @@ const REAL = SOUNDS as Record<string, { file: string; author: string; license: s
 for (const a of ANIMALS) {
   a.art = (ART as Record<string, string>)[a.id];
   const r = REAL[a.id];
+  a.silent = a.sound === 'silent' && !r;
   if (r) { a.audio = `./sounds/${r.file}`; a.credit = { author: r.author, license: r.license, source: r.source }; }
 }
 

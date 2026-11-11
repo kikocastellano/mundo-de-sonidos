@@ -182,6 +182,11 @@ export function playAnimal(a: Animal): number {
   unlockAudio();
   if (!ctx || store.muted) return 0;
   stopAll();
+  if (a.silent) {
+    const es = store.lang === 'es';
+    sayName(es ? `¡Shhh! ${a.name.es} casi no hace ruido. ${a.fact.es}` : `Shhh! The ${a.name.en.toLowerCase()} is almost silent. ${a.fact.en}`);
+    return 4;
+  }
   if (a.audio) {
     const known = decoded.get(a.audio);
     void playFile(a.audio).catch(() => RECIPES[a.sound]?.());

@@ -9,7 +9,7 @@ const BY_EMOJI = { '🐁': 'mouse', '🐂': 'ox', '🐃': 'water-buffalo', '🐄
 // Dibujos más precisos que el emoji genérico (antes no se usaban porque los móviles antiguos no los tenían)
 // Dibujos propios en assets/art-custom (el set no tiene el pájaro kiwi, solo la fruta)
 const CUSTOM = { kiwi: 'kiwi-bird' };
-const BY_ID = { burro: 'donkey', ganso: 'goose', barnacla: 'goose', alce: 'moose', pollito: 'baby-chick', cebra: 'zebra', canguro: 'kangaroo' };
+const BY_ID = { jirafa: 'giraffe', tortuga: 'turtle', raton: 'mouse', pulpo: 'octopus', tiburon: 'shark', mariposa: 'butterfly', medusa: 'jellyfish', 'caballito-mar': 'tropical-fish', 'estrella-mar': 'star', 'pez-payaso': 'tropical-fish', 'pez-globo': 'blowfish', cangrejo: 'crab', calamar: 'squid', langosta: 'lobster', langostino: 'shrimp', 'manta-raya': 'fish', caracol: 'snail', mariquita: 'lady-beetle', hormiga: 'ant', arana: 'spider', lombriz: 'worm', camaleon: 'lizard', escorpion: 'scorpion', dodo: 'dodo', perezoso: 'sloth', armadillo: 'hedgehog', 'oso-hormiguero': 'badger', diplodoco: 'sauropod', 't-rex': 't-rex', canguro: 'kangaroo', 'oso-polar': 'polar-bear', narval: 'dolphin', mamut: 'mammoth', burro: 'donkey', ganso: 'goose', barnacla: 'goose', alce: 'moose', pollito: 'baby-chick', cebra: 'zebra', canguro: 'kangaroo' };
 
 const src = readFileSync('src/data.ts', 'utf8');
 const animals = [...src.matchAll(/^ {2}A\(["']([\w-]+)["'], ["']([^"']+)["']/gm)].map((m) => [m[1], m[2]]);
