@@ -41,7 +41,7 @@ for (const t of targets) {
   await tap('.t-explore'); await shot('2-mapa'); await noHScroll('mapa');
   check((await page.locator('.zone').count()) === 8, '8 zonas en el mapa');
   await page.locator('.zone[data-go="/region/granja"]').click(); await shot('3-granja'); await noHScroll('región');
-  check((await page.locator('.card').count()) >= 20, 'granja con todos sus animales');
+  check((await page.locator('.card').count()) >= 15, 'granja con todos sus animales');
   await tap('.card[data-animal="vaca"]'); await shot('4-vaca'); await noHScroll('ficha');
   check(await page.isVisible('.action.other-lang'), 'botón con el nombre en inglés');
   await tap('.more-btn'); await shot('4b-saber-mas'); check((await page.locator('.sheet .tile').count()) === 6, 'panel «Saber más» con 6 tarjetas');

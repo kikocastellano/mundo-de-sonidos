@@ -90,7 +90,6 @@ export const ANIMALS: Animal[] = [
   A('pollito', '🐥', 'granja', false, 'peep', 'Pollito', 'Chick', 'Los pollitos pían para no perder a su mamá.', 'Chicks peep so they don’t lose their mum.'),
   A('pavo', '🦃', 'granja', false, 'gobble', 'Pavo', 'Turkey', 'Cuando el pavo se emociona, su cuello cambia de color.', 'When a turkey gets excited, its neck changes colour.'),
   A('burro', '🐴', 'granja', false, 'bray', 'Burro', 'Donkey', 'El rebuzno del burro se oye a 3 kilómetros.', 'A donkey’s bray can be heard 3 kilometres away.'),
-  A('ganso', '🦢', 'granja', false, 'honk', 'Ganso', 'Goose', 'Los gansos vuelan en forma de V para cansarse menos.', 'Geese fly in a V shape to save energy.'),
   A('conejo', '🐇', 'granja', false, 'squeak', 'Conejo', 'Rabbit', 'Los conejos dan saltitos de alegría llamados «binkies».', 'Rabbits do happy jumps called "binkies".'),
   A('toro', '🐂', 'granja', false, 'moo', 'Toro', 'Bull', 'Los toros no ven bien el color rojo.', 'Bulls can’t really see the colour red.'),
   // Océano
@@ -98,7 +97,6 @@ export const ANIMALS: Animal[] = [
   A('nutria', '🦦', 'oceano', true, 'squeak', 'Nutria', 'Otter', 'Las nutrias se dan la mano para dormir y no separarse.', 'Otters hold hands while they sleep so they don’t drift apart.'),
   A('gaviota', '🕊️', 'oceano', true, 'gull', 'Gaviota', 'Seagull', 'Las gaviotas pueden beber agua salada.', 'Seagulls can drink salty water.'),
   // África
-  A('jirafa', '🦒', 'africa', false, 'hum', 'Jirafa', 'Giraffe', 'Las jirafas casi no hacen ruido, pero de noche zumban.', 'Giraffes are very quiet, but they hum at night.'),
   A('rinoceronte', '🦏', 'africa', true, 'hippo', 'Rinoceronte', 'Rhino', 'El cuerno del rinoceronte está hecho de lo mismo que tus uñas.', 'A rhino’s horn is made of the same stuff as your nails.'),
   A('gorila', '🦍', 'africa', true, 'growl', 'Gorila', 'Gorilla', 'Los gorilas se golpean el pecho para saludar o avisar.', 'Gorillas beat their chests to say hello or warn others.'),
   A('flamenco', '🦩', 'africa', true, 'honk', 'Flamenco', 'Flamingo', 'Los flamencos son rosas por lo que comen.', 'Flamingos are pink because of what they eat.'),
@@ -109,7 +107,6 @@ export const ANIMALS: Animal[] = [
   A('serpiente', '🐍', 'america', true, 'rattle', 'Serpiente de cascabel', 'Rattlesnake', 'Agita la cola como un sonajero para decir «¡no te acerques!».', 'It shakes its tail like a rattle to say "stay away!".'),
   A('alce', '🦌', 'america', true, 'bugle', 'Alce', 'Moose', 'Los alces son grandes nadadores.', 'Moose are great swimmers.'),
   // Asia
-  A('bufalo', '🐃', 'asia', true, 'moo', 'Búfalo de agua', 'Water buffalo', 'A los búfalos de agua les encanta bañarse en el barro.', 'Water buffalo love bathing in mud.'),
   A('cobra', '🐍', 'asia', true, 'hiss', 'Cobra', 'Cobra', 'La cobra abre su capucha para parecer más grande.', 'A cobra opens its hood to look bigger.'),
   A('grulla', '🐦', 'asia', true, 'honk', 'Grulla', 'Crane', 'Las grullas bailan dando saltos para enamorarse.', 'Cranes dance and jump to find a partner.'),
   // Europa
@@ -123,7 +120,6 @@ export const ANIMALS: Animal[] = [
   A('paloma', '🕊️', 'europa', true, 'coo', 'Paloma', 'Dove', 'Las palomas siempre encuentran el camino a casa.', 'Doves always find their way home.'),
   // Oceanía
   A('cacatua', '🦜', 'oceania', true, 'parrot', 'Cacatúa', 'Cockatoo', 'Las cacatúas bailan cuando oyen música.', 'Cockatoos dance when they hear music.'),
-  A('tortuga', '🐢', 'oceania', true, 'snuffle', 'Tortuga marina', 'Sea turtle', 'Las tortugas vuelven a la playa donde nacieron.', 'Sea turtles return to the beach where they were born.'),
   // Polos
   A('reno', '🦌', 'polos', false, 'snuffle', 'Reno', 'Reindeer', 'Las rodillas de los renos hacen «clic» al andar.', 'Reindeer knees go "click" when they walk.'),
   A('buho-nival', '🦉', 'polos', true, 'owl', 'Búho nival', 'Snowy owl', 'El búho nival caza de día porque en verano no anochece.', 'Snowy owls hunt by day because summer nights never get dark.'),
@@ -131,7 +127,6 @@ export const ANIMALS: Animal[] = [
   // Granja y mascotas
   A('cordero', '🐑', 'granja', false, 'baa', 'Cordero', 'Lamb', 'Cada cordero reconoce el balido de su mamá entre cientos.', 'Every lamb knows its mum’s bleat among hundreds.'),
   A('gatito', '🐱', 'granja', false, 'meow', 'Gatito', 'Kitten', 'Los gatitos ronronean desde que tienen una semana.', 'Kittens can purr when they are just one week old.'),
-  A('raton', '🐁', 'granja', false, 'squeak', 'Ratón', 'Mouse', 'Los ratones cantan canciones que nosotros no podemos oír.', 'Mice sing songs that we can’t hear.'),
   A('periquito', '🦜', 'granja', false, 'parrot', 'Periquito', 'Budgie', 'Los periquitos pueden aprender palabras.', 'Budgies can learn words.'),
   // Océano
   // África
@@ -150,7 +145,6 @@ export const ANIMALS: Animal[] = [
   A('murcielago', '🦇', 'europa', true, 'squeak', 'Murciélago', 'Bat', 'Los murciélagos «ven» con el sonido de su eco.', 'Bats "see" using the echo of their calls.'),
   A('lechuza', '🦉', 'europa', true, 'hiss', 'Lechuza', 'Barn owl', 'La lechuza no ulula: ¡bufa y chilla!', 'Barn owls don’t hoot – they hiss and screech!'),
   A('ruisenor', '🐦', 'europa', true, 'parrot', 'Ruiseñor', 'Nightingale', 'El ruiseñor sabe más de 200 canciones.', 'A nightingale knows more than 200 songs.'),
-  A('pajaro-carpintero', '🐦', 'europa', true, 'woodpecker', 'Pájaro carpintero', 'Woodpecker', 'Golpea los árboles 20 veces por segundo.', 'It taps on trees 20 times a second.'),
   A('cisne', '🦢', 'europa', true, 'honk', 'Cisne', 'Swan', 'Las crías del cisne viajan en la espalda de sus padres.', 'Baby swans ride on their parents’ backs.'),
   A('mosquito', '🦟', 'europa', true, 'buzz', 'Mosquito', 'Mosquito', 'Su zumbido es el ruido de sus alas.', 'Its buzz is the sound of its wings.'),
   // Oceanía
@@ -207,7 +201,6 @@ export const ANIMALS: Animal[] = [
   A("zarigueya", "🐨", "oceania", true, "growl", "Pósum", "Possum", "El pósum sale de noche y trepa muy bien.", "The possum comes out at night and climbs very well."),
   A("lagopodo", "🐦", "polos", true, "caw", "Perdiz nival", "Ptarmigan", "Sus plumas se vuelven blancas en invierno.", "Its feathers turn white in winter."),
   A("charran-artico", "🐦", "polos", true, "gull", "Charrán ártico", "Arctic tern", "Viaja cada año de un polo al otro.", "It flies from one pole to the other every year."),
-  A("barnacla", "🦢", "polos", true, "honk", "Barnacla", "Barnacle goose", "Los pollitos saltan desde acantilados al nacer.", "Chicks jump from cliffs when they hatch."),
   // ---- Ampliación 4 ----
   A("muntiaco", "🦌", "asia", true, "bugle", "Muntíaco", "Muntjac", "El muntíaco ladra como un perro cuando se asusta.", "The muntjac barks like a dog when it’s scared."),
   A("ardilla-gigante", "🐿️", "asia", true, "chatter", "Ardilla gigante", "Giant squirrel", "Es una ardilla enorme de colores: ¡morada, naranja y crema!", "It’s a huge, colourful squirrel – purple, orange and cream!"),
