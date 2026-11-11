@@ -3,12 +3,12 @@ import type { Lang } from './data';
 
 export type Act = 'seen' | 'right' | 'listen';
 
-interface State { lang: Lang; muted: boolean; favs: string[]; stars: Record<string, number>; premium: boolean; voice: Record<Lang, string>; seen: Record<string, number>; rounds: number; log: [number, Act, string][]; kid: string; rated: number; asked: number; purchased: boolean; trialUntil: number; trialEndSeen: boolean }
+interface State { lang: Lang; muted: boolean; favs: string[]; stars: Record<string, number>; premium: boolean; voice: Record<Lang, string>; seen: Record<string, number>; rounds: number; log: [number, Act, string][]; kid: string; rated: number; asked: number; purchased: boolean; trialUntil: number; trialEndSeen: boolean; welcomed: boolean }
 
 const KEY = 'mundo-sonidos-v1';
 const defaults = (): State => ({
   lang: (navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en',
-  muted: false, favs: [], stars: {}, premium: false, voice: { es: '', en: '' }, seen: {}, rounds: 0, log: [], kid: '', rated: 0, asked: 0, purchased: false, trialUntil: 0, trialEndSeen: false,
+  muted: false, favs: [], stars: {}, premium: false, voice: { es: '', en: '' }, seen: {}, rounds: 0, log: [], kid: '', rated: 0, asked: 0, purchased: false, trialUntil: 0, trialEndSeen: false, welcomed: false,
 });
 
 function load(): State {

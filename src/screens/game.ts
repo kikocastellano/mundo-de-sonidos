@@ -71,7 +71,7 @@ export function game(root: HTMLElement, where: RegionId | 'todo', words = false)
       choices.querySelectorAll('.choice:not(.right)').forEach((o) => o.classList.add('fade'));
       prompt.innerHTML = words ? `${t('great')} <b>${esc(target.name[O])}</b> = ${esc(target.name[L])}` : `${t('great')} <b>${esc(target.name[L])}</b>`;
       sfx('win'); confetti();
-      setTimeout(() => (words ? sayName(target.name[O], O) : sayName(target.name[L])), 500);
+      setTimeout(() => (words ? sayName(O === 'en' ? `It's ${/^[aeiou]/i.test(target.name.en) ? 'an' : 'a'} ${target.name.en.toLowerCase()}!` : target.name.es, O) : sayName(target.name[L])), 500);
       if (mistakes === 0) streak++;
       addStar(where); logAct('right', target.id); setTimeout(() => discover(target.id), 1200);
       store.rounds = (store.rounds || 0) + 1; save();

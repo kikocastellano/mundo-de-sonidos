@@ -10,7 +10,7 @@ export function credits(root: HTMLElement) {
   root.innerHTML = `
     <section class="screen">
       <header class="topbar">${backBtn('/padres')}<h2>${t('credits')}</h2><span class="spacer"></span></header>
-      <div class="panel"><p>${L === 'es' ? 'App creada por Kiko Castellano. Dibujos: Fluent Emoji de Microsoft (licencia MIT).' : 'App by Kiko Castellano. Pictures: Microsoft Fluent Emoji (MIT licence).'}</p></div>
+      <div class="panel"><p>${L === 'es' ? 'App creada por Kiko Castellano. Dibujos: Fluent Emoji de Microsoft (licencia MIT).' : 'App by Kiko Castellano. Pictures: Microsoft Fluent Emoji (MIT licence).'}</p><p class="version">v${__APP_VERSION__}</p></div>
       <div class="credit-list">${ANIMALS.map((a) => `<div class="credit-item"><span>${art(a)}</span><div><b>${esc(a.name[L])}</b>
         ${a.credit ? `${esc(a.credit.author)} · ${esc(a.credit.license)} · <a href="${esc(a.credit.source)}" target="_blank" rel="noopener">${L === 'es' ? 'fuente' : 'source'}</a>` : prov}</div></div>`).join('')}</div>
     </section>`;

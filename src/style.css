@@ -549,3 +549,11 @@ img.art.inline { display: inline-block; vertical-align: -.15em; }
 .portrait-emoji img.art { width: 1.1em; height: 1.1em; }
 .q-emoji img.art { width: 1.2em; height: 1.2em; }
 .sticker .s-emoji img.art { width: 1.25em; height: 1.25em; }
+
+/* Bienvenida: mano que señala «Explorar» */
+.welcome-target { position: relative; animation: welcomePulse 1.6s ease-in-out infinite; }
+.welcome-hand { position: absolute; right: 10%; bottom: -18px; font-size: 2.6rem; pointer-events: none; animation: welcomeHand 1.2s ease-in-out infinite; filter: drop-shadow(0 3px 4px rgba(0,0,0,.3)); }
+@keyframes welcomeHand { 0%,100% { transform: translate(0,0) } 50% { transform: translate(-6px,-14px) scale(.92) } }
+@keyframes welcomePulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,210,80,.0) } 50% { box-shadow: 0 0 0 8px rgba(255,210,80,.55) } }
+.version { opacity: .6; font-size: .85em; margin-top: .5em; }
+@media (prefers-reduced-motion: reduce) { .welcome-hand, .welcome-target { animation: none; } }

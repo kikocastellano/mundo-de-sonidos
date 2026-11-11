@@ -1,7 +1,7 @@
 {
   "name": "mundo-de-sonidos",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.1.0",
   "description": "App educativa para niños de 2 a 8 años: descubre animales del mundo y escucha sus sonidos",
   "type": "module",
   "scripts": {

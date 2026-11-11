@@ -3,6 +3,8 @@ import { ANIMALS } from '../data';
 import { t } from '../i18n';
 import { hasPremium, isLocked, store, trialActive } from '../store';
 import { art, esc, icon } from '../ui';
+import { sayName } from '../audio';
+import { save } from '../store';
 
 /** Mismo animal para todo el día; si no hay compra, uno de los gratuitos. */
 export function animalOfDay() {
@@ -45,4 +47,13 @@ export function home(root: HTMLElement) {
       </div>
       <p class="tagline">${t('privacy')}</p>
     </section>`;
+  if (!store.welcomed) {
+    const ex = root.querySelector<HTMLElement>('.t-explore')!;
+    ex.classList.add('welcome-target');
+    ex.insertAdjacentHTML('beforeend', '<span class="welcome-hand" aria-hidden="true">👆</span>');
+    const hi = () => { sayName(es ? '¡Hola! Toca un animal para escuchar cómo suena' : 'Hi! Tap an animal to hear how it sounds'); };
+    setTimeout(hi, 700);
+    document.addEventListener('pointerdown', (e) => { if (!ex.contains(e.target as Node)) hi(); }, { once: true });
+    ex.addEventListener('click', () => { store.welcomed = true; save(); });
+  }
 }
