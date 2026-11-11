@@ -21,9 +21,11 @@ WIDE = {'oso': 'Ursidae', 'oso-polar': 'Ursidae', 'canguro': 'Macropodiformes', 
   'morsa': 'Pinnipedia', 'foca-leopardo': 'Phocidae', 'cocodrilo': 'Crocodylia', 'raton': 'Muridae', 'hamster': 'Cricetidae', 'beluga': 'Odontoceti',
   'yak': 'Bos', 'leopardo-nieves': 'Panthera', 'buey-almizclero': 'Caprinae', 'buho-nival': 'Bubo', 'panda': 'Ailuridae'}
 if os.environ.get('INAT_AMPLIO'): TAXA.update(WIDE)
+MAX = int(os.environ.get('INAT_MAX', '6'))
 SKIP = int(os.environ.get('INAT_SALTAR', '0'))  # salta los N primeros sonidos (ya vistos)
 TAXA.update({'gallina-guinea': 'Numida meleagris', 'elefante-marino': 'Mirounga', 'foca-gris': 'Halichoerus grypus', 'indri': 'Indri indri', 'chacal': 'Canis aureus', 'calao': 'Tockus', 'turaco': 'Corythaixoides', 'ardilla-listada': 'Tamias striatus', 'perrito-pradera': 'Cynomys', 'castor': 'Castor', 'tucan': 'Ramphastos', 'guacamayo': 'Ara', 'cardenal': 'Cardinalis cardinalis', 'arrendajo-azul': 'Cyanocitta cristata', 'sinsonte': 'Mimus polyglottos', 'buho-barrado': 'Strix varia', 'colimbo': 'Gavia immer', 'rana-toro': 'Lithobates catesbeianus', 'coqui': 'Eleutherodactylus coqui', 'uapiti': 'Cervus canadensis', 'pica': 'Ochotona princeps', 'capuchino': 'Sapajus', 'martin-pescador': 'Megaceryle alcyon', 'aguila-pescadora': 'Pandion haliaetus', 'codorniz': 'Colinus virginianus', 'saltamontes-cantor': 'Pterophylla camellifolia', 'geco': 'Gekko gecko', 'macaco': 'Macaca', 'siamang': 'Symphalangus syndactylus', 'faisan': 'Phasianus colchicus', 'cotorra': 'Psittacula krameri', 'petirrojo': 'Erithacus rubecula', 'mirlo': 'Turdus merula', 'gorrion': 'Passer domesticus', 'urraca': 'Pica pica', 'abubilla': 'Upupa epops', 'golondrina': 'Hirundo rustica', 'mochuelo': 'Athene noctua', 'autillo': 'Otus scops', 'corzo': 'Capreolus capreolus', 'marmota': 'Marmota marmota', 'liron': 'Glis glis', 'saltamontes': 'Tettigonia viridissima', 'kiwi': 'Apteryx', 'kea': 'Nestor notabilis', 'tui': 'Prosthemadera novaeseelandiae', 'campanero': 'Anthornis melanura', 'ruru': 'Ninox novaeseelandiae', 'urraca-australiana': 'Gymnorhina tibicen', 'zarigueya': 'Trichosurus vulpecula', 'planeador': 'Petaurus breviceps', 'lagopodo': 'Lagopus', 'charran-artico': 'Sterna paradisaea', 'barnacla': 'Branta leucopsis'})
 TAXA.update({'muntiaco': 'Muntiacus', 'ardilla-gigante': 'Ratufa indica', 'koel': 'Eudynamys scolopaceus', 'bulbul': 'Pycnonotus', 'mina': 'Acridotheres tristis', 'daman': 'Dendrohyrax', 'francolin': 'Francolinus', 'tejedor': 'Ploceus', 'ciervo-cola-blanca': 'Odocoileus virginianus', 'zorro-gris': 'Urocyon cinereoargenteus', 'rana-leopardo': 'Lithobates pipiens', 'chotacabras': 'Antrostomus vociferus', 'buho-cornudo': 'Bubo virginianus', 'ardilla-gris': 'Sciurus carolinensis', 'mono-arana': 'Ateles', 'titi': 'Callithrix', 'gallo-praderas': 'Tympanuchus', 'lobo-marino': 'Zalophus californianus', 'jilguero': 'Carduelis carduelis', 'carbonero': 'Parus major', 'chochin': 'Troglodytes troglodytes', 'oropendola': 'Oriolus oriolus', 'sapo-partero': 'Alytes obstetricans', 'ranita-san-antonio': 'Hyla arborea', 'verdugo': 'Cracticus', 'rana-verde-australiana': 'Pelodryas caerulea', 'galah': 'Eolophus roseicapilla', 'lori-arcoiris': 'Trichoglossus moluccanus', 'escribano-nival': 'Plectrophenax nivalis', 'havelda': 'Clangula hyemalis'})
+TAXA.update({'pinguino': 'Spheniscus', 'jirafa': 'Giraffa', 'rinoceronte': 'Rhinocerotidae', 'gorila': 'Gorilla', 'turaco': 'Corythaixoides concolor', 'mosquito': 'Aedes'})
 TAXA.update({'ballena': 'Megaptera novaeangliae', 'koala': 'Phascolarctos cinereus', 'ganso': 'Anser anser', 'ardilla': 'Sciurus vulgaris', 'golondrina': 'Hirundo rustica'})
 LIC = {'cc0': 'CC0', 'cc-by': 'CC BY', 'cc-by-sa': 'CC BY-SA'}
 
@@ -43,11 +45,13 @@ def one(aid):
     obs.sort(key=lambda o: (o.get('quality_grade') != 'research', -(o.get('faves_count') or 0)))
     d = f'{OUT}/{aid}'; os.makedirs(d, exist_ok=True); out = []
     seen = 0
+    try: OLD = {c.get('url') for c in json.load(open(f'sounds-raw/{aid}/candidatos.json'))}
+    except Exception: OLD = set()
     for o in obs:
         for s in o.get('sounds') or []:
             lic = LIC.get((s.get('license_code') or '').lower())
             url = s.get('file_url')
-            if not lic or not url or len(out) >= 6: continue
+            if not lic or not url or len(out) >= MAX or url in OLD: continue
             seen += 1
             if seen <= SKIP: continue
             ext = url.split('?')[0].rsplit('.', 1)[-1].lower()[:4]
