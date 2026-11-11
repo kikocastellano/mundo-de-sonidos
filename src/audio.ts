@@ -183,9 +183,8 @@ export function playAnimal(a: Animal): number {
   if (!ctx || store.muted) return 0;
   stopAll();
   if (a.silent) {
-    const es = store.lang === 'es';
-    sayName(es ? `¡Shhh! ${a.name.es} casi no hace ruido. ${a.fact.es}` : `Shhh! The ${a.name.en.toLowerCase()} is almost silent. ${a.fact.en}`);
-    return 4;
+    sayName(a.name[store.lang]);
+    return 1.5;
   }
   if (a.audio) {
     const known = decoded.get(a.audio);
