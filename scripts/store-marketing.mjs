@@ -9,8 +9,8 @@ await new Promise((r) => setTimeout(r, 2500));
 const B = 'http://localhost:4181/';
 const seen = Object.fromEntries(['vaca', 'perro', 'gato', 'oveja', 'cerdo', 'caballo', 'pato', 'gallo', 'leon', 'elefante', 'jirafa', 'koala', 'pinguino', 'tigre', 'ballena', 'delfin', 'cabra', 'burro'].map((id, i) => [id, i + 1]));
 const SHOTS = [
-  { id: '1', hash: '', bg: ['#7cc8ff', '#2f8fd8'], es: ['152 animales', 'con su sonido real'], en: ['152 animals', 'with real sounds'] },
-  { id: '2', hash: '#/mundo', bg: ['#5ab4f0', '#1f78b4'], es: ['Viaja por', 'todo el mundo'], en: ['Travel around', 'the world'] },
+  { id: '1', hash: '', bg: ['#7cc8ff', '#2f8fd8'], es: ['177 animales', 'del mundo entero'], en: ['177 animals', 'from around the world'] },
+  { id: '2', hash: '#/region/oceano', bg: ['#5ab4f0', '#1f78b4'], es: ['Pulpos, tiburones…', '¡y dinosaurios!'], en: ['Octopuses, sharks…', 'and dinosaurs!'] },
   { id: '3', hash: '#/animal/leon', bg: ['#ffb36b', '#d9822b'], es: ['Toca y escucha', 'al instante'], en: ['Tap and listen', 'instantly'] },
   { id: '4', hash: '#/animal/elefante', more: true, bg: ['#9bd67a', '#3c9445'], es: ['Aprende curiosidades', 'que se leen en voz alta'], en: ['Fun facts', 'read out loud'] },
   { id: '5', hash: '#/juego/granja', bg: ['#b8a4ff', '#7b5cff'], es: ['¿Quién suena?', 'Aprende jugando'], en: ['Who’s that sound?', 'Learn by playing'] },
@@ -22,7 +22,7 @@ const b = await chromium.launch();
 for (const lang of ['es', 'en']) {
   mkdirSync(`docs/tienda/${lang}`, { recursive: true });
   const ctx = await b.newContext({ viewport: { width: 360, height: 720 }, deviceScaleFactor: 2.5, isMobile: true, hasTouch: true, locale: lang });
-  await ctx.addInitScript(([l, s]) => localStorage.setItem('mundo-sonidos-v1', JSON.stringify({ lang: l, premium: true, seen: s, stars: { granja: 12 }, favs: ['leon'] })), [lang, seen]);
+  await ctx.addInitScript(([l, s]) => localStorage.setItem('mundo-sonidos-v1', JSON.stringify({ lang: l, premium: true, welcomed: true, seen: s, stars: { granja: 12 }, favs: ['leon'] })), [lang, seen]);
   const p = await ctx.newPage();
   const frame = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   for (const s of SHOTS) {

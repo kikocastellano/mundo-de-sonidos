@@ -5,13 +5,23 @@
 **Descripción corta (80):** Sonidos reales de animales del mundo para niños. Sin anuncios y sin conexión.
 **Descripción larga:**
 ¡Viaja por el mundo y descubre cómo suenan los animales! 🦁🐘🐧
-- 🌍 Mapa del mundo para tocar: granja, océano, África, América, Asia, Europa, Oceanía y los polos.
-- 🔊 Sonidos reales de animales y su nombre en voz alta, en español e inglés.
-- 👂 Juego «¿Quién suena?»: sin vidas, sin esperas, sin frustración.
-- 💖 Favoritos, 🌙 modo calma para dormir y 🧑‍🏫 modo profe para clase.
-- 🚫 **Sin anuncios.** Sin cuentas, sin rastreo, **funciona sin conexión**.
-- 🔒 Pagos y ajustes detrás de una puerta para padres.
-Gratis con decenas de animales y 24 horas de prueba gratis de todo. Con un **pago único** (sin suscripción) desbloqueas todos los animales, los que vayan llegando, el modo calma y el modo profe. Se puede compartir con la familia de Google Play.
+
+🌍 Explora el mapa: la granja, el océano, África, América, Asia, Europa, Oceanía y los polos.
+🔊 177 animales: más de 140 con su sonido real, grabado en la naturaleza.
+🤫 Animales silenciosos: pulpos, tiburones, mariposas… ¡y dinosaurios!
+🗣️ Escucha su nombre en español y en inglés: un primer paso divertido hacia otro idioma.
+📖 Curiosidades leídas en voz alta: qué comen, dónde viven, cómo se llaman sus crías…
+👂 «¿Quién suena?» y juego de inglés: sin vidas, sin esperas, sin frustración.
+📒 Un álbum de pegatinas para completar.
+🌙 Modo calma: nana, lluvia, olas y más sonidos para dormir.
+🧑‍🏫 Modo profe: presentaciones y preguntas para clase.
+
+✅ Sin anuncios. Nunca.
+✅ Sin cuentas y sin recoger datos.
+✅ Funciona sin conexión.
+✅ Para niños de 2 a 8 años.
+
+Gratis con decenas de animales y 24 horas de prueba gratis de todo. Con un pago único (sin suscripción) desbloqueas todos los animales, los que vayan llegando, el modo calma y el modo profe.
 
 ## English
 **Title:** World of Sounds: Animals

@@ -7,7 +7,8 @@
 Travel the world and discover what animals sound like! 🦁🐘🐧
 
 🌍 Explore a world map: the farm, the ocean, Africa, America, Asia, Europe, Oceania and the poles.
-🔊 152 animals with their real sound, recorded in nature.
+🔊 177 animals: over 140 with their real sound, recorded in nature.
+🤫 Silent animals: octopuses, sharks, butterflies… and dinosaurs!
 🗣️ Hear each name in English and in Spanish — a fun first step into a second language.
 📖 Fun facts read out loud: what they eat, where they live, what their babies are called…
 👂 "Who's that sound?" and a language game: no lives, no waiting, no frustration.
