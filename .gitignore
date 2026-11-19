@@ -8,3 +8,6 @@ sounds-raw
 *.keystore
 keystore.properties
 descargas/
+youtube/*.mp4
+youtube/**/*.mp4
+youtube/.tmp/
