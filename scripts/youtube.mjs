@@ -196,4 +196,31 @@ PÚBLICO: Configuración → Canal → Configuración avanzada → «Sí, establ
 `);
   console.log('✓ canal PequeMundo');
 }
+if (MODE === 'miniaturas') {
+  // 3 miniaturas (1280x720) para el vídeo de dormir, para probarlas con «Probar y comparar» de YouTube.
+  mkdirSync('youtube/miniaturas', { recursive: true });
+  const img = (id, s, x, y, extra = '') => `<img src="${art64(byId[id])}" style="position:absolute;width:${s}px;height:${s}px;left:${x}px;top:${y}px;${extra}">`;
+  const stars = (n, h) => Array.from({ length: n }, (_, i) => `<div style="position:absolute;left:${(i * 197) % 1280}px;top:${(i * 83) % h}px;width:${3 + (i % 3) * 2}px;height:${3 + (i % 3) * 2}px;border-radius:50%;background:#fff;opacity:${0.5 + (i % 4) / 8}"></div>`).join('');
+  const T = (txt, fs, extra = '') => `<div class="t" style="font-size:${fs}px;${extra}">${txt}</div>`;
+  const zz = (x, y, s) => `<div class="t" style="position:absolute;left:${x}px;top:${y}px;font-size:${s}px;color:#fff6c8;transform:rotate(-12deg)">z<span style="font-size:${s * 0.75}px">z</span><span style="font-size:${s * 0.55}px">z</span></div>`;
+  // A: un animal grande durmiendo + texto corto enorme
+  await png(`<div style="position:absolute;inset:0;background:radial-gradient(circle at 70% 35%,#3b4aa0,#0b1440 75%)">${stars(60, 720)}
+    <div style="position:absolute;right:110px;top:70px;width:170px;height:170px;border-radius:50%;background:#fff6c8;box-shadow:0 0 90px 30px rgba(255,246,200,.35)"></div>
+    ${img('oveja', 520, 690, 230, 'filter:drop-shadow(0 20px 30px rgba(0,0,0,.5))')}${zz(1010, 170, 110)}
+    <div style="position:absolute;left:60px;top:150px">${T('A DORMIR', 150, 'color:#fff6c8')}${T('🌧️ 1 HORA', 110, 'margin-top:10px')}</div>
+    <div class="t" style="position:absolute;left:60px;bottom:60px;font-size:46px;color:#0b1440;background:#fff6c8;padding:4px 28px;border-radius:40px;text-shadow:none">lluvia suave + grillos</div></div>`, 'youtube/miniaturas/dormir-A.png', 1280, 720);
+  // B: varios animales dormidos en fila sobre colina + luna, sensación de calma
+  await png(`<div style="position:absolute;inset:0;background:linear-gradient(#1a2366,#3b4aa0)">${stars(70, 420)}
+    <div style="position:absolute;left:560px;top:40px;width:160px;height:160px;border-radius:50%;background:#fff6c8;box-shadow:0 0 120px 40px rgba(255,246,200,.3)"></div>
+    <div style="position:absolute;left:-100px;right:-100px;bottom:-160px;height:400px;background:#12205a;border-radius:50%"></div>
+    ${['buho', 'oveja', 'gato', 'pinguino', 'rana'].map((id, k) => img(id, 200, 80 + k * 230, 420, 'filter:brightness(.85) drop-shadow(0 10px 20px rgba(0,0,0,.5))')).join('')}${zz(330, 390, 60)}${zz(1000, 390, 60)}
+    <div style="position:absolute;left:0;right:0;top:250px;text-align:center">${T('Sonidos para dormir', 92, 'color:#fff6c8')}</div></div>`, 'youtube/miniaturas/dormir-B.png', 1280, 720);
+  // C: fondo casi negro (para pantalla de noche), luna y texto con la promesa clara
+  await png(`<div style="position:absolute;inset:0;background:#070b22">${stars(40, 720)}
+    <div style="position:absolute;left:250px;top:50px;width:150px;height:150px;border-radius:50%;background:#fff6c8;box-shadow:0 0 140px 50px rgba(255,246,200,.25)"></div>
+    ${img('buho', 360, 60, 260)}
+    <div style="position:absolute;left:470px;top:110px;width:760px">${T('Para dormir', 130, 'color:#fff')}${T('bebés y niños', 100, 'color:#9fb4ff')}${T('lluvia suave 🌧️', 90, 'color:#fff6c8')}
+      <div class="t" style="margin-top:28px;display:inline-block;font-size:48px;color:#070b22;background:#9fe0a8;padding:4px 30px;border-radius:40px;text-shadow:none">pantalla oscura · 1 hora</div></div></div>`, 'youtube/miniaturas/dormir-C.png', 1280, 720);
+  console.log('✓ miniaturas');
+}
 await b.close(); rmSync(TMP, { recursive: true, force: true });
