@@ -1,4 +1,4 @@
-// Generador de vídeos para el canal de YouTube «Mundo de Sonidos».
+// Generador de vídeos para el canal de YouTube «PequeMundo» (publicita la app «Mundo de Sonidos»).
 //   node scripts/youtube.mjs shorts   → youtube/shorts/short-XX.mp4 + .txt (título, descripción, etiquetas)
 //   node scripts/youtube.mjs dormir   → youtube/largos/dormir-1h.mp4 + .txt
 //   node scripts/youtube.mjs canal    → youtube/canal/icono.png y banner.png
@@ -80,11 +80,12 @@ if (MODE === 'shorts') {
     await add('end', `<div class="c" style="background:linear-gradient(160deg,#ffd75e,#ff9a3c)"><div class="t" style="font-size:110px">¿Cuántos acertaste?</div>
       <img src="data:image/png;base64,${readFileSync('docs/tienda/icono-512.png').toString('base64')}" style="width:380px;height:380px;border-radius:90px;margin:60px 0;box-shadow:0 30px 60px rgba(0,0,0,.3)">
       <div class="t" style="font-size:90px">177 animales más en</div><div class="t" style="font-size:120px;color:#fff7c2">Mundo de Sonidos</div>
-      <div class="t" style="font-size:60px;color:#5a2d00;text-shadow:none;margin-top:30px">Gratis en Google Play · Sin anuncios</div></div>`, 3);
+      <div class="t" style="font-size:60px;color:#5a2d00;text-shadow:none;margin-top:30px">Gratis en Google Play · Sin anuncios</div>
+      <div class="t" style="font-size:64px;margin-top:70px;background:#e2457a;padding:10px 50px;border-radius:80px;text-shadow:none">🔔 Suscríbete a PequeMundo</div></div>`, 3.5);
     video(segs, snd, `youtube/shorts/short-${k}.mp4`);
     const names = ids.map((i) => byId[i].name.es.toLowerCase());
     writeFileSync(`youtube/shorts/short-${k}.txt`, `TÍTULO:
-¿Adivinas qué animal es? 🔊 ${theme} #shorts
+¿Adivinas qué animal es? 🔊 ${theme} | PequeMundo #shorts
 
 DESCRIPCIÓN:
 Escucha el sonido real y adivina el animal antes de que acabe la cuenta atrás. Hoy: ${names.join(', ')}. ¿Cuántos has acertado? 🦁🐮🐧
@@ -96,7 +97,7 @@ Sonidos: ${ids.map((i) => `${byId[i].name.es}: ${byId[i].credit?.author} (${byId
 Dibujos: Fluent Emoji de Microsoft (MIT).
 
 ETIQUETAS:
-sonidos de animales, adivina el animal, animales para niños, ${names.join(', ')}, aprender animales, animales en inglés, videos para niños, infantil, educativo
+pequemundo, sonidos de animales, adivina el animal, animales para niños, ${names.join(', ')}, aprender animales, animales en inglés, videos para niños, infantil, educativo
 
 AJUSTES: Público → «Sí, es contenido creado para niños».
 `);
@@ -130,7 +131,7 @@ if (MODE === 'dormir') {
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-loop', '1', '-framerate', '1', '-i', `${TMP}/noche.png`, '-i', `${TMP}/audio.m4a`, '-t', String(total),
     '-c:v', 'libx264', '-tune', 'stillimage', '-preset', 'veryfast', '-crf', '28', '-pix_fmt', 'yuv420p', '-r', '1', '-c:a', 'copy', '-movflags', '+faststart', `youtube/largos/dormir-${HOURS}h.mp4`]);
   writeFileSync(`youtube/largos/dormir-${HOURS}h.txt`, `TÍTULO:
-Sonidos para dormir bebés y niños 🌙 Lluvia suave, grillos y búhos (${HOURS} hora${HOURS > 1 ? 's' : ''})
+Sonidos para dormir bebés y niños 🌙 Lluvia suave, grillos y búhos (${HOURS} hora${HOURS > 1 ? 's' : ''}) | PequeMundo
 
 DESCRIPCIÓN:
 ${HOURS} hora${HOURS > 1 ? 's' : ''} de lluvia suave con sonidos reales de la noche (grillos, ranas y búhos) para ayudar a dormir a bebés y niños. Sin música fuerte ni cambios bruscos, sin anuncios a mitad.
@@ -149,14 +150,50 @@ AJUSTES: Público → «Sí, es contenido creado para niños».
 }
 
 if (MODE === 'canal') {
+  // Marca del canal «PequeMundo»: planeta con animales asomando (icono), logotipo con nombre, banner y marca de agua.
   mkdirSync('youtube/canal', { recursive: true });
-  const icon = readFileSync('docs/tienda/icono-512.png').toString('base64');
-  await png(`<img src="data:image/png;base64,${icon}" style="width:800px;height:800px">`, 'youtube/canal/icono.png', 800, 800);
-  const parade = ['vaca', 'leon', 'elefante', 'pinguino', 'ballena', 'mono', 'buho', 'pulpo', 't-rex', 'loro'].map((i) => `<img src="${art64(byId[i])}" style="width:150px;height:150px">`).join('');
-  await png(`<div class="c" style="background:linear-gradient(#6fc0ff,#d9f1ff 60%,#9bd67a 61%,#5fb648)">
-    <div class="t" style="font-size:150px;line-height:.9"><span style="font-size:80px;color:#fff7c2">Mundo de</span><br>Sonidos</div>
-    <div class="t" style="font-size:56px;color:#23324a;text-shadow:none;margin-top:20px">Sonidos de animales · Adivinanzas · Inglés · Para dormir</div>
-    <div style="display:flex;gap:30px;margin-top:60px">${parade}</div></div>`, 'youtube/canal/banner.png', 2560, 1440);
-  console.log('✓ canal');
+  const A = (id, s, x, y, r = 0) => `<img src="${art64(byId[id])}" style="position:absolute;width:${s}px;height:${s}px;left:${x}px;top:${y}px;transform:rotate(${r}deg);filter:drop-shadow(0 ${s * 0.05}px ${s * 0.05}px rgba(0,0,0,.25))">`;
+  const planet = (S) => `<div style="position:relative;width:${S}px;height:${S}px">
+    <div style="position:absolute;inset:${S * 0.16}px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#7fd6ff,#2f8fd8 70%);box-shadow:inset -${S * 0.04}px -${S * 0.05}px 0 rgba(0,0,0,.12),0 ${S * 0.03}px ${S * 0.06}px rgba(0,0,0,.25);overflow:hidden">
+      <div style="position:absolute;left:8%;top:22%;width:45%;height:30%;background:#7ed957;border-radius:48% 52% 40% 60%"></div>
+      <div style="position:absolute;right:4%;top:48%;width:42%;height:34%;background:#5fc148;border-radius:60% 40% 55% 45%"></div>
+      <div style="position:absolute;left:20%;bottom:6%;width:30%;height:16%;background:#8be36a;border-radius:50%"></div></div>
+    ${A('leon', S * 0.36, S * 0.32, S * 0.0)}${A('elefante', S * 0.3, S * 0.0, S * 0.5, -12)}${A('pinguino', S * 0.27, S * 0.72, S * 0.52, 12)}
+    ${A('mono', S * 0.26, S * 0.02, S * 0.12, -18)}${A('pulpo', S * 0.24, S * 0.72, S * 0.12, 16)}${A('vaca', S * 0.3, S * 0.35, S * 0.7)}</div>`;
+  const word = (fs) => `<div class="t" style="font-size:${fs}px;letter-spacing:-1px"><span style="color:#ffd84a;text-shadow:0 ${fs * 0.06}px 0 #e2457a,0 ${fs * 0.1}px ${fs * 0.2}px rgba(0,0,0,.2)">Peque</span><span style="color:#fff;text-shadow:0 ${fs * 0.06}px 0 #2f8fd8,0 ${fs * 0.1}px ${fs * 0.2}px rgba(0,0,0,.2)">Mundo</span></div>`;
+  const sky = 'background:radial-gradient(circle at 50% 30%,#ffe9a8,#ffc94a 45%,#ff9a3c)';
+  await png(`<div class="c" style="${sky}">${planet(700)}</div>`, 'youtube/canal/icono.png', 800, 800);
+  await png(`<div class="c" style="${sky}">${planet(600)}${word(150)}</div>`, 'youtube/canal/logo.png', 1000, 1000);
+  await png(`<div class="c" style="background:transparent">${planet(150)}</div>`, 'youtube/canal/marca-de-agua.png', 150, 150);
+  // Banner 2560x1440: lo importante dentro de la zona segura central (1546x423)
+  const parade = ['vaca', 'leon', 'elefante', 'pinguino', 'ballena', 'mono', 'buho', 'pulpo', 't-rex', 'loro', 'rana', 'jirafa'];
+  await png(`<div class="c" style="background:linear-gradient(#7cc8ff,#dff3ff 58%,#9bd67a 58.2%,#5fb648)">
+    <div style="position:absolute;left:90px;top:610px;display:flex;gap:24px">${parade.slice(0, 4).map((i) => `<img src="${art64(byId[i])}" style="width:120px;height:120px">`).join('')}</div>
+    <div style="position:absolute;right:90px;top:610px;display:flex;gap:24px">${parade.slice(8).map((i) => `<img src="${art64(byId[i])}" style="width:120px;height:120px">`).join('')}</div>
+    <div style="position:absolute;top:520px;left:0;right:0;display:flex;flex-direction:column;align-items:center">${word(170)}
+      <div class="t" style="font-size:46px;color:#23324a;text-shadow:none;margin-top:4px">Animales · Adivinanzas · Inglés · Para dormir</div>
+      <div class="t" style="margin-top:22px;font-size:40px;color:#fff;background:#e2457a;padding:6px 34px;border-radius:60px;text-shadow:none">🎮 Juega con 177 animales en la app «Mundo de Sonidos»</div></div></div>`, 'youtube/canal/banner.png', 2560, 1440);
+  writeFileSync('youtube/canal/descripcion.txt', `NOMBRE DEL CANAL: PequeMundo
+IDENTIFICADOR: @pequemundo (o @pequemundo.oficial si está cogido)
+
+DESCRIPCIÓN DEL CANAL:
+¡Bienvenidos a PequeMundo! 🌍 Vídeos para que los peques aprendan jugando: sonidos reales de animales, adivinanzas, palabras en inglés, curiosidades y sonidos para dormir. 🦁🐘🐧🌙
+Vídeos tranquilos, sin gritos ni sustos, pensados para niños de 2 a 8 años y sus familias.
+
+🎮 ¿Os gustan los animales? Jugad con más de 170 en nuestra app «Mundo de Sonidos»: sonidos reales, juegos, álbum de pegatinas y modo calma. Gratis y sin anuncios en Google Play 👉 ${PLAY}
+
+📅 Nuevo vídeo cada día.
+
+ENLACES (Personalizar canal → Información básica → Enlaces):
+- App Mundo de Sonidos → ${PLAY}
+
+PALABRAS CLAVE (Configuración → Canal → Información básica → Palabras clave):
+pequemundo, videos para niños, sonidos de animales, adivina el animal, animales para niños, aprender inglés niños, sonidos para dormir bebés, educación infantil, aprender jugando, mundo de sonidos
+
+MARCA DE AGUA (Personalizar canal → Branding → Marca de agua del vídeo): marca-de-agua.png, «Todo el vídeo».
+
+PÚBLICO: Configuración → Canal → Configuración avanzada → «Sí, establecer este canal como creado para niños».
+`);
+  console.log('✓ canal PequeMundo');
 }
 await b.close(); rmSync(TMP, { recursive: true, force: true });

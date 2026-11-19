@@ -1,0 +1,20 @@
+NOMBRE DEL CANAL: PequeMundo
+IDENTIFICADOR: @pequemundo (o @pequemundo.oficial si está cogido)
+
+DESCRIPCIÓN DEL CANAL:
+¡Bienvenidos a PequeMundo! 🌍 Vídeos para que los peques aprendan jugando: sonidos reales de animales, adivinanzas, palabras en inglés, curiosidades y sonidos para dormir. 🦁🐘🐧🌙
+Vídeos tranquilos, sin gritos ni sustos, pensados para niños de 2 a 8 años y sus familias.
+
+🎮 ¿Os gustan los animales? Jugad con más de 170 en nuestra app «Mundo de Sonidos»: sonidos reales, juegos, álbum de pegatinas y modo calma. Gratis y sin anuncios en Google Play 👉 https://play.google.com/store/apps/details?id=com.kikocastellano.mundodesonidos
+
+📅 Nuevo vídeo cada día.
+
+ENLACES (Personalizar canal → Información básica → Enlaces):
+- App Mundo de Sonidos → https://play.google.com/store/apps/details?id=com.kikocastellano.mundodesonidos
+
+PALABRAS CLAVE (Configuración → Canal → Información básica → Palabras clave):
+pequemundo, videos para niños, sonidos de animales, adivina el animal, animales para niños, aprender inglés niños, sonidos para dormir bebés, educación infantil, aprender jugando, mundo de sonidos
+
+MARCA DE AGUA (Personalizar canal → Branding → Marca de agua del vídeo): marca-de-agua.png, «Todo el vídeo».
+
+PÚBLICO: Configuración → Canal → Configuración avanzada → «Sí, establecer este canal como creado para niños».
