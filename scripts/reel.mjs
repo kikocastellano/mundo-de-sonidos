@@ -14,8 +14,8 @@ const VARIANT = process.argv[2] || 'animales';
 // [escena, ruta, frase principal, frase pequeña, color de fondo]
 const VARIANTS = {
   animales: [
-    ['1', '', '¡Descubre 152 animales!', 'de todo el mundo', ['#7cc8ff', '#2f8fd8']],
-    ['2', '#/mundo', 'Viaja por el mundo', 'granja, selva, océano…', ['#5ab4f0', '#1f78b4']],
+    ['1', '', '¡Descubre 177 animales!', 'de todo el mundo', ['#7cc8ff', '#2f8fd8']],
+    ['2', '#/region/oceano', 'Pulpos, tiburones…', '¡y hasta dinosaurios!', ['#5ab4f0', '#1f78b4']],
     ['3', '#/animal/leon', 'Sonidos reales', 'grabados en la naturaleza', ['#ffb36b', '#d9822b']],
     ['4', '#/juego/granja', '¿Quién suena?', 'aprende jugando', ['#b8a4ff', '#7b5cff']],
     ['5', '#/album', 'Colecciona pegatinas', 'y aprende inglés', ['#7fe0b0', '#2bb06a']],
@@ -43,7 +43,7 @@ const SOUNDS = {
 const SCENES = VARIANTS[VARIANT];
 const b = await chromium.launch();
 const ctx = await b.newContext({ viewport: { width: 360, height: 720 }, deviceScaleFactor: 2.5, isMobile: true, hasTouch: true, locale: 'es-ES' });
-await ctx.addInitScript((s) => localStorage.setItem('mundo-sonidos-v1', JSON.stringify({ lang: 'es', premium: true, seen: s, stars: { granja: 12 } })), seen);
+await ctx.addInitScript((s) => localStorage.setItem('mundo-sonidos-v1', JSON.stringify({ lang: 'es', premium: true, welcomed: true, seen: s, stars: { granja: 12 } })), seen);
 const p = await ctx.newPage();
 const frame = await b.newPage({ viewport: { width: 1080, height: 1920 } });
 const font = `<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&display=swap" rel="stylesheet">`;
@@ -64,8 +64,8 @@ const icon = readFileSync('docs/tienda/icono-512.png').toString('base64');
 await frame.setContent(`<html><head>${font}</head><body style="margin:0;width:1080px;height:1920px;background:linear-gradient(160deg,#ffd75e,#ff9a3c);font-family:'Baloo 2',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px">
   <img src="data:image/png;base64,${icon}" style="width:420px;height:420px;border-radius:96px;box-shadow:0 30px 60px rgba(0,0,0,.3)">
   <div style="text-align:center;color:#fff;line-height:.9;text-shadow:0 8px 0 #e2457a,0 14px 30px rgba(0,0,0,.25)"><div style="font-size:80px;color:#fff7c2">Mundo de</div><div style="font-size:150px;font-weight:800">Sonidos</div></div>
-  <div style="font-size:66px;font-weight:800;color:#5a2d00">¡Muy pronto en Google Play!</div>
-  <div style="font-size:44px;font-weight:800;color:#5a2d00;opacity:.85">Sin anuncios · Para niños de 2 a 8 años</div></body></html>`);
+  <div style="font-size:66px;font-weight:800;color:#5a2d00">¡Ya en Google Play!</div>
+  <div style="font-size:44px;font-weight:800;color:#5a2d00;opacity:.85">Gratis · Sin anuncios · De 2 a 8 años</div></body></html>`);
 await frame.waitForTimeout(700); await frame.screenshot({ path: `${OUT}/s6.png` });
 await b.close(); server.kill();
 
