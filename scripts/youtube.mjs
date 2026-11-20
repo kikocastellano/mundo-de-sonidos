@@ -15,6 +15,7 @@ const { ANIMALS, REGIONS } = await import(`../${TMP}/data.mjs`);
 const byId = Object.fromEntries(ANIMALS.map((a) => [a.id, a]));
 const art64 = (a) => `data:image/svg+xml;base64,${readFileSync(`public/art/${a.art}`).toString('base64')}`;
 const FONT = '<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">';
+const ff0 = (...a) => execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...a]);
 const dur = (f) => parseFloat(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f]).toString());
 const PLAY = 'https://play.google.com/store/apps/details?id=com.kikocastellano.mundodesonidos';
 
@@ -102,6 +103,44 @@ pequemundo, sonidos de animales, adivina el animal, animales para niños, ${name
 AJUSTES: Público → «Sí, es contenido creado para niños».
 `);
     console.log('✓ short', k, theme);
+  }
+}
+
+if (MODE === 'quiz') {
+  // Short de preguntas: 3 preguntas con 3 opciones (dibujos), cuenta atrás y respuesta con curiosidad.
+  mkdirSync('youtube/shorts', { recursive: true });
+  const QUIZ = {
+    '11': { tema: 'Preguntas de animales', bg: ['#7b5cff', '#3f2fb8'], qs: [
+      ['¿Qué animal tiene 3 corazones?', ['tiburon', 'pulpo', 'delfin'], 'pulpo', '¡Y su sangre es azul! 💙'],
+      ['¿Qué animal puede dormir de pie?', ['perro', 'gato', 'caballo'], 'caballo', 'Bloquea sus patas para no caerse 🐴'],
+      ['¿Quién lleva a su bebé en una bolsa?', ['canguro', 'mono', 'oso-polar'], 'canguro', 'Su bebé se llama joey 🦘'],
+    ] },
+  };
+  ff0('-f', 'lavfi', '-i', 'sine=f=900:d=0.07', '-af', 'afade=t=out:st=0.03:d=0.04,volume=0.5', `${TMP}/tick.wav`);
+  ff0('-f', 'lavfi', '-i', 'sine=f=1320:d=0.35', '-f', 'lavfi', '-i', 'sine=f=1760:d=0.35', '-filter_complex', '[1:a]adelay=110:all=1[b];[0:a][b]amix=2:normalize=0,afade=t=out:st=0.2:d=0.25,volume=0.5', `${TMP}/ding.wav`);
+  for (const [k, Q] of Object.entries(QUIZ)) {
+    const segs = []; const snd = []; let t = 0;
+    const BG = `background:linear-gradient(165deg,${Q.bg[0]},${Q.bg[1]})`;
+    const add = async (html, d) => { const f = `${TMP}/q${k}-${segs.length}.png`; await png(`<div class="c" style="${BG}">${html}</div>`, f); segs.push([f, d]); t += d; };
+    const opt = (id, state, n) => { const a = byId[id]; const ok = state === 'ok', off = state === 'off';
+      return `<div style="display:flex;align-items:center;gap:36px;width:860px;padding:22px 40px;border-radius:70px;background:${ok ? '#2bd67b' : '#fff'};opacity:${off ? 0.35 : 1};box-shadow:0 14px 30px rgba(0,0,0,.25);transform:scale(${ok ? 1.05 : 1})">
+        <div style="width:96px;height:96px;border-radius:50%;background:${ok ? '#fff' : '#ffd84a'};color:#23324a;font-size:70px;font-weight:800;display:grid;place-items:center">${ok ? '✓' : 'ABC'[n]}</div>
+        <img src="${art64(a)}" style="width:200px;height:200px"><div style="font-size:84px;font-weight:800;color:${ok ? '#fff' : '#23324a'}">${a.name.es}</div></div>`; };
+    await add(`<div class="t" style="font-size:120px">🧠 3 PREGUNTAS</div><div class="t" style="font-size:96px;margin-top:30px;color:#ffe066">¿Las acierta</div><div class="t" style="font-size:96px;color:#ffe066">tu peque?</div>`, 1.6);
+    for (const [qi, [q, ops, right, fact]] of Q.qs.entries()) {
+      const qh = `<div class="t" style="font-size:64px;opacity:.85">Pregunta ${qi + 1} de 3</div><div class="t" style="font-size:${q.length > 30 ? 92 : 104}px;margin:24px 60px 50px">${q}</div>`;
+      for (const c of [3, 2, 1]) { snd.push([`${TMP}/tick.wav`, t, 0.1]); await add(`${qh}<div style="display:flex;flex-direction:column;gap:34px">${ops.map((o, n) => opt(o, '', n)).join('')}</div><div class="t" style="font-size:150px;margin-top:50px">${c}</div>`, 1); }
+      snd.push([`${TMP}/ding.wav`, t, 0.5]);
+      if (byId[right].audio) snd.push([`public/sounds/${right}.mp3`, t + 0.5, 2.2]);
+      await add(`${qh}<div style="display:flex;flex-direction:column;gap:34px">${ops.map((o, n) => opt(o, o === right ? 'ok' : 'off', n)).join('')}</div><div class="t" style="font-size:70px;margin:50px 60px 0;color:#ffe066">${fact}</div>`, 2.8);
+    }
+    await add(`<div class="t" style="font-size:104px">¿Cuántas acertó?</div><div class="t" style="font-size:90px;margin-top:10px">👇 ¡Cuéntanoslo!</div>
+      <img src="data:image/png;base64,${readFileSync('docs/tienda/icono-512.png').toString('base64')}" style="width:300px;height:300px;border-radius:70px;margin:60px 0 30px;box-shadow:0 30px 60px rgba(0,0,0,.3)">
+      <div class="t" style="font-size:70px">Más animales en la app</div><div class="t" style="font-size:100px;color:#ffe066">Mundo de Sonidos</div>
+      <div class="t" style="font-size:60px;margin-top:50px;background:#e2457a;padding:10px 50px;border-radius:80px;text-shadow:none">🔔 Suscríbete a PequeMundo</div>`, 3.5);
+    video(segs, snd, `youtube/shorts/short-${k}.mp4`);
+    writeFileSync(`youtube/shorts/short-${k}.txt`, `TÍTULO:\n3 preguntas de animales 🧠 ¿Las acierta tu peque? | PequeMundo #shorts\n\nDESCRIPCIÓN:\n¿Qué animal tiene 3 corazones? ¿Cuál duerme de pie? ¿Quién lleva a su bebé en una bolsa? 🐙🐴🦘 Juega con tu peque y descubre curiosidades de los animales.\n\n📲 Más de 170 animales con su sonido real en la app Mundo de Sonidos (gratis, sin anuncios): ${PLAY}\n\n🔔 Suscríbete a PequeMundo para más adivinanzas y sonidos para dormir.\n\nSonido del caballo: ${byId.caballo.credit?.author} (${byId.caballo.credit?.license}). Dibujos: Fluent Emoji de Microsoft (MIT).\n\nETIQUETAS:\npequemundo, preguntas de animales, quiz para niños, curiosidades de animales, adivinanzas para niños, pulpo, caballo, canguro, aprender jugando, videos educativos para niños\n\nTIKTOK:\n3 preguntas de animales 🧠 ¿Cuántas acierta tu peque? ¡Cuéntanos en comentarios! 👇\n🎮 Más de 170 animales en nuestra app «Mundo de Sonidos» (gratis y sin anuncios en Google Play)\n📺 Más vídeos en YouTube: PequeMundo\n#quizparaniños #curiosidades #animales #aprenderjugando #preguntasyrespuestas #mamaprimeriza #crianza #infantil #fyp #parati\n`);
+    console.log('✓ quiz', k);
   }
 }
 
