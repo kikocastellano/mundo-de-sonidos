@@ -7,7 +7,7 @@ const [ids, tema, out] = [process.argv[2].split(','), process.argv[3], process.a
 const ART = JSON.parse(readFileSync('src/art.json', 'utf8'));
 const art = (id) => `data:image/svg+xml;base64,${readFileSync(`public/art/${ART[id]}`).toString('base64')}`;
 mkdirSync(dirname(out), { recursive: true });
-const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
 const sil = ids.map((id, k) => `<div style="position:relative;width:290px;height:290px;transform:rotate(${[-8, 4, 9][k]}deg)">
   <div style="position:absolute;inset:0;background:#fff;border-radius:60px;box-shadow:0 18px 40px rgba(0,0,0,.25)"></div>
   <img src="${art(id)}" style="position:absolute;left:30px;top:30px;width:240px;height:240px;filter:brightness(0) opacity(.85)">

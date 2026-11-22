@@ -10,7 +10,7 @@ const B = 'http://localhost:4191/';
 const ART = JSON.parse(readFileSync('src/art.json', 'utf8'));
 const art = (id) => `data:image/svg+xml;base64,${readFileSync(`public/art/${ART[id]}`).toString('base64')}`;
 const icon = readFileSync('docs/tienda/icono-512.png').toString('base64');
-const b = await chromium.launch();
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
 const ctx = await b.newContext({ viewport: { width: 360, height: 720 }, deviceScaleFactor: 2.5, isMobile: true, hasTouch: true, locale: 'es-ES' });
 await ctx.addInitScript(() => localStorage.setItem('mundo-sonidos-v1', JSON.stringify({ lang: 'es', premium: true, welcomed: true, seen: { vaca: 1, leon: 1, perro: 1, gato: 1, pato: 1 }, stars: { granja: 12 } })));
 const app = await ctx.newPage();

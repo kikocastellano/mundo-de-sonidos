@@ -7,7 +7,7 @@ const OUT = 'youtube/tiktok', TMP = 'youtube/.tmp-tt'; mkdirSync(OUT, { recursiv
 const ff = (...a) => execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...a], { stdio: 'inherit' });
 const D = 15;
 const icon = readFileSync('docs/tienda/icono-512.png').toString('base64');
-const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}); const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
 const FONT = '<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&display=swap" rel="stylesheet">';
 const layer = async (html, f) => { await p.setContent(`<html><head>${FONT}</head><body style="margin:0;width:1080px;height:1920px;background:transparent;font-family:'Baloo 2';color:#fff;position:relative">${html}</body></html>`); await p.waitForTimeout(600); await p.screenshot({ path: f, omitBackground: true }); };
 const T = (t, fs, c = '#fff') => `<div style="font-size:${fs}px;line-height:1.02;color:${c};text-shadow:0 6px 0 rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.6)">${t}</div>`;

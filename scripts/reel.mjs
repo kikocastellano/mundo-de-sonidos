@@ -41,7 +41,7 @@ const SOUNDS = {
   calma: [['buho', 0.4], ['grillo', 2.3], ['buho', 4.3], ['pinguino', 6.3], ['rana', 8.3], ['ruisenor', 10.2]],
 };
 const SCENES = VARIANTS[VARIANT];
-const b = await chromium.launch();
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
 const ctx = await b.newContext({ viewport: { width: 360, height: 720 }, deviceScaleFactor: 2.5, isMobile: true, hasTouch: true, locale: 'es-ES' });
 await ctx.addInitScript((s) => localStorage.setItem('mundo-sonidos-v1', JSON.stringify({ lang: 'es', premium: true, welcomed: true, seen: s, stars: { granja: 12 } })), seen);
 const p = await ctx.newPage();

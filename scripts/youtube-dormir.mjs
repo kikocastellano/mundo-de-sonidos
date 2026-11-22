@@ -18,7 +18,7 @@ function still(png, audio, secs, out) {
   ff('-loop', '1', '-framerate', '1', '-i', png, '-i', audio, '-t', String(secs), '-c:v', 'libx264', '-tune', 'stillimage', '-preset', 'veryfast', '-crf', '30',
     '-pix_fmt', 'yuv420p', '-r', '1', '-c:a', 'copy', '-movflags', '+faststart', out);
 }
-const b = await chromium.launch();
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
 const page = await b.newPage({ viewport: { width: 1280, height: 720 } });
 
 if (MODE === 'olas') {

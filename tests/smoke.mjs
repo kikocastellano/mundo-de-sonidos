@@ -20,7 +20,7 @@ const targets = [
 let failures = 0;
 const check = (c, m) => { if (!c) { failures++; console.error('  ✗', m); } else console.log('  ✓', m); };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
 
 for (const t of targets) {
   console.log(`\n[${t.name}]`);

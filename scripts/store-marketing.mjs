@@ -18,7 +18,7 @@ const SHOTS = [
   { id: '7', hash: '#/calma', calm: true, bg: ['#3a3f8f', '#0b1440'], es: ['Modo calma', 'para dormir'], en: ['Calm mode', 'for bedtime'] },
   { id: '8', hash: '#/profe/preguntas', bg: ['#ffb48a', '#ff7d4a'], es: ['Modo profe', 'preguntas para clase'], en: ['Teacher mode', 'quizzes for class'] },
 ];
-const b = await chromium.launch();
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
 for (const lang of ['es', 'en']) {
   mkdirSync(`docs/tienda/${lang}`, { recursive: true });
   const ctx = await b.newContext({ viewport: { width: 360, height: 720 }, deviceScaleFactor: 2.5, isMobile: true, hasTouch: true, locale: lang });

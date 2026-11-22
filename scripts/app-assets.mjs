@@ -19,7 +19,7 @@ const emoji = (e, size, x, y) => ART[e] ? `<img src="data:image/svg+xml;base64,$
   emojiFont(e, size, x, y);
 const emojiFont = (e, size, x, y) => `<div style="position:absolute;left:${x}px;top:${y}px;font-size:${size}px;line-height:1;font-family:'Noto Color Emoji';filter:drop-shadow(0 ${size * 0.05}px ${size * 0.04}px rgba(0,0,0,.25))">${e}</div>`;
 
-const b = await chromium.launch();
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
 const shot = async (html, w, h, path) => { const p = await b.newPage({ viewport: { width: w, height: h } }); await p.setContent(html); await p.waitForTimeout(400); await p.screenshot({ path }); await p.close(); };
 
 // Icono 1024 (Play pide 512; Capacitor genera el resto)

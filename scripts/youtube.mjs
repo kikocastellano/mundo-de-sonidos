@@ -19,7 +19,7 @@ const ff0 = (...a) => execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...a])
 const dur = (f) => parseFloat(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', f]).toString());
 const PLAY = 'https://play.google.com/store/apps/details?id=com.kikocastellano.mundodesonidos';
 
-const b = await chromium.launch();
+const b = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
 const page = await b.newPage({ viewport: { width: 1080, height: 1920 } });
 async function png(html, path, w = 1080, h = 1920) {
   await page.setViewportSize({ width: w, height: h });
