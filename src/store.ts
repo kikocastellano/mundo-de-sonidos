@@ -7,8 +7,8 @@ interface State { lang: Lang; muted: boolean; favs: string[]; stars: Record<stri
 
 const KEY = 'mundo-sonidos-v1';
 const defaults = (): State => ({
-  lang: (navigator.language || 'es').toLowerCase().startsWith('es') ? 'es' : 'en',
-  muted: false, favs: [], stars: {}, premium: false, voice: { es: '', en: '' }, seen: {}, rounds: 0, log: [], kid: '', rated: 0, asked: 0, purchased: false, trialUntil: 0, trialEndSeen: false, welcomed: false,
+  lang: ((l) => (l.startsWith('es') ? 'es' : l.startsWith('pt') ? 'pt' : 'en'))((navigator.language || 'es').toLowerCase()),
+  muted: false, favs: [], stars: {}, premium: false, voice: { es: '', en: '', pt: '' }, seen: {}, rounds: 0, log: [], kid: '', rated: 0, asked: 0, purchased: false, trialUntil: 0, trialEndSeen: false, welcomed: false,
 });
 
 function load(): State {

@@ -1,6 +1,6 @@
 // Juego «¿Quién suena?»: suena un animal y el niño elige entre 3 (o 4) imágenes. Sin vidas ni castigos.
 import { playAnimal, preload, sayName, sfx } from '../audio';
-import { ANIMALS, REGIONS, type Animal, type RegionId } from '../data';
+import { ANIMALS, REGIONS, otherLang, type Animal, type RegionId } from '../data';
 import { t } from '../i18n';
 import { addStar, discover, hasPremium, isLocked, logAct, save, store } from '../store';
 import { art, $, backBtn, confetti, esc, icon, soundRings } from '../ui';
@@ -14,7 +14,7 @@ export function gamePicker(root: HTMLElement) {
       <header class="topbar">${backBtn('/')}<h2><span class="title-emoji">👂</span>${t('game')}</h2><span class="spacer"></span></header>
       <p class="subtitle">${t('chooseRegion')}</p>
       <div class="grid picker">
-        <button class="card" data-go="/ingles" style="--i:0"><span class="card-emoji">🗣️</span><span class="card-name"><span class="lang-badge">${L === 'es' ? 'EN' : 'ES'}</span> ${t('english')}</span></button>
+        <button class="card" data-go="/ingles" style="--i:0"><span class="card-emoji">🗣️</span><span class="card-name"><span class="lang-badge">${otherLang(L).toUpperCase()}</span> ${t('english')}</span></button>
         <button class="card" data-go="/juego/todo" style="--i:0"><span class="card-emoji">🌍</span><span class="card-name">${t('allRegions')}</span></button>
         ${REGIONS.map((r, i) => `<button class="card" data-go="/juego/${r.id}" style="--i:${i + 1}"><span class="card-emoji">${r.emoji}</span><span class="card-name">${esc(r.name[L])}</span>${store.stars[r.id] ? `<span class="stars-badge">★ ${store.stars[r.id]}</span>` : ''}</button>`).join('')}
       </div>
@@ -23,7 +23,7 @@ export function gamePicker(root: HTMLElement) {
 
 export function game(root: HTMLElement, where: RegionId | 'todo', words = false) {
   const L = store.lang;
-  const O = L === 'es' ? 'en' : 'es';
+  const O = otherLang(L);
   const free = ANIMALS.filter((a) => !isLocked(a) && (words || !a.silent));
   let pool = where === 'todo' ? free : free.filter((a) => a.region === where);
   // Si una región tiene pocos animales gratis, se completa con otros para tener opciones.

@@ -1,10 +1,13 @@
 // Ficha de datos de animales y regiones.
 import ART from './art.json';
 import SOUNDS from './sounds.json';
+import { PT_ANIMALS } from './pt';
 
 // Fase 4 sustituirá `sound` (sonido sintetizado de prueba) por `audio` (grabación real con licencia).
 
-export type Lang = 'es' | 'en';
+export type Lang = 'es' | 'en' | 'pt';
+/** Idioma que se aprende como «el otro»: desde español, inglés; desde inglés, español; desde portugués, inglés. */
+export const otherLang = (l: Lang): Lang => (l === 'en' ? 'es' : 'en');
 export type RegionId = 'granja' | 'oceano' | 'africa' | 'america' | 'asia' | 'europa' | 'oceania' | 'polos';
 
 export interface Region {
@@ -36,20 +39,20 @@ export interface Animal {
 }
 
 export const REGIONS: Region[] = [
-  { id: 'granja', emoji: '🏡', name: { es: 'La granja', en: 'The farm' }, sky: ['#7cc8ff', '#d9f1ff'], hills: ['#9bd67a', '#5fb648'], accent: '#e8553e' },
-  { id: 'oceano', emoji: '🌊', name: { es: 'El océano', en: 'The ocean' }, sky: ['#5ab4f0', '#c8ecff'], hills: ['#3f9fd8', '#1f78b4'], accent: '#0d6fb8' },
-  { id: 'africa', emoji: '🦁', name: { es: 'África', en: 'Africa' }, sky: ['#ffb36b', '#ffe6b0'], hills: ['#e2b65c', '#c8913a'], accent: '#d9822b' },
-  { id: 'america', emoji: '🦅', name: { es: 'América', en: 'America' }, sky: ['#86c5ff', '#e4f4ff'], hills: ['#6cbf73', '#2f8f4e'], accent: '#2f8f4e' },
-  { id: 'asia', emoji: '🐯', name: { es: 'Asia', en: 'Asia' }, sky: ['#ffb8c9', '#fff0e0'], hills: ['#8fcf8f', '#4e9e6a'], accent: '#d94f7a' },
-  { id: 'europa', emoji: '🦉', name: { es: 'Europa', en: 'Europe' }, sky: ['#9fb8ff', '#eef1ff'], hills: ['#86c27a', '#4f8f45'], accent: '#5b6fd8' },
-  { id: 'oceania', emoji: '🦘', name: { es: 'Oceanía', en: 'Oceania' }, sky: ['#ff9f7a', '#ffe1c4'], hills: ['#e08a4f', '#b8612f'], accent: '#c2532a' },
-  { id: 'polos', emoji: '🐧', name: { es: 'Los polos', en: 'The poles' }, sky: ['#9fd8ff', '#f2fbff'], hills: ['#e6f4ff', '#c4e2f5'], accent: '#3a8fc8' },
+  { id: 'granja', emoji: '🏡', name: { es: 'La granja', en: 'The farm', pt: 'A fazenda' }, sky: ['#7cc8ff', '#d9f1ff'], hills: ['#9bd67a', '#5fb648'], accent: '#e8553e' },
+  { id: 'oceano', emoji: '🌊', name: { es: 'El océano', en: 'The ocean', pt: 'O oceano' }, sky: ['#5ab4f0', '#c8ecff'], hills: ['#3f9fd8', '#1f78b4'], accent: '#0d6fb8' },
+  { id: 'africa', emoji: '🦁', name: { es: 'África', en: 'Africa', pt: 'África' }, sky: ['#ffb36b', '#ffe6b0'], hills: ['#e2b65c', '#c8913a'], accent: '#d9822b' },
+  { id: 'america', emoji: '🦅', name: { es: 'América', en: 'America', pt: 'América' }, sky: ['#86c5ff', '#e4f4ff'], hills: ['#6cbf73', '#2f8f4e'], accent: '#2f8f4e' },
+  { id: 'asia', emoji: '🐯', name: { es: 'Asia', en: 'Asia', pt: 'Ásia' }, sky: ['#ffb8c9', '#fff0e0'], hills: ['#8fcf8f', '#4e9e6a'], accent: '#d94f7a' },
+  { id: 'europa', emoji: '🦉', name: { es: 'Europa', en: 'Europe', pt: 'Europa' }, sky: ['#9fb8ff', '#eef1ff'], hills: ['#86c27a', '#4f8f45'], accent: '#5b6fd8' },
+  { id: 'oceania', emoji: '🦘', name: { es: 'Oceanía', en: 'Oceania', pt: 'Oceania' }, sky: ['#ff9f7a', '#ffe1c4'], hills: ['#e08a4f', '#b8612f'], accent: '#c2532a' },
+  { id: 'polos', emoji: '🐧', name: { es: 'Los polos', en: 'The poles', pt: 'Os polos' }, sky: ['#9fd8ff', '#f2fbff'], hills: ['#e6f4ff', '#c4e2f5'], accent: '#3a8fc8' },
 ];
 
 const A = (
   id: string, emoji: string, region: RegionId, premium: boolean, sound: string,
   es: string, en: string, factEs: string, factEn: string,
-): Animal => ({ id, emoji, region, premium, sound, name: { es, en }, fact: { es: factEs, en: factEn } });
+): Animal => ({ id, emoji, region, premium, sound, name: { es, en, pt: PT_ANIMALS[id]?.[0] ?? es }, fact: { es: factEs, en: factEn, pt: PT_ANIMALS[id]?.[2] ?? factEn } });
 
 export const ANIMALS: Animal[] = [
   // Granja (gratis)

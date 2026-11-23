@@ -1,12 +1,13 @@
 // Modo profe: reproduce seguidos los favoritos (o una región) a pantalla completa para proyectar en clase.
 import { playAnimal, sayName, stopAll } from '../audio';
 import { ANIMALS, animalById, animalsIn, regionById, type Animal, type RegionId } from '../data';
+import { tr } from '../i18n';
 import { isLocked, store } from '../store';
 import { art, $, backBtn, icon, soundRings } from '../ui';
 import { premiumWall } from './premium';
 
 export function teacher(root: HTMLElement, src: string | null) {
-  const title = store.lang === 'es' ? 'Modo profe' : 'Teacher mode';
+  const title = tr('Modo profe', 'Teacher mode', 'Modo professor');
   if (premiumWall(root, title)) return;
   const favs = store.favs.map(animalById).filter((a): a is Animal => !!a);
   const list = (src && regionById(src) ? animalsIn(src as RegionId) : src === 'fav' && favs.length ? favs : ANIMALS).filter((a) => !isLocked(a));

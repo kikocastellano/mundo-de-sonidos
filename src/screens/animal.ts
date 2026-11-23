@@ -1,6 +1,6 @@
 // Ficha del animal: imagen grande, sonido, nombre, dato curioso y deslizar al siguiente.
 import { playAnimal, preload, sayName, sfx, stopAll } from '../audio';
-import { ANIMALS, animalById, animalsIn, regionById } from '../data';
+import { ANIMALS, animalById, animalsIn, regionById, otherLang } from '../data';
 import { INFO } from '../info';
 import { t } from '../i18n';
 import { discover, isLocked, logAct, store, toggleFav } from '../store';
@@ -11,7 +11,7 @@ export function animal(root: HTMLElement, id: string, fromFav: boolean) {
   if (!a) return go('/mundo');
   const r = regionById(a.region)!;
   const L = store.lang;
-  const O = L === 'es' ? 'en' : 'es'; // el otro idioma, para aprender el nombre
+  const O = otherLang(L); // el otro idioma, para aprender el nombre
   const list = fromFav ? store.favs.map(animalById).filter((x) => !!x) as typeof ANIMALS : animalsIn(a.region);
   const idx = Math.max(0, list.findIndex((x) => x.id === id));
   const locked = isLocked(a);
@@ -104,7 +104,7 @@ function openInfo(a: (typeof ANIMALS)[number], accent: string) {
   const tiles: [string, string, string][] = [
     ['🏠', t('home'), x.home], ['🍽️', t('food'), x.food],
     // «Cría» a secas no enseña nada: solo se muestra si la cría tiene un nombre propio (ternero, potro…)
-    ...(/^cr[ií]a$/i.test(info.es.baby.trim()) ? [] : [['👶', t('baby'), x.baby] as [string, string, string]]),
+    ...(/^cr[ií]a$/i.test(info.es.baby.trim()) || /^filhote$/i.test(x.baby.trim()) ? [] : [['👶', t('baby'), x.baby] as [string, string, string]]),
     ['📏', t('size'), x.size], ['⚖️', t('weight'), info.weight], ['⏳', t('life'), `${info.life} ${t('years')}`],
   ];
   const facts = [a.fact[L], ...x.more];

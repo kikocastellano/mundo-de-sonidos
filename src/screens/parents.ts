@@ -1,8 +1,8 @@
 // Puerta para padres (mantener pulsado el número dicho en palabras) y zona de padres.
 import { availableVoices, sayName, sfx } from '../audio';
 import { billingStatus, buy, redeemCode, canBuy, isNativeApp, onBillingChange, price, restore, testUnlockAllowed } from '../billing';
-import { ANIMALS } from '../data';
-import { t } from '../i18n';
+import { ANIMALS, type Lang } from '../data';
+import { t, tr } from '../i18n';
 import { save, startTrial, store, trialActive, trialAvailable, weekSummary } from '../store';
 import { $, art, backBtn, esc, go, icon } from '../ui';
 
@@ -40,21 +40,21 @@ function parentArea(root: HTMLElement, next: string | null) {
       ${paywallPanel(next)}
       <div class="panel settings">
         <div class="row"><span>${t('language')}</span>
-          <div class="seg">${(['es', 'en'] as const).map((l) => `<button data-lang="${l}" class="${store.lang === l ? 'on' : ''}">${l === 'es' ? 'Español' : 'English'}</button>`).join('')}</div></div>
+          <div class="seg">${(['es', 'en', 'pt'] as const).map((l) => `<button data-lang="${l}" class="${store.lang === l ? 'on' : ''}">${{ es: 'Español', en: 'English', pt: 'Português' }[l]}</button>`).join('')}</div></div>
         <div class="row"><span>${t('kidName')}</span><input class="kid-name" maxlength="20" value="${esc(store.kid)}" autocomplete="off" /></div>
-        ${store.premium ? '' : `<div class="row"><span>${store.lang === 'es' ? 'Código de acceso' : 'Access code'}</span><span class="code-row"><input class="code-input" maxlength="20" autocomplete="off" autocapitalize="characters" /><button class="pill code-btn">OK</button></span></div>`}
+        ${store.premium ? '' : `<div class="row"><span>${tr('Código de acceso', 'Access code', 'Código de acesso')}</span><span class="code-row"><input class="code-input" maxlength="20" autocomplete="off" autocapitalize="characters" /><button class="pill code-btn">OK</button></span></div>`}
         <div class="row"><span>${t('voice')}</span>
           <select class="voice-select" aria-label="${t('voice')}">${availableVoices().map((v, i) => `<option value="${v.name}" ${(store.voice[store.lang] ? store.voice[store.lang] === v.name : i === 0) ? 'selected' : ''}>${v.name.replace(/^(Microsoft|Google|Apple)\s*/i, '').replace(/\s*-\s*.*$/, '')} (${v.lang})</option>`).join('') || '<option>—</option>'}</select></div>
         <div class="row"><span>${t('sound')}</span>
           <button class="toggle ${store.muted ? '' : 'on'}" aria-pressed="${!store.muted}">${store.muted ? icon.mute : icon.speaker}</button></div>
       </div>
       <div class="panel credits"><h3>${t('credits')}</h3><p>${t('creditsBody')}</p><p class="muted">${t('privacy')}</p>
-        <div class="link-row"><button class="pill" data-go="/creditos">${t('credits')}</button><a class="pill" href="./privacidad.html" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center">${store.lang === 'es' ? 'Privacidad' : 'Privacy'}</a></div></div>
-      ${!testUnlockAllowed() ? '' : `<div class="panel settings"><div class="row"><span>${store.lang === 'es' ? 'Probar premium (solo pruebas, sin pago)' : 'Try premium (testing only, no payment)'}</span>
+        <div class="link-row"><button class="pill" data-go="/creditos">${t('credits')}</button><a class="pill" href="./privacidad.html" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center">${tr('Privacidad', 'Privacy', 'Privacidade')}</a></div></div>
+      ${!testUnlockAllowed() ? '' : `<div class="panel settings"><div class="row"><span>${tr('Probar premium (solo pruebas, sin pago)', 'Try premium (testing only, no payment)', 'Testar premium (só testes, sem pagamento)')}</span>
         <button class="toggle premium-test ${store.premium ? 'on' : ''}" aria-pressed="${store.premium}">${icon.star}</button></div></div>`}
     </section>`;
   root.querySelectorAll<HTMLElement>('[data-lang]').forEach((b) => b.addEventListener('click', () => {
-    store.lang = b.dataset.lang as 'es' | 'en'; save(); document.documentElement.lang = store.lang; parentArea(root, next);
+    store.lang = b.dataset.lang as Lang; save(); document.documentElement.lang = store.lang; parentArea(root, next);
   }));
   bindPaywall(root, () => parentArea(root, next));
   root.querySelector('.code-btn')?.addEventListener('click', async () => {
@@ -72,23 +72,23 @@ function parentArea(root: HTMLElement, next: string | null) {
 /** Resumen de la semana para los padres (calculado en el dispositivo, nunca sale de él). */
 function weekPanel() {
   const w = weekSummary(); const es = store.lang === 'es';
-  const who = store.kid || (es ? 'Tu peque' : 'Your child');
+  const who = store.kid || tr('Tu peque', 'Your child', 'Seu pequeno');
   const fav = w.fav ? ANIMALS.find((a) => a.id === w.fav) : undefined;
   const max = Math.max(1, ...w.perDay);
-  const days = es ? ['L', 'M', 'X', 'J', 'V', 'S', 'D'] : ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  const days = store.lang === 'pt' ? ['S', 'T', 'Q', 'Q', 'S', 'S', 'D'] : es ? ['L', 'M', 'X', 'J', 'V', 'S', 'D'] : ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
   const label = (i: number) => days[(new Date(Date.now() - (6 - i) * 864e5).getDay() + 6) % 7];
   const total = Object.keys(store.seen).length;
   return `<div class="panel week">
     <h3>📊 ${t('weekTitle')}</h3>
-    <p class="week-lead">${esc(who)} ${es ? `ha descubierto <b>${w.seen}</b> animales nuevos y ha acertado <b>${w.right}</b> preguntas.` : `discovered <b>${w.seen}</b> new animals and got <b>${w.right}</b> answers right.`}</p>
+    <p class="week-lead">${esc(who)} ${tr(`ha descubierto <b>${w.seen}</b> animales nuevos y ha acertado <b>${w.right}</b> preguntas.`, `discovered <b>${w.seen}</b> new animals and got <b>${w.right}</b> answers right.`, `descobriu <b>${w.seen}</b> animais novos e acertou <b>${w.right}</b> perguntas.`)}</p>
     <div class="week-stats">
-      <div><b>${w.listen}</b><small>${es ? 'sonidos escuchados' : 'sounds played'}</small></div>
-      <div><b>${w.days}/7</b><small>${es ? 'días jugando' : 'days playing'}</small></div>
-      <div><b>${total}</b><small>${es ? 'pegatinas en total' : 'stickers in total'}</small></div>
+      <div><b>${w.listen}</b><small>${tr('sonidos escuchados', 'sounds played', 'sons ouvidos')}</small></div>
+      <div><b>${w.days}/7</b><small>${tr('días jugando', 'days playing', 'dias jogando')}</small></div>
+      <div><b>${total}</b><small>${tr('pegatinas en total', 'stickers in total', 'figurinhas no total')}</small></div>
     </div>
     <div class="week-bars">${w.perDay.map((v, i) => `<div><i style="height:${Math.round((v / max) * 100)}%"></i><small>${label(i)}</small></div>`).join('')}</div>
-    ${fav ? `<p class="muted">${es ? 'Su animal favorito esta semana' : 'Favourite animal this week'}: <b>${art(fav, 'inline')} ${esc(fav.name[store.lang])}</b></p>` : ''}
-    <p class="muted small">${es ? 'Estos datos solo se guardan en este dispositivo.' : 'This data stays on this device only.'}</p>
+    ${fav ? `<p class="muted">${tr('Su animal favorito esta semana', 'Favourite animal this week', 'Animal favorito da semana')}: <b>${art(fav, 'inline')} ${esc(fav.name[store.lang])}</b></p>` : ''}
+    <p class="muted small">${tr('Estos datos solo se guardan en este dispositivo.', 'This data stays on this device only.', 'Estes dados ficam só neste aparelho.')}</p>
   </div>`;
 }
 
@@ -112,6 +112,13 @@ function paywallPanel(next: string | null) {
           ['🧑‍🏫', '<b>Modo profe</b>: presentaciones y preguntas para clase'],
           ['✨', '<b>Animales nuevos</b> en el futuro, sin pagar más'],
           ['🚫', 'Sin anuncios y sin datos personales. <b>Nunca.</b>'],
+        ] : store.lang === 'pt' ? [
+          ['🦁', `<b>+${premiumCount} animais</b> do mundo todo com o som real`],
+          ['📒', `Completar o <b>álbum de ${ANIMALS.length} figurinhas</b> (agora tem ${got})`],
+          ['🌙', '<b>Modo calma</b>: 10 sons para dormir com temporizador'],
+          ['🧑‍🏫', '<b>Modo professor</b>: apresentações e perguntas para a aula'],
+          ['✨', '<b>Animais novos</b> no futuro, sem pagar mais'],
+          ['🚫', 'Sem anúncios e sem dados pessoais. <b>Nunca.</b>'],
         ] : [
           ['🦁', `<b>+${premiumCount} animals</b> from around the world with real sounds`],
           ['📒', `Complete the <b>${ANIMALS.length}-sticker album</b> (now ${got})`],
@@ -127,7 +134,7 @@ function paywallPanel(next: string | null) {
         <div class="marquee">${row(few.slice(0, half), 'l')}${row(few.slice(half), 'r')}</div>
         <h3>${t('premiumTitle')}</h3>
         <ul class="perks">${perks.map(([e, txt], k) => `<li style="--i:${k}"><span>${e}</span><p>${txt}</p></li>`).join('')}</ul>
-        <div class="price-box"><b>${price()}</b><span>${es ? 'pago único · para siempre' : 'one-time · forever'}</span><small>${es ? 'Menos que un café ☕ y sin suscripciones' : 'Less than a coffee ☕ and no subscriptions'}</small></div>
+        <div class="price-box"><b>${price()}</b><span>${tr('pago único · para siempre', 'one-time · forever', 'pagamento único · para sempre')}</span><small>${tr('Menos que un café ☕ y sin suscripciones', 'Less than a coffee ☕ and no subscriptions', 'Menos que um café ☕ e sem assinatura')}</small></div>
         ${trialActive() ? `<p class="trial-on">🎁 ${t('trialOn')} <b>${Math.max(1, Math.ceil((store.trialUntil - Date.now()) / 3600000))}</b> ${t('trialHours')}</p>` : ''}
         <button class="buy-btn" ${canBuy() ? '' : 'disabled'}>${t('buy')} <b>${price()}</b></button>
         ${trialAvailable() ? `<button class="trial-btn">🎁 ${t('trialBtn')}</button><p class="muted small">${t('trialNote')}</p>` : ''}
@@ -162,7 +169,7 @@ export function premiumScreen(root: HTMLElement) {
     <section class="screen parents">
       <header class="topbar">${backBtn('/')}<h2>⭐ Premium</h2><span class="spacer"></span></header>
       ${paywallPanel('premium')}
-      ${!testUnlockAllowed() ? '' : `<div class="panel settings"><div class="row"><span>${store.lang === 'es' ? 'Probar premium (solo pruebas, sin pago)' : 'Try premium (testing only, no payment)'}</span>
+      ${!testUnlockAllowed() ? '' : `<div class="panel settings"><div class="row"><span>${tr('Probar premium (solo pruebas, sin pago)', 'Try premium (testing only, no payment)', 'Testar premium (só testes, sem pagamento)')}</span>
         <button class="toggle premium-test ${store.premium ? 'on' : ''}" aria-pressed="${store.premium}">${icon.star}</button></div></div>`}
     </section>`;
   bindPaywall(root, () => premiumScreen(root));

@@ -1,6 +1,8 @@
 // Modo profe · Preguntas: preguntas de opción múltiple sobre las fichas de los animales, para jugar en clase.
 import { sayAll, sayName, sfx } from '../audio';
-import { ANIMALS, REGIONS, animalsIn, regionById, type Animal, type Lang, type RegionId } from '../data';
+import { ANIMALS, REGIONS, animalsIn, regionById, otherLang, type Animal, type Lang, type RegionId } from '../data';
+import { tr } from '../i18n';
+import { PT_ANIMALS } from '../pt';
 import { INFO } from '../info';
 import { CLASE, type Clase } from '../info/clases';
 import { discover, isLocked, logAct, store } from '../store';
@@ -9,24 +11,28 @@ import { premiumWall } from './premium';
 
 interface Q { animal: Animal; text: string; options: { label: string; emoji: string }[]; answer: number; say?: Lang }
 
-const CLASES: Record<Clase, { emoji: string; es: string; en: string }> = {
-  mamifero: { emoji: '🐾', es: 'Mamífero', en: 'Mammal' },
-  ave: { emoji: '🪶', es: 'Ave', en: 'Bird' },
-  reptil: { emoji: '🦎', es: 'Reptil', en: 'Reptile' },
-  anfibio: { emoji: '🐸', es: 'Anfibio', en: 'Amphibian' },
-  insecto: { emoji: '🐞', es: 'Insecto', en: 'Insect' },
-  pez: { emoji: '🐟', es: 'Pez', en: 'Fish' },
-  invertebrado: { emoji: '🐙', es: 'Sin huesos', en: 'No bones' },
+const CLASES: Record<Clase, { emoji: string; es: string; en: string; pt: string }> = {
+  mamifero: { emoji: '🐾', es: 'Mamífero', en: 'Mammal', pt: 'Mamífero' },
+  ave: { emoji: '🪶', es: 'Ave', en: 'Bird', pt: 'Ave' },
+  reptil: { emoji: '🦎', es: 'Reptil', en: 'Reptile', pt: 'Réptil' },
+  anfibio: { emoji: '🐸', es: 'Anfibio', en: 'Amphibian', pt: 'Anfíbio' },
+  insecto: { emoji: '🐞', es: 'Insecto', en: 'Insect', pt: 'Inseto' },
+  pez: { emoji: '🐟', es: 'Pez', en: 'Fish', pt: 'Peixe' },
+  invertebrado: { emoji: '🐙', es: 'Sin huesos', en: 'No bones', pt: 'Sem ossos' },
 };
-const DIETAS = { h: { emoji: '🌿', es: 'Plantas', en: 'Plants' }, c: { emoji: '🍖', es: 'Carne', en: 'Meat' }, o: { emoji: '🍽️', es: 'De todo', en: 'Everything' }, i: { emoji: '🐛', es: 'Bichitos', en: 'Bugs' } };
+const DIETAS = { h: { emoji: '🌿', es: 'Plantas', en: 'Plants', pt: 'Plantas' }, c: { emoji: '🍖', es: 'Carne', en: 'Meat', pt: 'Carne' }, o: { emoji: '🍽️', es: 'De todo', en: 'Everything', pt: 'De tudo' }, i: { emoji: '🐛', es: 'Bichitos', en: 'Bugs', pt: 'Bichinhos' } };
 
 const shuffle = <T,>(a: T[]) => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+/** Crías con nombre genérico que no sirven como respuesta («Filhote», «É o filhote da…»). */
+const GENERIC = /^(filhote|é o filhote)/i;
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const pick = <T,>(a: T[]) => a[Math.floor(Math.random() * a.length)];
 const MASC_A = /^(koala|gorila|panda|kea|cucaburra|ave)$/i;
 const FEM = /^(serpiente|perdiz|codorniz)$/i;
 const el = (a: Animal, L: Lang) => {
   const n = a.name[L].toLowerCase();
   if (L === 'en') return `the ${n}`;
+  if (L === 'pt') return `${PT_ANIMALS[a.id]?.[1] ?? 'o'} ${n}`;
   const w = n.split(' ')[0];
   const fem = FEM.test(w) || (/a$/.test(w) && !MASC_A.test(w));
   return `${fem ? 'la' : 'el'} ${n}`;
@@ -37,7 +43,7 @@ const words = (t: string) => new Set(t.toLowerCase().normalize('NFD').replace(/[
 const overlaps = (a: string, b: string) => { const A = words(a); return [...words(b)].some((w) => A.has(w) || A.has(w.replace(/s$/, '')) || A.has(w + 's')); };
 
 /** «de» + artículo: «del león», «de la jirafa». */
-const de = (who: string) => (who.startsWith('el ') ? `del ${who.slice(3)}` : `de ${who}`);
+const de = (who: string) => (who.startsWith('el ') ? `del ${who.slice(3)}` : who.startsWith('o ') ? `do ${who.slice(2)}` : who.startsWith('a ') ? `da ${who.slice(2)}` : `de ${who}`);
 
 /** Crea una pregunta de 3 opciones con la respuesta correcta y dos distractores distintos. */
 function makeQuestion(pool: Animal[], L: Lang, last: string): Q | null {
@@ -48,38 +54,38 @@ function makeQuestion(pool: Animal[], L: Lang, last: string): Q | null {
   const kinds = ['clase', 'dieta', 'region', 'comida', 'cria', 'casa', 'idioma', 'idioma', 'ruido', ...(a.silent ? ['ruido'] : [])];
   for (const k of shuffle(kinds)) {
     if (k === 'idioma') {
-      const O: Lang = L === 'es' ? 'en' : 'es';
+      const O: Lang = otherLang(L);
       const others = shuffle(ANIMALS.filter((b) => b.id !== a.id && b.name[O] !== a.name[O] && b.emoji !== a.emoji)).slice(0, 2);
       const o = shuffle([a, ...others]);
-      return { animal: a, text: L === 'es' ? `¿Cómo se dice ${a.name.es.toLowerCase()} en inglés?` : `How do you say ${a.name.en.toLowerCase()} in Spanish?`, options: o.map((b) => ({ label: b.name[O], emoji: O === 'en' ? '🇬🇧' : '🇪🇸' })), answer: o.indexOf(a), say: O } as Q;
+      return { animal: a, text: tr(`¿Cómo se dice ${a.name.es.toLowerCase()} en inglés?`, `How do you say ${a.name.en.toLowerCase()} in Spanish?`, `Como se diz ${a.name.pt.toLowerCase()} em inglês?`), options: o.map((b) => ({ label: b.name[O], emoji: O === 'en' ? '🇬🇧' : '🇪🇸' })), answer: o.indexOf(a), say: O } as Q;
     }
     if (k === 'ruido') {
-      const o = [{ label: L === 'es' ? 'Sí, se oye' : 'Yes, you can hear it', emoji: '🔊' }, { label: L === 'es' ? 'Casi nada: es silencioso' : 'Hardly: it is silent', emoji: '🤫' }];
-      return { animal: a, text: L === 'es' ? `¿Hace ruido ${who}?` : `Does ${who} make noise?`, options: o, answer: a.silent ? 1 : 0 };
+      const o = [{ label: tr('Sí, se oye', 'Yes, you can hear it', 'Sim, dá para ouvir'), emoji: '🔊' }, { label: tr('Casi nada: es silencioso', 'Hardly: it is silent', 'Quase nada: é silencioso'), emoji: '🤫' }];
+      return { animal: a, text: tr(`¿Hace ruido ${who}?`, `Does ${who} make noise?`, `${cap(who)} faz barulho?`), options: o, answer: a.silent ? 1 : 0 };
     }
     if (k === 'clase' && CLASE[a.id]) {
       const right = CLASE[a.id];
       const opts = [right, ...shuffle((Object.keys(CLASES) as Clase[]).filter((c) => c !== right)).slice(0, 2)];
       const o = shuffle(opts);
-      return { animal: a, text: L === 'es' ? `¿Qué tipo de animal es ${who}?` : `What kind of animal is ${who}?`, options: o.map((c) => ({ label: CLASES[c][L], emoji: CLASES[c].emoji })), answer: o.indexOf(right) };
+      return { animal: a, text: tr(`¿Qué tipo de animal es ${who}?`, `What kind of animal is ${who}?`, `Que tipo de animal é ${who}?`), options: o.map((c) => ({ label: CLASES[c][L], emoji: CLASES[c].emoji })), answer: o.indexOf(right) };
     }
     if (k === 'dieta') {
       const right = info.diet;
       const o = shuffle([right, ...shuffle((Object.keys(DIETAS) as (keyof typeof DIETAS)[]).filter((d) => d !== right)).slice(0, 2)]);
-      return { animal: a, text: L === 'es' ? `¿Qué come ${who}?` : `What does ${who} eat?`, options: o.map((d) => ({ label: DIETAS[d][L], emoji: DIETAS[d].emoji })), answer: o.indexOf(right) };
+      return { animal: a, text: tr(`¿Qué come ${who}?`, `What does ${who} eat?`, `O que ${who} come?`), options: o.map((d) => ({ label: DIETAS[d][L], emoji: DIETAS[d].emoji })), answer: o.indexOf(right) };
     }
     if (k === 'region' && a.region !== 'granja') {
       const right = a.region;
       const o = shuffle([right, ...shuffle(REGIONS.map((r) => r.id).filter((r) => r !== right && r !== 'granja')).slice(0, 2)]) as RegionId[];
-      return { animal: a, text: L === 'es' ? `¿De dónde es ${who}?` : `Where does ${who} come from?`, options: o.map((r) => ({ label: regionById(r)!.name[L], emoji: regionById(r)!.emoji })), answer: o.indexOf(right) };
+      return { animal: a, text: tr(`¿De dónde es ${who}?`, `Where does ${who} come from?`, `De onde é ${who}?`), options: o.map((r) => ({ label: regionById(r)!.name[L], emoji: regionById(r)!.emoji })), answer: o.indexOf(right) };
     }
-    if (k === 'cria' && !/^cr[ií]a/i.test(info.es.baby) && !/^es la cr/i.test(info.es.baby)) {
-      const others = shuffle(ANIMALS.filter((b) => INFO[b.id] && CLASE[b.id] !== CLASE[a.id] && !/^cr[ií]a|^es la cr/i.test(INFO[b.id].es.baby) && !overlaps(INFO[b.id][L].baby, x.baby)));
+    if (k === 'cria' && !/^cr[ií]a/i.test(info.es.baby) && !/^es la cr/i.test(info.es.baby) && !GENERIC.test(x.baby)) {
+      const others = shuffle(ANIMALS.filter((b) => INFO[b.id] && CLASE[b.id] !== CLASE[a.id] && !/^cr[ií]a|^es la cr/i.test(INFO[b.id].es.baby) && !GENERIC.test(INFO[b.id][L].baby) && !overlaps(INFO[b.id][L].baby, x.baby)));
       const seen = new Set([x.baby.toLowerCase()]); const d: string[] = [];
       for (const b of others) { const v = INFO[b.id][L].baby; if (!seen.has(v.toLowerCase()) && d.length < 2) { seen.add(v.toLowerCase()); d.push(v); } }
       if (d.length < 2) continue; // nunca una pregunta con menos de 3 respuestas
       const o = shuffle([x.baby, ...d]);
-      return { animal: a, text: L === 'es' ? `¿Cómo se llama la cría ${de(who)}?` : `What is ${who}’s baby called?`, options: o.map((v) => ({ label: v, emoji: '👶' })), answer: o.indexOf(x.baby) };
+      return { animal: a, text: tr(`¿Cómo se llama la cría ${de(who)}?`, `What is ${who}’s baby called?`, `Como se chama o filhote ${de(who)}?`), options: o.map((v) => ({ label: v, emoji: '👶' })), answer: o.indexOf(x.baby) };
     }
     if (k === 'comida' || k === 'casa') {
       const field = k === 'comida' ? 'food' : 'home';
@@ -88,7 +94,7 @@ function makeQuestion(pool: Animal[], L: Lang, last: string): Q | null {
       for (const b of others) { const v = INFO[b.id][L][field]; if (d.length < 2 && !/^junto a|^leche y/i.test(v) && !overlaps(v, x[field]) && !d.some((o) => overlaps(o, v))) d.push(v); }
       if (d.length < 2) continue;
       const o = shuffle([x[field], ...d]);
-      return { animal: a, text: k === 'comida' ? (L === 'es' ? `¿Cuál es la comida favorita ${de(who)}?` : `What does ${who} like to eat?`) : (L === 'es' ? `¿Dónde vive ${who}?` : `Where does ${who} live?`), options: o.map((v) => ({ label: v, emoji: k === 'comida' ? '🍽️' : '🏠' })), answer: o.indexOf(x[field]) };
+      return { animal: a, text: k === 'comida' ? tr(`¿Cuál es la comida favorita ${de(who)}?`, `What does ${who} like to eat?`, `Qual é a comida favorita ${de(who)}?`) : tr(`¿Dónde vive ${who}?`, `Where does ${who} live?`, `Onde vive ${who}?`), options: o.map((v) => ({ label: v, emoji: k === 'comida' ? '🍽️' : '🏠' })), answer: o.indexOf(x[field]) };
     }
   }
   return null;
@@ -96,13 +102,13 @@ function makeQuestion(pool: Animal[], L: Lang, last: string): Q | null {
 
 export function quiz(root: HTMLElement, src: string | null) {
   const L = store.lang;
-  if (premiumWall(root, L === 'es' ? 'Preguntas' : 'Quiz', '/profe')) return;
+  if (premiumWall(root, tr('Preguntas', 'Quiz', 'Perguntas'), '/profe')) return;
   const favs = store.favs.map((id) => ANIMALS.find((a) => a.id === id)).filter((a): a is Animal => !!a);
   const pool = (src && regionById(src) ? animalsIn(src as RegionId) : src === 'fav' && favs.length ? favs : ANIMALS).filter((a) => !isLocked(a));
   let score = 0, total = 0, last = '', q: Q | null = null, tries = 0, tm = 0;
   root.innerHTML = `
     <section class="screen quiz" style="--accent:#ff7d4a">
-      <header class="topbar">${backBtn('/profe')}<h2>❓ ${L === 'es' ? 'Preguntas' : 'Quiz'}</h2><div class="star-count">${icon.star}<b class="qs">0</b></div></header>
+      <header class="topbar">${backBtn('/profe')}<h2>❓ ${tr('Preguntas', 'Quiz', 'Perguntas')}</h2><div class="star-count">${icon.star}<b class="qs">0</b></div></header>
       <div class="q-card">
         <span class="q-emoji"></span>
         <button class="q-text" aria-live="polite"></button>
@@ -111,7 +117,7 @@ export function quiz(root: HTMLElement, src: string | null) {
       <p class="q-feedback"></p>
     </section>`;
   const qEmoji = $('.q-emoji', root), qText = $('.q-text', root), opts = $('.q-options', root), fb = $('.q-feedback', root);
-  const NUM = { es: ['Uno', 'Dos', 'Tres', 'Cuatro'], en: ['One', 'Two', 'Three', 'Four'] };
+  const NUM = { es: ['Uno', 'Dos', 'Tres', 'Cuatro'], en: ['One', 'Two', 'Three', 'Four'], pt: ['Um', 'Dois', 'Três', 'Quatro'] };
   /** Lee la pregunta y después cada respuesta con su número, para niños que aún no leen. */
   const read = () => q && sayAll([{ text: q.text }, ...q.options.flatMap((o, i) => [{ text: `${NUM[L][i]}:` }, { text: o.label, lang: q!.say ?? L }])]);
   qText.addEventListener('click', read);
@@ -138,14 +144,14 @@ export function quiz(root: HTMLElement, src: string | null) {
       b.classList.add('right'); total++; discover(q.animal.id); logAct('right', q.animal.id); if (tries === 0) score++;
       $('.qs', root).textContent = String(score);
       opts.querySelectorAll('.q-opt:not(.right)').forEach((o) => o.classList.add('fade'));
-      fb.textContent = L === 'es' ? '¡Correcto! 🎉' : 'Correct! 🎉';
+      fb.textContent = tr('¡Correcto! 🎉', 'Correct! 🎉', 'Correto! 🎉');
       sfx('win'); confetti(40);
-      if (q.say) sayName(q.options[i].label, q.say); else sayName(`${L === 'es' ? '¡Correcto!' : 'Correct!'} ${q.options[i].label}`);
+      if (q.say) sayName(q.options[i].label, q.say); else sayName(`${tr('¡Correcto!', 'Correct!', 'Correto!')} ${q.options[i].label}`);
       tm = window.setTimeout(next, 2600);
     } else {
       tries++; sfx('oops');
       b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong', 'fade');
-      fb.textContent = L === 'es' ? '¡Casi! Prueba otra' : 'Almost! Try another';
+      fb.textContent = tr('¡Casi! Prueba otra', 'Almost! Try another', 'Quase! Tente outra');
     }
   }
   next();
@@ -156,20 +162,20 @@ export function quiz(root: HTMLElement, src: string | null) {
 export function teacherMenu(root: HTMLElement, src: string | null) {
   const L = store.lang;
   const q = src ? `?src=${src}` : '';
-  if (premiumWall(root, L === 'es' ? 'Modo profe' : 'Teacher mode')) return;
+  if (premiumWall(root, tr('Modo profe', 'Teacher mode', 'Modo professor'))) return;
   root.innerHTML = `
     <section class="screen home">
-      <header class="topbar">${backBtn('/')}<h2>🧑‍🏫 ${L === 'es' ? 'Modo profe' : 'Teacher mode'}</h2><span class="spacer"></span></header>
+      <header class="topbar">${backBtn('/')}<h2>🧑‍🏫 ${tr('Modo profe', 'Teacher mode', 'Modo professor')}</h2><span class="spacer"></span></header>
       <nav class="home-menu">
-        <button class="big-btn teach-btn" data-go="/profe/ver${q}"><span class="big-emoji">▶️</span><span>${L === 'es' ? 'Presentar animales' : 'Show animals'}</span></button>
-        <button class="big-btn game" data-go="/profe/preguntas${q}"><span class="big-emoji">❓</span><span>${L === 'es' ? 'Preguntas' : 'Quiz'}</span></button>
+        <button class="big-btn teach-btn" data-go="/profe/ver${q}"><span class="big-emoji">▶️</span><span>${tr('Presentar animales', 'Show animals', 'Apresentar animais')}</span></button>
+        <button class="big-btn game" data-go="/profe/preguntas${q}"><span class="big-emoji">❓</span><span>${tr('Preguntas', 'Quiz', 'Perguntas')}</span></button>
       </nav>
-      <p class="subtitle">${L === 'es' ? '¿Qué animales?' : 'Which animals?'}</p>
+      <p class="subtitle">${tr('¿Qué animales?', 'Which animals?', 'Quais animais?')}</p>
       <div class="region-chips teach-chips">
-        <button class="chip ${!src ? 'on' : ''}" data-go="/profe" style="--c:#ff7d4a"><span>🌍</span>${L === 'es' ? 'Todos' : 'All'}<small>${ANIMALS.length}</small></button>
+        <button class="chip ${!src ? 'on' : ''}" data-go="/profe" style="--c:#ff7d4a"><span>🌍</span>${tr('Todos', 'All', 'Todos')}<small>${ANIMALS.length}</small></button>
         ${REGIONS.map((r) => `<button class="chip ${src === r.id ? 'on' : ''}" data-go="/profe?src=${r.id}" style="--c:${r.accent}"><span>${r.emoji}</span>${esc(r.name[L])}<small>${animalsIn(r.id).length}</small></button>`).join('')}
-        ${store.favs.length ? `<button class="chip ${src === 'fav' ? 'on' : ''}" data-go="/profe?src=fav" style="--c:#e2457a"><span>💖</span>${L === 'es' ? 'Favoritos' : 'Favourites'}<small>${store.favs.length}</small></button>` : ''}
+        ${store.favs.length ? `<button class="chip ${src === 'fav' ? 'on' : ''}" data-go="/profe?src=fav" style="--c:#e2457a"><span>💖</span>${tr('Favoritos', 'Favourites', 'Favoritos')}<small>${store.favs.length}</small></button>` : ''}
       </div>
-      <p class="tagline">${L === 'es' ? 'Ideal para proyectar en clase' : 'Great for the classroom projector'}</p>
+      <p class="tagline">${tr('Ideal para proyectar en clase', 'Great for the classroom projector', 'Ideal para projetar na sala de aula')}</p>
     </section>`;
 }

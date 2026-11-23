@@ -196,12 +196,15 @@ export function playAnimal(a: Animal): number {
 
 // ---------- Voz ----------
 // Se usa la voz del sistema más natural disponible, de chico si existe. Los padres pueden cambiarla.
-const FEMALE = /(female|mujer|woman|m[oó]nica|paulina|helena|elvira|laura|lucia|luc[ií]a|elena|marisol|sabina|dalia|paloma|ximena|camila|ines|in[eé]s|isabela|salome|google espa|samantha|serena|karen|moira|tessa|fiona|victoria|susan|hazel|zira|aria|jenny|libby|sonia|emma|ava|allison|martha|kate)/i;
-const MALE = /(\bmale|hombre|jorge|diego|juan|pablo|[aá]lvaro|carlos|enrique|raul|ra[uú]l|dario|dar[ií]o|daniel|alex|fred|tom|david|mark|george|james|guy|ryan|thomas|oliver|arthur|rishi)/i;
+const FEMALE = /(female|mujer|woman|m[oó]nica|paulina|helena|elvira|laura|lucia|luc[ií]a|elena|marisol|sabina|dalia|paloma|ximena|camila|ines|in[eé]s|isabela|salome|google espa|samantha|serena|karen|moira|tessa|fiona|victoria|susan|hazel|zira|aria|jenny|libby|sonia|emma|ava|allison|martha|kate|francisca|maria|luciana|thalita|leila|brenda|yara|manuela)/i;
+const MALE = /(\bmale|hombre|jorge|diego|juan|pablo|[aá]lvaro|carlos|enrique|raul|ra[uú]l|dario|dar[ií]o|daniel|alex|fred|tom|david|mark|george|james|guy|ryan|thomas|oliver|arthur|rishi|antonio|ant[oô]nio|ricardo|felipe|thiago|julio|j[uú]lio|fabio|f[aá]bio|humberto|donato)/i;
 
 // Voces de Google TTS en Android: el nombre no dice si es de mujer, pero estos códigos lo son
 const GOOGLE_FEMALE = /-x-(eea|eec|esc|gba|gbc|gbg|sfg|tpc|iob|tpf)-/i;
 const GOOGLE_MALE = /-x-(eed|eef|esd|gbb|gbd|tpd|iom|iol)-/i;
+
+/** Acento por defecto de cada idioma. */
+const TAG: Record<Lang, string> = { es: 'es-ES', en: 'en-GB', pt: 'pt-BR' };
 
 interface Voice { name: string; lang: string; localService: boolean; index: number }
 
@@ -230,7 +233,7 @@ function voiceScore(v: Voice, lang: Lang) {
   if (/google/i.test(v.name)) s += 10;
   if (/-local$/i.test(v.name)) s += 6; // funciona sin internet
   const tag = v.lang.toLowerCase().replace('_', '-');
-  if (tag === (lang === 'es' ? 'es-es' : 'en-gb')) s += 8;
+  if (tag === TAG[lang].toLowerCase()) s += 8;
   if (/espeak|compact|eloquence/i.test(v.name)) s -= 50;
   return s;
 }
@@ -253,12 +256,12 @@ if (!native && 'speechSynthesis' in window) {
 export function sayName(text: string, lang: Lang = store.lang) {
   if (store.muted) return;
   const v = pickVoice(lang);
-  const tag = v?.lang ?? (lang === 'es' ? 'es-ES' : 'en-GB');
+  const tag = v?.lang ?? TAG[lang];
   if (native) {
     void TextToSpeech.stop().catch(() => {}).finally(() =>
       TextToSpeech.speak({ text, lang: tag, rate: 0.92, pitch: 1, volume: 1, voice: v?.index, category: 'playback' }).catch(() =>
         // si la voz elegida falla, se intenta con la del sistema para ese idioma
-        TextToSpeech.speak({ text, lang: lang === 'es' ? 'es-ES' : 'en-GB', rate: 0.92 }).catch(() => {})));
+        TextToSpeech.speak({ text, lang: TAG[lang], rate: 0.92 }).catch(() => {})));
     return;
   }
   if (!('speechSynthesis' in window)) return;
@@ -278,7 +281,7 @@ export function sayAll(parts: { text: string; lang?: Lang }[]) {
     void TextToSpeech.stop().catch(() => {}).finally(async () => {
       for (const p of parts) {
         const lang = p.lang ?? store.lang; const v = pickVoice(lang);
-        try { await TextToSpeech.speak({ text: p.text, lang: v?.lang ?? (lang === 'es' ? 'es-ES' : 'en-GB'), rate: 0.92, voice: v?.index, category: 'playback' }); }
+        try { await TextToSpeech.speak({ text: p.text, lang: v?.lang ?? TAG[lang], rate: 0.92, voice: v?.index, category: 'playback' }); }
         catch { return; } // si se interrumpe (otra lectura o cambio de pantalla), se para
       }
     });
@@ -289,7 +292,7 @@ export function sayAll(parts: { text: string; lang?: Lang }[]) {
   for (const p of parts) {
     const lang = p.lang ?? store.lang; const v = pickVoice(lang);
     const u = new SpeechSynthesisUtterance(p.text);
-    u.lang = v?.lang ?? (lang === 'es' ? 'es-ES' : 'en-GB');
+    u.lang = v?.lang ?? TAG[lang];
     const sv = v ? speechSynthesis.getVoices()[v.index] : undefined; if (sv) u.voice = sv;
     u.rate = 0.92; speechSynthesis.speak(u);
   }

@@ -5,17 +5,17 @@ import { store } from '../store';
 import { $, backBtn, icon } from '../ui';
 import { premiumWall } from './premium';
 
-const OPTS: { id: Ambience; emoji: string; es: string; en: string }[] = [
-  { id: 'nana', emoji: '🎶', es: 'Nana', en: 'Lullaby' },
-  { id: 'lluvia', emoji: '🌧️', es: 'Lluvia suave', en: 'Soft rain' },
-  { id: 'olas', emoji: '🌊', es: 'Olas', en: 'Waves' },
-  { id: 'arroyo', emoji: '💧', es: 'Arroyo', en: 'Stream' },
-  { id: 'corazon', emoji: '💗', es: 'Latido', en: 'Heartbeat' },
-  { id: 'ballenas', emoji: '🐋', es: 'Ballenas', en: 'Whales' },
-  { id: 'chimenea', emoji: '🔥', es: 'Chimenea', en: 'Fireplace' },
-  { id: 'selva', emoji: '🌴', es: 'Selva', en: 'Jungle' },
-  { id: 'noche', emoji: '🦗', es: 'Noche', en: 'Night' },
-  { id: 'viento', emoji: '🍃', es: 'Brisa', en: 'Breeze' },
+const OPTS: { id: Ambience; emoji: string; es: string; en: string; pt: string }[] = [
+  { id: 'nana', emoji: '🎶', es: 'Nana', en: 'Lullaby', pt: 'Canção de ninar' },
+  { id: 'lluvia', emoji: '🌧️', es: 'Lluvia suave', en: 'Soft rain', pt: 'Chuva suave' },
+  { id: 'olas', emoji: '🌊', es: 'Olas', en: 'Waves', pt: 'Ondas' },
+  { id: 'arroyo', emoji: '💧', es: 'Arroyo', en: 'Stream', pt: 'Riacho' },
+  { id: 'corazon', emoji: '💗', es: 'Latido', en: 'Heartbeat', pt: 'Batimento' },
+  { id: 'ballenas', emoji: '🐋', es: 'Ballenas', en: 'Whales', pt: 'Baleias' },
+  { id: 'chimenea', emoji: '🔥', es: 'Chimenea', en: 'Fireplace', pt: 'Lareira' },
+  { id: 'selva', emoji: '🌴', es: 'Selva', en: 'Jungle', pt: 'Selva' },
+  { id: 'noche', emoji: '🦗', es: 'Noche', en: 'Night', pt: 'Noite' },
+  { id: 'viento', emoji: '🍃', es: 'Brisa', en: 'Breeze', pt: 'Brisa' },
 ];
 const TIMERS = [5, 15, 30, 0];
 

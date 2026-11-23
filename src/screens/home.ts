@@ -1,6 +1,6 @@
 // Pantalla principal: todo a la vista sin bajar, en una cuadrícula de tarjetas que se adapta a la pantalla.
-import { ANIMALS } from '../data';
-import { t } from '../i18n';
+import { ANIMALS, otherLang } from '../data';
+import { t, tr } from '../i18n';
 import { hasPremium, isLocked, store, trialActive } from '../store';
 import { art, esc, icon } from '../ui';
 import { sayName } from '../audio';
@@ -14,7 +14,7 @@ export function animalOfDay() {
 }
 
 export function home(root: HTMLElement) {
-  const es = store.lang === 'es';
+
   const total = Object.values(store.stars).reduce((a, b) => a + b, 0);
   const day = animalOfDay();
   const got = Object.keys(store.seen).length;
@@ -25,7 +25,7 @@ export function home(root: HTMLElement) {
     <section class="screen home2">
       <header class="home-top">
         <button class="btn-round ghost" data-go="/padres" aria-label="${t('parents')}">${icon.gear}</button>
-        <h1 class="home-logo"><span>${es ? 'Mundo de' : 'World of'}</span>${es ? 'Sonidos' : 'Sounds'}</h1>
+        <h1 class="home-logo"><span>${tr('Mundo de', 'World of', 'Mundo dos')}</span>${tr('Sonidos', 'Sounds', 'Sons')}</h1>
         <div class="home-right">
           <div class="star-count" aria-label="${total} ${t('stars')}">${icon.star}<b>${total}</b></div>
           ${store.premium ? '' : trialActive() ? `<button class="premium-pill trial" data-go="/premium">🎁 ${Math.max(1, Math.ceil((store.trialUntil - Date.now()) / 3600000))} h</button>` : `<button class="premium-pill" data-go="/premium">⭐ Premium</button>`}
@@ -37,13 +37,13 @@ export function home(root: HTMLElement) {
           <span class="th-text"><small>🌟 ${t('today')}</small><b>${esc(day.name[store.lang])}</b></span>
           <span class="aotd-play">${icon.play}</span>
         </button>
-        ${tile('t-explore', '/mundo', '🌍', t('play'), es ? `${ANIMALS.length} animales` : `${ANIMALS.length} animals`)}
+        ${tile('t-explore', '/mundo', '🌍', t('play'), `${ANIMALS.length} ${tr('animales', 'animals', 'animais')}`)}
         ${tile('t-game', '/juego', '👂', t('game'))}
-        ${tile('t-english', '/ingles', '🗣️', t('english'), '', `<span class="lang-badge">${es ? 'EN' : 'ES'}</span>`)}
+        ${tile('t-english', '/ingles', '🗣️', t('english'), '', `<span class="lang-badge">${otherLang(store.lang).toUpperCase()}</span>`)}
         ${tile('t-album', '/album', '📒', t('album'), `${got}/${ANIMALS.length}`)}
         ${tile('t-fav', '/favoritos', '💖', t('favorites'))}
         ${tile('t-calm', '/calma', '🌙', t('calm'), '', lockIcon)}
-        ${tile('t-teach', '/profe', '🧑‍🏫', es ? 'Modo profe' : 'Teacher mode', '', lockIcon)}
+        ${tile('t-teach', '/profe', '🧑‍🏫', tr('Modo profe', 'Teacher mode', 'Modo professor'), '', lockIcon)}
       </div>
       <p class="tagline">${t('privacy')}</p>
     </section>`;
@@ -51,7 +51,7 @@ export function home(root: HTMLElement) {
     const ex = root.querySelector<HTMLElement>('.t-explore')!;
     ex.classList.add('welcome-target');
     ex.insertAdjacentHTML('beforeend', '<span class="welcome-hand" aria-hidden="true">👆</span>');
-    const hi = () => { sayName(es ? '¡Hola! Toca un animal para escuchar cómo suena' : 'Hi! Tap an animal to hear how it sounds'); };
+    const hi = () => { sayName(tr('¡Hola! Toca un animal para escuchar cómo suena', 'Hi! Tap an animal to hear how it sounds', 'Olá! Toque num animal para ouvir o som dele')); };
     setTimeout(hi, 700);
     document.addEventListener('pointerdown', (e) => { if (!ex.contains(e.target as Node)) hi(); }, { once: true });
     ex.addEventListener('click', () => { store.welcomed = true; save(); });

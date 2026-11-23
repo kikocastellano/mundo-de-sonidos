@@ -1,6 +1,6 @@
 // Utilidades de interfaz compartidas por todas las pantallas.
 import { sfx, stopAll, unlockAudio } from './audio';
-import type { Animal } from './data';
+import type { Animal, Lang } from './data';
 import { t } from './i18n';
 import { animalById } from './data';
 import { isLocked, onSticker, save, startTrial, store, trialAvailable } from './store';
@@ -36,7 +36,7 @@ export const backBtn = (to: string) => `<button class="btn-round back" data-go="
 export const art = (a: Animal, cls = '') => a.art ? `<img class="art ${cls}" src="./art/${a.art}" alt="" draggable="false">` : a.emoji;
 
 /** Tarjeta de animal reutilizable (región, favoritos). */
-export function card(a: Animal, i: number, lang: 'es' | 'en') {
+export function card(a: Animal, i: number, lang: Lang) {
   const locked = isLocked(a);
   return `<button class="card ${locked ? 'locked' : ''}" data-animal="${a.id}" style="--i:${i}" aria-label="${esc(a.name[lang])}${locked ? ' – ' + t('locked') : ''}">
     <span class="card-emoji">${art(a)}</span>
