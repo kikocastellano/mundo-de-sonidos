@@ -2,6 +2,7 @@
 // Se recolorea solo el «cuerpo»: se respetan blancos, negros (ojos) y la banda de tono protegida (picos, patas…).
 //  hue: tono destino (0-360) del cuerpo · sat: multiplica saturación · light: multiplica luminosidad
 export const VARIANTS = {
+  kookaburra: { base: 'bird', hue: 30, sat: 0.45, light: 0.85 },
   'pez-payaso': { base: 'tropical-fish', hue: 22, sat: 1.2, light: 1.0 }, 'estrella-mar': { base: 'star', hue: 15, sat: 1.0, light: 0.95 },
   'caballito-mar': { base: 'tropical-fish', hue: 40, sat: 1.1, light: 1.0 }, 'manta-raya': { base: 'fish', hue: 220, sat: 0.3, light: 0.55 },
   camaleon: { base: 'lizard', hue: 95, sat: 1.1, light: 0.95 }, armadillo: { base: 'hedgehog', hue: 30, sat: 0.25, light: 0.85 },

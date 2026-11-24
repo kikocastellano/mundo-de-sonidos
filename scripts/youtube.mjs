@@ -106,6 +106,36 @@ AJUSTES: Público → «Sí, es contenido creado para niños».
   }
 }
 
+if (MODE === 'viral') {
+  // Short rápido de 5 sonidos, de fácil a «imposible», con gancho desde el segundo 0 (silueta + sonido real).
+  mkdirSync('youtube/tiktok', { recursive: true });
+  const R = [['vaca', 'FÁCIL', '#2bd67b'], ['leon', 'FÁCIL', '#2bd67b'], ['elefante', 'MEDIO', '#ffb02e'], ['lobo', 'DIFÍCIL', '#ff6a3d'], ['mono-aullador', 'IMPOSIBLE 🔥', '#e2257a']];
+  ff0('-f', 'lavfi', '-i', 'sine=f=1320:d=0.3', '-f', 'lavfi', '-i', 'sine=f=1760:d=0.3', '-filter_complex', '[1:a]adelay=90:all=1[b];[0:a][b]amix=2:normalize=0,afade=t=out:st=0.15:d=0.25,volume=0.45', `${TMP}/ding.wav`);
+  const segs = []; const snd = []; let t = 0;
+  const add = async (html, d) => { const f = `${TMP}/v-${segs.length}.png`; await png(html, f); segs.push([f, d]); t += d; };
+  const bar = (k) => `<div style="position:absolute;top:420px;left:0;right:0;display:flex;justify-content:center;gap:16px">${R.map((_, j) => `<div style="width:120px;height:18px;border-radius:9px;background:${j <= k ? '#fff' : 'rgba(255,255,255,.3)'}"></div>`).join('')}</div>`;
+  const hook = `<div class="t" style="position:absolute;top:170px;left:40px;right:40px;text-align:center;font-size:96px;line-height:1">¿Tu peque acierta<br>el último? 😱</div>`;
+  for (const [k, [id, lvl, col]] of R.entries()) {
+    const a = byId[id]; const BG = `background:radial-gradient(circle at 50% 55%,${col},#23324a 140%)`;
+    const card = (inner) => `<div class="card" style="position:absolute;top:620px;left:190px;width:700px;height:700px">${inner}</div>`;
+    const lv = `<div style="position:absolute;top:500px;left:0;right:0;text-align:center"><span style="font-size:64px;font-weight:800;background:#23324a;color:#fff;padding:6px 36px;border-radius:50px">${k + 1}/5 · ${lvl}</span></div>`;
+    snd.push([`public/sounds/${id}.mp3`, t + 0.05, 2.6]);
+    await add(`<div class="c" style="${BG}"></div>${hook}${bar(k)}${lv}${card(`<img src="${art64(a)}" style="width:520px;height:520px;filter:brightness(0) opacity(.85)">`)}
+      <div class="t" style="position:absolute;top:1400px;left:0;right:0;text-align:center;font-size:100px">🔊 ¿Qué animal es?</div>`, 1.7);
+    snd.push([`${TMP}/ding.wav`, t, 0.4]);
+    const extra = id === 'mono-aullador' ? '¡Se oye a 5 km! 🤯' : `🇬🇧 ${a.name.en}`;
+    await add(`<div class="c" style="${BG}"></div>${hook}${bar(k)}${lv}${card(`<img src="${art64(a)}" style="width:540px;height:540px">`)}
+      <div class="t" style="position:absolute;top:1370px;left:0;right:0;text-align:center;font-size:${a.name.es.length > 9 ? 120 : 140}px">¡${a.name.es}!</div>
+      <div class="t" style="position:absolute;top:1540px;left:0;right:0;text-align:center;font-size:70px;color:#fff3a8">${extra}</div>`, id === 'mono-aullador' ? 2.2 : 1.2);
+  }
+  await add(`<div class="c" style="background:linear-gradient(160deg,#ffd75e,#ff9a3c)"><div class="t" style="font-size:96px">¿Cuántos acertó? 👇</div>
+    <img src="data:image/png;base64,${readFileSync('docs/tienda/icono-512.png').toString('base64')}" style="width:330px;height:330px;border-radius:76px;margin:50px 0 30px;box-shadow:0 30px 60px rgba(0,0,0,.3)">
+    <div class="t" style="font-size:80px">+170 animales en la app</div><div class="t" style="font-size:110px;color:#fff3a8">Mundo de Sonidos</div>
+    <div class="t" style="font-size:58px;margin-top:40px;background:#23324a;padding:10px 46px;border-radius:70px;text-shadow:none">Gratis en Google Play · sin anuncios</div></div>`, 2.6);
+  video(segs, snd, 'youtube/tiktok/viral-5-sonidos.mp4', false);
+  console.log('✓ viral', t.toFixed(1), 's');
+}
+
 if (MODE === 'quiz') {
   // Short de preguntas: 3 preguntas con 3 opciones (dibujos), cuenta atrás y respuesta con curiosidad.
   mkdirSync('youtube/shorts', { recursive: true });
