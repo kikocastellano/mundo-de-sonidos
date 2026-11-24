@@ -5,6 +5,8 @@ const config: CapacitorConfig = {
   appName: 'Mundo de Sonidos',
   webDir: 'dist',
   android: { backgroundColor: '#d9f1ff' },
+  // Android 15+: la app va de borde a borde; Capacitor pasa los márgenes de las barras del sistema como variables CSS
+  plugins: { SystemBars: { insetsHandling: 'css', initialViewportFitValueHint: 'cover' } },
 };
 
 export default config;
