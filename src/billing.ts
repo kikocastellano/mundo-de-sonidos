@@ -14,6 +14,10 @@ const emit = () => listeners.forEach((f) => f());
 /** Estado de la conexión con Google Play, visible en la pantalla de compra para diagnosticar. */
 export let billingStatus = 'esperando';
 let productPrice: string | null = null;
+/** Oferta con descuento activa (p. ej. Black Friday): token para comprarla y precio normal tachado. */
+let offerToken: string | undefined;
+let fullPrice: string | null = null;
+let discountPct: number | null = null;
 let started = false;
 
 /** ¿Es la app instalada desde la tienda (Android/iOS)? Ahí nunca existe el desbloqueo de pruebas. */
@@ -26,6 +30,8 @@ export const testUnlockAllowed = () => !isNativeApp();
 export const canBuy = () => isNativeApp() && productPrice !== null;
 
 export const price = () => productPrice ?? FALLBACK_PRICE;
+/** Precio normal (tachado) y % de descuento si hay una oferta activa en Google Play. */
+export const offer = () => (fullPrice ? { full: fullPrice, pct: discountPct } : null);
 
 const errMsg = (e: unknown) => (e as { message?: string })?.message ?? String(e);
 
@@ -41,8 +47,18 @@ if (isNativeApp() && store.premium && !store.purchased) { store.premium = false;
 
 async function loadProduct() {
   try {
-    const { product } = await NativePurchases.getProduct({ productIdentifier: PRODUCT_ID, productType: PURCHASE_TYPE.INAPP });
-    productPrice = product.priceString || FALLBACK_PRICE;
+    // Google Play devuelve una entrada por cada oferta del producto: se elige la más barata (ofertas como Black Friday)
+    const { products } = await NativePurchases.getProducts({ productIdentifiers: [PRODUCT_ID], productType: PURCHASE_TYPE.INAPP });
+    const list = (products ?? []).filter((p) => p.identifier === PRODUCT_ID || !p.identifier);
+    if (!list.length) throw new Error('sin producto');
+    const best = list.reduce((a, b) => (b.price < a.price ? b : a));
+    productPrice = best.priceString || FALLBACK_PRICE;
+    offerToken = best.offerToken;
+    const full = best.fullPrice ?? Math.max(...list.map((p) => p.price));
+    if (full > best.price + 0.001) {
+      fullPrice = new Intl.NumberFormat(undefined, { style: 'currency', currency: best.currencyCode }).format(full);
+      discountPct = best.discountDisplayInfo?.percentageDiscount ?? Math.round((1 - best.price / full) * 100);
+    } else { fullPrice = null; discountPct = null; }
     billingStatus = 'listo';
   } catch (e) {
     productPrice = null;
@@ -69,7 +85,7 @@ export async function initBilling() {
 export async function buy(): Promise<boolean> {
   if (!productPrice) { await loadProduct(); emit(); if (!productPrice) return false; }
   try {
-    const t = await NativePurchases.purchaseProduct({ productIdentifier: PRODUCT_ID, productType: PURCHASE_TYPE.INAPP, quantity: 1 });
+    const t = await NativePurchases.purchaseProduct({ productIdentifier: PRODUCT_ID, productType: PURCHASE_TYPE.INAPP, quantity: 1, ...(offerToken ? { offerToken } : {}) });
     if (grant([t])) billingStatus = 'comprado';
     else billingStatus = 'compra pendiente: se desbloqueará cuando Google la confirme';
   } catch (e) {

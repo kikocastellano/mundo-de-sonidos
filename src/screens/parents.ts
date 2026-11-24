@@ -1,6 +1,6 @@
 // Puerta para padres (mantener pulsado el número dicho en palabras) y zona de padres.
 import { availableVoices, sayName, sfx } from '../audio';
-import { billingStatus, buy, redeemCode, canBuy, isNativeApp, onBillingChange, price, restore, testUnlockAllowed } from '../billing';
+import { billingStatus, buy, offer, redeemCode, canBuy, isNativeApp, onBillingChange, price, restore, testUnlockAllowed } from '../billing';
 import { ANIMALS, type Lang } from '../data';
 import { t, tr } from '../i18n';
 import { save, startTrial, store, trialActive, trialAvailable, weekSummary } from '../store';
@@ -134,7 +134,7 @@ function paywallPanel(next: string | null) {
         <div class="marquee">${row(few.slice(0, half), 'l')}${row(few.slice(half), 'r')}</div>
         <h3>${t('premiumTitle')}</h3>
         <ul class="perks">${perks.map(([e, txt], k) => `<li style="--i:${k}"><span>${e}</span><p>${txt}</p></li>`).join('')}</ul>
-        <div class="price-box"><b>${price()}</b><span>${tr('pago único · para siempre', 'one-time · forever', 'pagamento único · para sempre')}</span><small>${tr('Menos que un café ☕ y sin suscripciones', 'Less than a coffee ☕ and no subscriptions', 'Menos que um café ☕ e sem assinatura')}</small></div>
+        <div class="price-box">${offer() ? `<span class="deal">🔥 -${offer()!.pct}% · <s>${offer()!.full}</s></span>` : ''}<b>${price()}</b><span>${tr('pago único · para siempre', 'one-time · forever', 'pagamento único · para sempre')}</span><small>${tr('Menos que un café ☕ y sin suscripciones', 'Less than a coffee ☕ and no subscriptions', 'Menos que um café ☕ e sem assinatura')}</small></div>
         ${trialActive() ? `<p class="trial-on">🎁 ${t('trialOn')} <b>${Math.max(1, Math.ceil((store.trialUntil - Date.now()) / 3600000))}</b> ${t('trialHours')}</p>` : ''}
         <button class="buy-btn" ${canBuy() ? '' : 'disabled'}>${t('buy')} <b>${price()}</b></button>
         ${trialAvailable() ? `<button class="trial-btn">🎁 ${t('trialBtn')}</button><p class="muted small">${t('trialNote')}</p>` : ''}
@@ -159,6 +159,8 @@ function bindPaywall(root: HTMLElement, rerender: () => void) {
     if (store.premium !== wasPremium) { offBilling?.(); offBilling = null; rerender(); return; }
     const st = root.querySelector('.billing-status'); if (st) st.textContent = `Google Play: ${billingStatus}`;
     root.querySelectorAll('.price-box b, .buy-btn:not(.rate-btn) b').forEach((b) => { b.textContent = price(); });
+    const box = root.querySelector('.price-box'); const o = offer();
+    if (box && o && !box.querySelector('.deal')) box.insertAdjacentHTML('afterbegin', `<span class="deal">🔥 -${o.pct}% · <s>${o.full}</s></span>`);
     const btn = root.querySelector<HTMLButtonElement>('.buy-btn:not(.rate-btn)'); if (btn) btn.disabled = !canBuy();
   });
 }
