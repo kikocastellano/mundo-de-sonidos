@@ -166,6 +166,36 @@ if (MODE === 'viral-pt') {
   console.log('✓ viral-pt', t.toFixed(1), 's');
 }
 
+if (MODE === 'resenas') {
+  // Vídeo corto pidiendo reseñas (sin ofrecer nada a cambio): historia personal + app + cómo valorar.
+  mkdirSync('youtube/tiktok', { recursive: true });
+  const ICON = `data:image/png;base64,${readFileSync('docs/tienda/icono-512.png').toString('base64')}`;
+  const cap = (n) => `data:image/png;base64,${readFileSync(`docs/tienda/es/captura-${n}.png`).toString('base64')}`;
+  const segs = []; let t = 0; const snd = [];
+  const add = async (html, d) => { const f = `${TMP}/r-${segs.length}.png`; await png(html, f); segs.push([f, d]); t += d; };
+  const T = (txt, fs, col = '#fff') => `<div class="t" style="font-size:${fs}px;color:${col};text-align:center;margin:0 60px">${txt}</div>`;
+  const parade = ['leon', 'vaca', 'pinguino', 'elefante', 'pulpo'].map((id) => `<img src="${art64(byId[id])}" style="width:170px;height:170px">`).join('');
+  snd.push(['public/sounds/leon.mp3', 0.1, 2.2]);
+  await add(`<div class="c" style="background:radial-gradient(circle at 50% 40%,#fff3a8,#ffcf3f 45%,#ff9a3c)">${T('Soy papá 👋', 120, '#23324a')}${T('y he creado una app', 96)}${T('para peques 🦁', 96)}
+    <div style="display:flex;gap:20px;margin-top:70px">${parade}</div></div>`, 3);
+  snd.push(['public/sounds/vaca.mp3', t + 0.2, 2]);
+  await add(`<div class="c" style="background:linear-gradient(160deg,#7cc8ff,#2f8fd8)">${T('177 animales', 120)}${T('con su sonido REAL 🔊', 84, '#fff3a8')}
+    <img src="${cap(1)}" style="width:560px;margin-top:50px;border-radius:40px;box-shadow:0 30px 60px rgba(0,0,0,.3)"></div>`, 3);
+  snd.push(['public/sounds/pinguino.mp3', t + 0.2, 2]);
+  await add(`<div class="c" style="background:linear-gradient(160deg,#2bd67b,#0f8f6e)">${T('Sin anuncios 🚫', 110)}${T('y sin internet ✈️', 96, '#fff3a8')}
+    <img src="${cap(5)}" style="width:560px;margin-top:50px;border-radius:40px;box-shadow:0 30px 60px rgba(0,0,0,.3)"></div>`, 3);
+  await add(`<div class="c" style="background:linear-gradient(160deg,#7b5cff,#3f2fb8)">${T('Si la usáis en casa…', 96)}
+    <div style="font-size:150px;margin:40px 0">⭐⭐⭐⭐⭐</div>${T('una reseña en Google Play', 80, '#fff3a8')}${T('me ayuda muchísimo 🙏', 96)}
+    ${T('(así otras familias la encuentran)', 56, 'rgba(255,255,255,.85)')}</div>`, 4);
+  await add(`<div class="c" style="background:linear-gradient(160deg,#ffd75e,#ff9a3c)">
+    <img src="${ICON}" style="width:300px;height:300px;border-radius:70px;box-shadow:0 30px 60px rgba(0,0,0,.3)">
+    ${T('Mundo de Sonidos', 110)}
+    <div class="t" style="font-size:54px;color:#23324a;text-shadow:none;margin:30px 0 10px;text-align:center">Google Play → Mundo de Sonidos<br>→ «Valorar esta aplicación» ⭐</div>
+    <div class="t" style="font-size:60px;margin-top:40px;background:#23324a;padding:12px 46px;border-radius:70px;text-shadow:none">🖤 Black Friday: 0,99 €</div></div>`, 3.5);
+  video(segs, snd, 'youtube/tiktok/resenas.mp4', true);
+  console.log('✓ resenas', t.toFixed(1), 's');
+}
+
 if (MODE === 'quiz') {
   // Short de preguntas: 3 preguntas con 3 opciones (dibujos), cuenta atrás y respuesta con curiosidad.
   mkdirSync('youtube/shorts', { recursive: true });
